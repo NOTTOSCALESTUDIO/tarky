@@ -14,4 +14,4 @@ Unofficial fan project. Not affiliated with or endorsed by Battlestate Games. "E
 
 ## Support
 
-If the guide helps you, you can [buy me a Tarkov item](https://ko-fi.com/nottoscalestudio).
+https://ko-fi.com/nottoscalestudio
