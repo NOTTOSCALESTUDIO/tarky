@@ -1,7 +1,7 @@
 {
   "name": "Tarkov Story Route",
   "short_name": "Tarkov Route",
-  "description": "EFT PvE story routing guide",
+  "description": "Escape from Tarkov story and trader-loyalty routing guide",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
