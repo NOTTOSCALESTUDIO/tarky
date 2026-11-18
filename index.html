@@ -135,6 +135,9 @@ ul.tasks{list-style:none;padding-left:0}
 .task label{cursor:pointer}
 .task input{accent-color:var(--accent);vertical-align:-2px}
 .task.tdone>label span{text-decoration:line-through;color:var(--muted)}
+.task.tpend{animation:tfade 5000ms linear forwards;animation-delay:var(--tpast,0ms)}.task.tpend>label span{text-decoration:line-through}
+.task.tpend>label::after{content:"done · click again to undo";margin-left:8px;font-size:11px;color:var(--accent);font-weight:600}
+@keyframes tfade{from{opacity:1}to{opacity:.25}}
 .label.carry{color:var(--accent)}
 details.opt{background:var(--panel);border:1px solid var(--line);padding:10px 14px}
 details.opt summary{cursor:pointer}
@@ -218,60 +221,7 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
   <p><b>The numbers are route steps, not a raid count.</b> Each step is one raid when it goes very well; repeat a step as often as you need, and only tick it off when you move on.</p>
   <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a class="chap chap-tour" data-chap="Tour" target="_blank" rel="noopener">Tour</a><a class="chap chap-fs" data-chap="Falling Skies" target="_blank" rel="noopener">Falling Skies</a><a class="chap chap-ticket" data-chap="The Ticket" target="_blank" rel="noopener">The Ticket</a><a class="chap chap-aw" data-chap="Accidental Witness" target="_blank" rel="noopener">Accidental Witness</a><a class="chap chap-ba" data-chap="Batya" target="_blank" rel="noopener">Batya</a><a class="chap chap-bf" data-chap="Blue Fire" target="_blank" rel="noopener">Blue Fire</a><a class="chap chap-bo" data-chap="Boreas" target="_blank" rel="noopener">Boreas</a><a class="chap chap-lb" data-chap="The Labyrinth" target="_blank" rel="noopener">The Labyrinth</a><a class="chap chap-un" data-chap="The Unheard" target="_blank" rel="noopener">The Unheard</a><a class="chap chap-ta" data-chap="They Are Already Here" target="_blank" rel="noopener">They Are Already Here</a><span class="muted" style="font-size:13px">Colored names are story chapters; click one for its wiki guide.</span><span class="progress" id="prog"></span> <button type="button" class="rst" data-reset="route">Reset route</button><button class="reset" id="reset" type="button">Clear checkmarks</button> <button type="button" class="reset" id="expbtn" title="Save your checkmarks and settings to a file">Export progress</button><button type="button" class="reset" id="impbtn" title="Load a progress file">Import progress</button><input type="file" id="impfile" accept=".json,application/json" hidden></div>
 </header>
-
-<section id="prestige">
-  <hr class="rule">
-  <details class="opt" id="prestigebox"><summary><h2 style="display:inline">Prestige targets</h2> <span class="muted">(level, task, story, skills, hideout and roubles per Prestige)</span></summary>
-  <p class="small" style="margin:10px 0"><label><b>Your Prestige:</b> <select id="prestsel"><option value="">not set</option><option value="0">0 (no Prestige yet)</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6 (max)</option></select></label> <span class="muted">Set it to see your next target and add its figurines to the loot list.</span></p>
-  <div id="nbbox"></div>
-  <div class="scroll"><table id="presttable">
-    <thead><tr><th>Prestige</th><th>PMC level</th><th>Task</th><th>Story</th><th>Skills</th><th>Hideout</th><th>Roubles</th></tr></thead>
-    <tbody>
-      <tr><td>1 · PvP</td><td class="mono">25</td><td>New Beginning (Prestige 1)</td><td>—</td><td>—</td><td>Intelligence Center 1, Nutrition Unit 2, Rest Space 2</td><td class="mono">10M</td></tr>
-      <tr><td>1 · PvE</td><td class="mono">15</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="mono">5M</td></tr>
-      <tr><td>2 · PvP</td><td class="mono">30</td><td>New Beginning (Prestige 2)</td><td><b>Complete Tour</b></td><td>Strength 10, Endurance 10, Charisma 7</td><td>IC 1, NU 2, RS 2</td><td class="mono">15M</td></tr>
-      <tr><td>2 · PvE</td><td class="mono">25</td><td>New Beginning (Prestige 2)</td><td><b>Complete Tour</b></td><td>Strength 10, Endurance 10, Charisma 7</td><td>IC 1, NU 2, RS 2</td><td class="mono">10M</td></tr>
-      <tr><td>3</td><td class="mono">35</td><td>New Beginning (Prestige 3)</td><td><b>Tour + Falling Skies</b></td><td>Strength 10, Endurance 10, Charisma 7</td><td>IC 1, NU 2, RS 2</td><td class="mono">15M</td></tr>
-      <tr><td>4</td><td class="mono">40</td><td>New Beginning (Prestige 4)</td><td><b>Tour + obtain the Ticket</b> (step 13 of this route)</td><td>Strength 15, Endurance 15, Charisma 12</td><td>IC 1, NU 2, RS 2</td><td class="mono">15M</td></tr>
-      <tr><td>5</td><td class="mono">47</td><td>New Beginning (Prestige 5), Collector</td><td>Tour, They Are Already Here, obtain the Ticket</td><td>Strength 20, Endurance 20, Charisma 20</td><td>IC 2, Security 3, RS 3</td><td class="mono">20M</td></tr>
-      <tr><td>6</td><td class="mono">47</td><td>New Beginning (Prestige 6), Collector</td><td>Complete The Ticket (an ending)</td><td>Strength 20, Endurance 20, Charisma 20</td><td>IC 2, Security 3, RS 3</td><td class="mono">20M</td></tr>
-    </tbody>
-  </table></div>
-  <details class="opt refnotes"><summary><b>Prestige notes</b> <span class="muted">(skills, carry-over, Labs keycards, hideout)</span></summary>
-  <ul>
-    <li><b>Prestige 0 → 1 is mostly an XP run.</b> Story is optional for it. This route is built from a fresh character for compatibility, but its real target is <b>Prestige 2 and up</b>.</li>
-    <li><b>Prestige 1 needs no story.</b> PvP needs level 25, Ragman's New Beginning (level 25 to start: 50 Scavs, extract from The Lab, hand in any PMC, Scav, Boss and Trader figurine), the three hideout modules and 10M roubles. PvE needs only level 15 and 5M roubles.</li>
-    <li><b>This route's chapters map onto Prestige 2–4:</b> Tour for Prestige 2, Falling Skies for 3, and obtaining the Ticket (end of step 13, before Kerman's offer) for 4. Kerman's choice and the endings only matter from Prestige 6.</li>
-    <li><b>New Beginning (Prestige 2)</b>, from Ragman, unlocks once you have Prestige 1 and reach level 30 (20 in PvE); prestiging itself still needs level 30 (25 in PvE), per the table: eliminate 10 PMCs, extract from The Lab, hand in 2 FiR PMC figurines, 2 FiR Scav figurines, 2 FiR Boss figurines and 2 FiR Trader figurines.</li>
-    <li><b>Skills level from normal play.</b> Strength levels while you move over your weight limit (the weight number turns from grey to yellow); Endurance levels while you move under it (grey number); the hideout Gym (Defective Wall 6, Illumination 2, Vents 2) also trains both. You don't need your own: open the player profile of a friend who has a Gym in the same game mode (PvP or PvE), choose view hideout, press Enter to walk in, go to their Gym and use the weight bench. Charisma comes from spending money with traders on items and services. Each Prestige also grants +1 Charisma.
-      <ul>
-        <li><b>Skill fatigue:</b> in a raid, each skill slows sharply after about 5 points (red arrow next to the skill; 1.3.0.0 retuned this, so trust the arrow), and recovers to full speed after about 200 seconds (3⅓ minutes) without gains. So alternate: about 3½ minutes overweight (Strength), then about 3½ minutes under the limit (Endurance), and repeat for the whole raid.</li>
-        <li><b>Solo: 3-(b-TG) stim loop.</b> Pack so you're just over the limit. The 3-(b-TG) gives Strength +10 for 4 minutes, which lifts your carry limit: stimmed you're under it (Endurance), and when it wears off you're over (Strength). One stim covers an 8-minute cycle, and stimmed training counts. About 30,000 roubles each on the flea; hand tremor for 45 s, so don't stim right before a fight.</li>
-        <li><b>Duo: hand off a heavy item.</b> One player carries it (overweight, Strength) while the other stays light (Endurance). Every 3½ minutes, drop it for the other player to pick up. Free, and nobody backtracks. Swap in cover.</li>
-      </ul></li>
-    <li><b>Carry-over slots are limited when you Prestige.</b> Fill them in this order:
-      <ol>
-        <li>Small, high-value items such as an LEDX skin transilluminator or a Physical Bitcoin. They sell for the most per slot and pay toward the next Prestige's rouble requirement.</li>
-        <li>FiR items the next New Beginning asks for (for Prestige 2: 2 each of PMC, Scav, Boss and Trader figurines), or any other FiR hand-in that gates an early task on the route.</li>
-        <li>Hard-to-find Collector items.</li>
-      </ol>
-      Carried items keep their FiR status.</li>
-    <li><b>Prestiges that need Collector (5–6):</b> Collector (Fence, level 42) opens after Shooter Born in Heaven (Mechanic), The Tarkov Shooter - Part 4 (Jaeger, Parts 1–4), Sew it Good - Part 2 (Ragman), Chemical - Part 3 (Skier) and Postman Pat - Part 2 (Prapor, then Therapist). Start the two bolt-action lines early; they're the slow ones. Lever-action rifles (Jaeger LL2) count as bolt-action and fire much faster, so use one. Otherwise the Remington Model 700 builds to the highest ergonomics of the bolt-actions.</li>
-    <li><b>Cultist Circle for task items.</b> Sacrifice ₽400,000+ in base value (5 MP5s works; a Sacred Amulet adds 15%): 25% of the time you get a 6-hour timer that pays out items your active tasks and unfinished hideout modules need (hand-in items, not Gunsmith build parts). The fewer tasks you have active, the likelier it hits the one you want, even a LEDX. Don't hold back task accepts early to do this; use it once your active list is slim.</li>
-    <li><b>Labs keycards.</b> Every New Beginning needs a Lab extract, so each Prestige needs a TerraGroup Labs access keycard (single use). <b>Best early pick: Chemical - Part 4.</b> It's the earliest task that pays out 2 cards, enough for the step 13 Lab run (Tour + The Ticket) and one return trip for New Beginning's Lab extract. Before you can buy them (flea market at level 30, about 95,000 roubles in PvP on Nov 3, 2026, or Therapist at LL4 for 166,500), these are the ways to get one; after that, buying is simpler:
-      <ul>
-        <li><b>Chemical - Part 4</b> (Skier, after Chemical - Part 3): 2 cards on completion; mark the chemical transport on Customs.</li>
-        <li><b>Camera, Action!</b> (Mechanic, level 12, after Skier's Serious Allegations): 3 cards on completion for FiR SSD drive, USB Adapter, Portable Powerbank and Rechargeable battery.</li>
-        <li><b>Intelligence Center 2 craft</b>: 3 cards from 1 Intelligence folder, 40 minutes; the UHF RFID Reader is a tool you get back. About a third of a folder's price per card, the cheapest repeatable source once IC2 is built.</li>
-        <li><b>Barters</b>: Mechanic LL3 (Bulbex cable cutter + Pipe grip wrench), Ref LL3 (about 18 GP coins).</li>
-      </ul>
-      Task data is from tarkov.dev; which trader group each task sits in under 1.1 may differ, so check the trader screen.</li>
-    <li>For Prestige 1–4 the hideout target is the same three modules, so building Intelligence Center 1, Nutrition Unit 2 and Rest Space 2 early is never wasted.</li>
-  </ul>
-  </details>
-  
-  </details>
-</section>
+<section id="logcta" class="logcta" hidden aria-live="polite"></section>
 
 <section>
   <hr class="rule">
@@ -374,7 +324,7 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
   </details>
   </div>
   <aside class="hwish" id="hwish">
-    <details class="wl" id="wl-story" open><summary><h3 style="display:inline">Story wish list <button type="button" class="rst" data-reset="story">Reset</button></h3></summary>
+    <details class="wl" id="wl-story"><summary><h3 style="display:inline">Story wish list <button type="button" class="rst" data-reset="story">Reset</button></h3></summary>
     <p class="muted small">Every story hand-in on this route, in story order. FiR items must be looted or crafted (crafts always count as FiR); the rest can be bought.</p>
     <p class="muted small"><b>Crafting power:</b> crafts need the Generator running to start, except in the Lavatory, which needs no power. You can switch the Generator off after starting to save fuel, but the craft then runs more than 14× slower. <b>Story crafts are the exception: keep power on until the timer ends.</b></p>
     <ul class="hwl">
@@ -396,7 +346,7 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
       <li><label><input type="checkbox" data-hw="story|Falling Skies|WB2 Illumination 1"> <span class="mono">1×</span> Crickent lighter + 10,000 roubles (Illumination 1, which Workbench 2 needs) <span class="chap chap-fs" style="font-size:10px;padding:0 4px">Falling Skies</span> <span class="fl hi">Flea 20</span></label></li>
     </ul>
         </details>
-    <details class="wl" id="wl-keys" open><summary><h3 style="display:inline">Key list <button type="button" class="rst" data-reset="keys">Reset</button></h3></summary>
+    <details class="wl" id="wl-keys"><summary><h3 style="display:inline">Key list <button type="button" class="rst" data-reset="keys">Reset</button></h3></summary>
     <p class="muted small">Keys the route's tasks need: keep each until its task is done. Keys not on this list aren't needed by the route. Flea at level 25; no trader sells them. The Unknown, TerraGroup science office and Machinery keys spawn at their task spots.</p>
     <ul class="hwl">
       <li><label><input type="checkbox" data-hw="keys|Dorm room 206 key"> <span class="keyname">Dorm room 206 key</span>: Operation Aquarius <span class="muted">(step 3)</span></label></li>
@@ -425,7 +375,7 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
       <li><label><input type="checkbox" data-hw="keys|TerraGroup meeting room key"> <span class="keyname">TerraGroup meeting room key</span>: The Secret Recipe (optional: some spawns) <span class="muted">(cleanup C2, Streets)</span></label></li>
     </ul>
         </details>
-    <details class="wl" id="wl-hideout" open><summary><h3 style="display:inline">Hideout wish list <button type="button" class="rst" data-reset="hideout">Reset</button></h3></summary>
+    <details class="wl" id="wl-hideout"><summary><h3 style="display:inline">Hideout wish list <button type="button" class="rst" data-reset="hideout">Reset</button></h3></summary>
     <p class="muted small">Every item for your Prestige target's modules, totaled and A–Z for the in-game wish list; tick what you have. None need to be found in raid. Loot what you can, and buy the rest on the flea market once you reach the level on its tag. <b>No rush to buy:</b> hideout modules don't gate any task on this route except Workbench 1 (the Armored case craft at step 13, already on step 1's build list) and Intelligence Center 1, the first objective of The Ticket. Buy the rest when you're ready to build. The exception: if buying the last item or two finishes a module, do it early, since building it eats the parts you've been hoarding and frees stash space.</p>
     <h4>Prestige 1–4: Intelligence Center 1, Rest Space 2, Nutrition Unit 2</h4>
     <p class="muted small">Includes the modules they need first: Security 1, Vents 1, Generator 1, Workbench 1, Rest Space 1, Nutrition Unit 1, Lavatory 1–2, Water Collector 1. Plus <span class="mono">257,000</span> roubles.</p>
@@ -501,7 +451,6 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
 <section class="phase" data-phase="tour">
   <hr class="rule">
   <div class="phasehead"><h2>Phase 1 · Tour opening and Prapor LL2</h2><p class="muted" style="flex-basis:100%;margin:2px 0 0">Tour runs the whole route and only completes at step 13: Shoreline Terminal (step 8), the Reserve and Lighthouse hand-ins (step 12), then The Lab (step 13).</p><span class="progress">Steps 1–7</span></div>
-  <p><b>1.1 task groups:</b> each trader shows only a few tasks at a time, and finishing them opens the next group. The wiki doesn't record group membership, so a task it lists as open from the start may not appear yet. Before each raid, check the trader screens and stack only what's listed.</p>
   <div id="r1"></div>
 </section>
 
@@ -607,6 +556,60 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
   <div id="r4"></div>
 </section>
 
+<section id="prestige">
+  <hr class="rule">
+  <details class="opt" id="prestigebox"><summary><h2 style="display:inline">Prestige targets</h2> <span class="muted">(level, task, story, skills, hideout and roubles per Prestige)</span></summary>
+  <p class="small" style="margin:10px 0"><label><b>Your Prestige:</b> <select id="prestsel"><option value="">not set</option><option value="0">0 (no Prestige yet)</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6 (max)</option></select></label> <span class="muted">Set it to see your next target and add its figurines to the loot list.</span></p>
+  <div id="nbbox"></div>
+  <div class="scroll"><table id="presttable">
+    <thead><tr><th>Prestige</th><th>PMC level</th><th>Task</th><th>Story</th><th>Skills</th><th>Hideout</th><th>Roubles</th></tr></thead>
+    <tbody>
+      <tr><td>1 · PvP</td><td class="mono">25</td><td>New Beginning (Prestige 1)</td><td>—</td><td>—</td><td>Intelligence Center 1, Nutrition Unit 2, Rest Space 2</td><td class="mono">10M</td></tr>
+      <tr><td>1 · PvE</td><td class="mono">15</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="mono">5M</td></tr>
+      <tr><td>2 · PvP</td><td class="mono">30</td><td>New Beginning (Prestige 2)</td><td><b>Complete Tour</b></td><td>Strength 10, Endurance 10, Charisma 7</td><td>IC 1, NU 2, RS 2</td><td class="mono">15M</td></tr>
+      <tr><td>2 · PvE</td><td class="mono">25</td><td>New Beginning (Prestige 2)</td><td><b>Complete Tour</b></td><td>Strength 10, Endurance 10, Charisma 7</td><td>IC 1, NU 2, RS 2</td><td class="mono">10M</td></tr>
+      <tr><td>3</td><td class="mono">35</td><td>New Beginning (Prestige 3)</td><td><b>Tour + Falling Skies</b></td><td>Strength 10, Endurance 10, Charisma 7</td><td>IC 1, NU 2, RS 2</td><td class="mono">15M</td></tr>
+      <tr><td>4</td><td class="mono">40</td><td>New Beginning (Prestige 4)</td><td><b>Tour + obtain the Ticket</b> (step 13 of this route)</td><td>Strength 15, Endurance 15, Charisma 12</td><td>IC 1, NU 2, RS 2</td><td class="mono">15M</td></tr>
+      <tr><td>5</td><td class="mono">47</td><td>New Beginning (Prestige 5), Collector</td><td>Tour, They Are Already Here, obtain the Ticket</td><td>Strength 20, Endurance 20, Charisma 20</td><td>IC 2, Security 3, RS 3</td><td class="mono">20M</td></tr>
+      <tr><td>6</td><td class="mono">47</td><td>New Beginning (Prestige 6), Collector</td><td>Complete The Ticket (an ending)</td><td>Strength 20, Endurance 20, Charisma 20</td><td>IC 2, Security 3, RS 3</td><td class="mono">20M</td></tr>
+    </tbody>
+  </table></div>
+  <details class="opt refnotes"><summary><b>Prestige notes</b> <span class="muted">(skills, carry-over, Labs keycards, hideout)</span></summary>
+  <ul>
+    <li><b>Prestige 0 → 1 is mostly an XP run.</b> Story is optional for it. This route is built from a fresh character for compatibility, but its real target is <b>Prestige 2 and up</b>.</li>
+    <li><b>Prestige 1 needs no story.</b> PvP needs level 25, Ragman's New Beginning (level 25 to start: 50 Scavs, extract from The Lab, hand in any PMC, Scav, Boss and Trader figurine), the three hideout modules and 10M roubles. PvE needs only level 15 and 5M roubles.</li>
+    <li><b>This route's chapters map onto Prestige 2–4:</b> Tour for Prestige 2, Falling Skies for 3, and obtaining the Ticket (end of step 13, before Kerman's offer) for 4. Kerman's choice and the endings only matter from Prestige 6.</li>
+    <li><b>New Beginning (Prestige 2)</b>, from Ragman, unlocks once you have Prestige 1 and reach level 30 (20 in PvE); prestiging itself still needs level 30 (25 in PvE), per the table: eliminate 10 PMCs, extract from The Lab, hand in 2 FiR PMC figurines, 2 FiR Scav figurines, 2 FiR Boss figurines and 2 FiR Trader figurines.</li>
+    <li><b>Skills level from normal play.</b> Strength levels while you move over your weight limit (the weight number turns from grey to yellow); Endurance levels while you move under it (grey number); the hideout Gym (Defective Wall 6, Illumination 2, Vents 2) also trains both. You don't need your own: open the player profile of a friend who has a Gym in the same game mode (PvP or PvE), choose view hideout, press Enter to walk in, go to their Gym and use the weight bench. Charisma comes from spending money with traders on items and services. Each Prestige also grants +1 Charisma.
+      <ul>
+        <li><b>Skill fatigue:</b> in a raid, each skill slows sharply after about 5 points (red arrow next to the skill; 1.3.0.0 retuned this, so trust the arrow), and recovers to full speed after about 200 seconds (3⅓ minutes) without gains. So alternate: about 3½ minutes overweight (Strength), then about 3½ minutes under the limit (Endurance), and repeat for the whole raid.</li>
+        <li><b>Solo: 3-(b-TG) stim loop.</b> Pack so you're just over the limit. The 3-(b-TG) gives Strength +10 for 4 minutes, which lifts your carry limit: stimmed you're under it (Endurance), and when it wears off you're over (Strength). One stim covers an 8-minute cycle, and stimmed training counts. About 30,000 roubles each on the flea; hand tremor for 45 s, so don't stim right before a fight.</li>
+        <li><b>Duo: hand off a heavy item.</b> One player carries it (overweight, Strength) while the other stays light (Endurance). Every 3½ minutes, drop it for the other player to pick up. Free, and nobody backtracks. Swap in cover.</li>
+      </ul></li>
+    <li><b>Carry-over slots are limited when you Prestige.</b> Fill them in this order:
+      <ol>
+        <li>Small, high-value items such as an LEDX skin transilluminator or a Physical Bitcoin. They sell for the most per slot and pay toward the next Prestige's rouble requirement.</li>
+        <li>FiR items the next New Beginning asks for (for Prestige 2: 2 each of PMC, Scav, Boss and Trader figurines), or any other FiR hand-in that gates an early task on the route.</li>
+        <li>Hard-to-find Collector items.</li>
+      </ol>
+      Carried items keep their FiR status.</li>
+    <li><b>Prestiges that need Collector (5–6):</b> Collector (Fence, level 42) opens after Shooter Born in Heaven (Mechanic), The Tarkov Shooter - Part 4 (Jaeger, Parts 1–4), Sew it Good - Part 2 (Ragman), Chemical - Part 3 (Skier) and Postman Pat - Part 2 (Prapor, then Therapist). Start the two bolt-action lines early; they're the slow ones. Lever-action rifles (Jaeger LL2) count as bolt-action and fire much faster, so use one. Otherwise the Remington Model 700 builds to the highest ergonomics of the bolt-actions.</li>
+    <li><b>Cultist Circle for task items.</b> Sacrifice ₽400,000+ in base value (5 MP5s works; a Sacred Amulet adds 15%): 25% of the time you get a 6-hour timer that pays out items your active tasks and unfinished hideout modules need (hand-in items, not Gunsmith build parts). The fewer tasks you have active, the likelier it hits the one you want, even a LEDX. Don't hold back task accepts early to do this; use it once your active list is slim.</li>
+    <li><b>Labs keycards.</b> Every New Beginning needs a Lab extract, so each Prestige needs a TerraGroup Labs access keycard (single use). <b>Best early pick: Chemical - Part 4.</b> It's the earliest task that pays out 2 cards, enough for the step 13 Lab run (Tour + The Ticket) and one return trip for New Beginning's Lab extract. Before you can buy them (flea market at level 30, about 95,000 roubles in PvP on Nov 3, 2026, or Therapist at LL4 for 166,500), these are the ways to get one; after that, buying is simpler:
+      <ul>
+        <li><b>Chemical - Part 4</b> (Skier, after Chemical - Part 3): 2 cards on completion; mark the chemical transport on Customs.</li>
+        <li><b>Camera, Action!</b> (Mechanic, level 12, after Skier's Serious Allegations): 3 cards on completion for FiR SSD drive, USB Adapter, Portable Powerbank and Rechargeable battery.</li>
+        <li><b>Intelligence Center 2 craft</b>: 3 cards from 1 Intelligence folder, 40 minutes; the UHF RFID Reader is a tool you get back. About a third of a folder's price per card, the cheapest repeatable source once IC2 is built.</li>
+        <li><b>Barters</b>: Mechanic LL3 (Bulbex cable cutter + Pipe grip wrench), Ref LL3 (about 18 GP coins).</li>
+      </ul>
+      Task data is from tarkov.dev; which trader group each task sits in under 1.1 may differ, so check the trader screen.</li>
+    <li>For Prestige 1–4 the hideout target is the same three modules, so building Intelligence Center 1, Nutrition Unit 2 and Rest Space 2 early is never wasted.</li>
+  </ul>
+  </details>
+  
+  </details>
+</section>
+
 <section id="choices">
   <hr class="rule">
   <details class="opt refnotes" id="choicebox"><summary><b>Choice tasks</b> <span class="muted">(one side fails the other; these open as you finish more tasks)</span></summary>
@@ -656,7 +659,7 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
   <p><b>Unofficial fan project.</b> Not affiliated with or endorsed by Battlestate Games. "Escape from Tarkov", "Tarkov" and related names, art and content are trademarks and copyrights of Battlestate Games.</p>
   <p>Task details adapted from the <a href="https://escapefromtarkov.fandom.com/" target="_blank" rel="noopener">Escape from Tarkov Wiki</a> (Fandom) and corrected from in-game play; rep rewards and item data from <a href="https://tarkov.dev/" target="_blank" rel="noopener">tarkov.dev</a>.</p>
   <p><b>Licences:</b> the guide's code is <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener">GPL-3.0</a> (<a href="https://github.com/nottoscalestudio/tarky" target="_blank" rel="noopener">source on GitHub</a>), with <a href="https://github.com/nottoscalestudio/tarky#additional-terms-gpl-30-section-7" target="_blank" rel="noopener">additional terms</a> on name use and liability. Task text adapted from the wiki stays under <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>, so you can reuse it with credit under the same licence. Free to use and share.</p>
-  <details class="whatsnew" id="whatsnew"><summary>What's new</summary><ul><li><b>v367</b>: Checked against game build 1.3.0.2.48779 and the wiki (Nov 18): 63 tasks now show how many tasks from their loyalty group they need first, as the wiki now lists; Thirsty - Hounds is LL2; Big Sale no longer needs one raid. <b>Report a problem</b> (footer): one tap sends a report of your setup and what the guide saw, with account numbers removed and an optional note in any language; or save it as a file. Linked devices now recognise each other with a private key that other party members never see. <b>Link your phone again once</b> after updating. Party codes are longer (two groups of four, like K7QM-3XHP; existing codes still work), and a party now stays open for a week between sessions and reopens itself under the same code. Shorter header: the game build last played, when the wiki was last checked, and the guide version. Game logs now keeps <b>one checklist per account and game mode</b> (PvE, PvP, a season) and shows the one from your latest session, so a shared PC or a seasonal character never mixes progress. Each checklist also has its own party code, name, faction, ending and hideout wishlist, so switching to a roommate's account moves this device into their party. Tasks the guide lacks are listed from every mode. The Any map box no longer shows its heading and note when every task in it is hidden (locked). War Never Changes, A Wedge Between Us, Fresh Stock and Oil Change now stay locked until the Boreas step where you hand Mechanic the C-1 hard drives, as in the game. Task names in the Loot list now jump to that task. Sanitary Standards' gas analyzers are split: 2 found in raid for the hand-in, plus 1 that can be any (it's stashed in raid), tagged non-FiR.</li><li><b>v366</b>: <b>Your Prestige</b> selector in Prestige targets: it highlights your next rank, lists that New Beginning's objectives (figurines scale from 1 any, to 2 and 3 found-in-raid, to 10 specific ones at Prestige 5–6), and adds those figurines to the Loot list. Raising it offers to clear your ticks for the new run. Added <b>Immunity</b> (Fence).</li><li><b>v365</b>: Removed 32 tasks the wiki marks as removed from the game (Historical content), such as Private Clinic, Perfect Mediator, Flint, Athlete and An Apple a Day Keeps the Doctor Away. Collector now opens after the wiki's current requirements.</li><li><b>v364</b>: <b>Before you start</b> is reorganised into cards, with trader unlocks as a table. The Trader tally now starts collapsed. Steam players can now use <b>Game logs</b> too: a one-time setup file copies the logs out of Program Files, where Chrome can't read them. If several accounts play on one PC, Game logs follows one of them (switch in the panel).</li><li><b>v363</b>: <b>Game logs</b> (desktop Chrome/Edge): point the guide at Tarkov's Logs folder and finished tasks tick themselves, with your raid status shown to your party. Choose PvE, PvP or both, and import past completions since a date. It also flags when your game is on a newer build than the guide, and lists tasks your game has that the guide doesn't yet.</li><li><b>v362</b>: Each party member has an <b>in my raid</b> switch: turn it off for anyone not raiding with you, since found-in-raid items can only change hands in the same raid. Party sync now shares finished tasks: coloured dots on a task show which party members have done it. New <b>Link device</b> QR code: scan it with your phone to join as you, with ticks synced both ways. <b>Invite</b> now shows a QR code too.</li><li><b>v359–v361 · public release</b>: Licensed as GPL-3.0 for the code, with section 7 terms covering use of the guide's name and liability for redistributors' warranties; wiki-derived task text is CC BY-SA 3.0 (see the footer and README). Launched with live party sync (start or join a party in the Loot panel and everyone's open hand-ins merge into one colour-coded list; share strings still work offline), locked tasks hidden until unlocked (toggle in the bottom bar), EoD-only tasks left out, and the guide version in the header with a reload prompt when an update arrives.</li></ul></details>
+  <details class="whatsnew" id="whatsnew"><summary>What's new</summary><ul><li><b>v368</b>: Everything but <b>Before you start</b> now starts collapsed, and Prestige targets moved below the route, so new players meet Before you start and then step 1 first. The Game logs panel now links the open-source code (GPL-3.0) and how your log data is handled, so anyone can check it before connecting. Ticking a task now fades it out over 5 seconds before it disappears; click it again to undo a mis-tap. A <b>Let the game tick your tasks</b> card at the top walks you through connecting game logs until they're connected (phones get how to link to the gaming PC instead); "Not now" shrinks it to one line. Removed the old task-groups note above step 1: the guide now shows how many tasks from a loyalty group each task needs.</li><li><b>v367</b>: Checked against game build 1.3.0.2.48779 and the wiki (Nov 18): 63 tasks now show how many tasks from their loyalty group they need first, as the wiki now lists; Thirsty - Hounds is LL2; Big Sale no longer needs one raid. <b>Report a problem</b> (footer): one tap sends a report of your setup and what the guide saw, with account numbers removed and an optional note in any language; or save it as a file. Linked devices now recognise each other with a private key that other party members never see. <b>Link your phone again once</b> after updating. Party codes are longer (two groups of four, like K7QM-3XHP; existing codes still work), and a party now stays open for a week between sessions and reopens itself under the same code. Shorter header: the game build last played, when the wiki was last checked, and the guide version. Game logs now keeps <b>one checklist per account and game mode</b> (PvE, PvP, a season) and shows the one from your latest session, so a shared PC or a seasonal character never mixes progress. Each checklist also has its own party code, name, faction, ending and hideout wishlist, so switching to a roommate's account moves this device into their party. Tasks the guide lacks are listed from every mode. The Any map box no longer shows its heading and note when every task in it is hidden (locked). War Never Changes, A Wedge Between Us, Fresh Stock and Oil Change now stay locked until the Boreas step where you hand Mechanic the C-1 hard drives, as in the game. Task names in the Loot list now jump to that task. Sanitary Standards' gas analyzers are split: 2 found in raid for the hand-in, plus 1 that can be any (it's stashed in raid), tagged non-FiR.</li><li><b>v366</b>: <b>Your Prestige</b> selector in Prestige targets: it highlights your next rank, lists that New Beginning's objectives (figurines scale from 1 any, to 2 and 3 found-in-raid, to 10 specific ones at Prestige 5–6), and adds those figurines to the Loot list. Raising it offers to clear your ticks for the new run. Added <b>Immunity</b> (Fence).</li><li><b>v365</b>: Removed 32 tasks the wiki marks as removed from the game (Historical content), such as Private Clinic, Perfect Mediator, Flint, Athlete and An Apple a Day Keeps the Doctor Away. Collector now opens after the wiki's current requirements.</li><li><b>v364</b>: <b>Before you start</b> is reorganised into cards, with trader unlocks as a table. The Trader tally now starts collapsed. Steam players can now use <b>Game logs</b> too: a one-time setup file copies the logs out of Program Files, where Chrome can't read them. If several accounts play on one PC, Game logs follows one of them (switch in the panel).</li><li><b>v363</b>: <b>Game logs</b> (desktop Chrome/Edge): point the guide at Tarkov's Logs folder and finished tasks tick themselves, with your raid status shown to your party. Choose PvE, PvP or both, and import past completions since a date. It also flags when your game is on a newer build than the guide, and lists tasks your game has that the guide doesn't yet.</li><li><b>v362</b>: Each party member has an <b>in my raid</b> switch: turn it off for anyone not raiding with you, since found-in-raid items can only change hands in the same raid. Party sync now shares finished tasks: coloured dots on a task show which party members have done it. New <b>Link device</b> QR code: scan it with your phone to join as you, with ticks synced both ways. <b>Invite</b> now shows a QR code too.</li><li><b>v359–v361 · public release</b>: Licensed as GPL-3.0 for the code, with section 7 terms covering use of the guide's name and liability for redistributors' warranties; wiki-derived task text is CC BY-SA 3.0 (see the footer and README). Launched with live party sync (start or join a party in the Loot panel and everyone's open hand-ins merge into one colour-coded list; share strings still work offline), locked tasks hidden until unlocked (toggle in the bottom bar), EoD-only tasks left out, and the guide version in the header with a reload prompt when an update arrives.</li></ul></details>
 </footer>
 <div class="rptpanel" id="rptpanel" hidden role="dialog" aria-label="Report a problem">
   <div class="lhead"><b>Report a problem</b><button type="button" id="rptclose" aria-label="Close">×</button></div>
@@ -670,6 +673,9 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
 <style>.rptpanel{position:fixed;left:50%;transform:translateX(-50%);bottom:64px;z-index:70;width:min(560px,calc(100vw - 24px));max-height:calc(100vh - 100px);overflow:auto;background:var(--panel);color:var(--ink);border:1px solid var(--line,#888);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.3);padding:10px 12px;font-size:13.5px}
 .rptpanel .lhead{display:flex;justify-content:space-between;align-items:center}.rptpanel .lhead button{font-size:18px;background:none;border:0;color:inherit;cursor:pointer}
 .rptpanel textarea{width:100%;box-sizing:border-box;font:inherit;font-size:13px;margin:4px 0}.rptpanel pre{max-height:220px;overflow:auto;font-size:11px;white-space:pre-wrap;word-break:break-all;background:var(--bg);padding:6px;border-radius:4px}
+.logcta{margin:14px 0 4px;padding:12px 14px;border:2px solid var(--accent);border-radius:8px;background:var(--panel)}.logcta h2{margin:0 0 6px;font-size:20px}.logcta p,.logcta ol{margin:6px 0}.logcta ol{padding-left:20px}.logcta li{margin:3px 0}.logcta.mini{border-width:1px;padding:7px 12px;font-size:14px}.logcta.mini p{margin:0}.logcta .lreset{display:inline-block;width:auto}
+.ctabtn{font:inherit;font-weight:700;padding:7px 14px;border-radius:6px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+#logtog:not(.on){font-weight:700}
 .rptbtns{display:flex;gap:8px;margin-top:6px}.footlinks a+a{margin-left:14px}</style>
 <script>(function(){
   const P=document.getElementById("rptpanel"),L=document.getElementById("rpt-link");if(!P||!L)return;
@@ -1388,10 +1394,20 @@ function lockWhy(st){
 const WALIAS={"Reserve":"Reserve (quest)","The Huntsman Path - Dragnet":"Dragnet"};
 const NOGUIDE=new Set(["Long Line", "Acquaintance", "All This Filth...", "First Aid", "Wet Job - Part 1", "Blood in the Water", "One-Way Ticket", "Stirrup", "Polikhim Hobo", "Secret Message", "The Huntsman Path - Big Game"]);
 const wikiUrl=n=>{let b=baseOf(n);b=WALIAS[b]||b;return "https://escapefromtarkov.fandom.com/wiki/"+encodeURIComponent(b.replace(/ /g,"_"))+(NOGUIDE.has(b)?"":"#Guide");};
+// Ticking a task by hand waits a few seconds before it counts (and the task disappears): click again to undo.
+// Unticking, and ticks from the game logs, apply at once.
+const TICKMS=5000,PEND={};
+function tickTask(cb){const k=cb.dataset.k;
+  if(PEND[k]){clearTimeout(PEND[k].t);delete PEND[k];document.querySelectorAll("li.task input[data-k]").forEach(i=>{if(i.dataset.k===k){i.checked=false;i.closest("li").classList.remove("tpend");i.closest("li").style.removeProperty("--tleft");}});return;}
+  if(!cb.checked){tdone[k]=false;save();render();return;}
+  PEND[k]={at:Date.now(),t:setTimeout(()=>{delete PEND[k];tdone[k]=true;save();render();},TICKMS)};
+  document.querySelectorAll("li.task input[data-k]").forEach(i=>{if(i.dataset.k===k){i.checked=true;const li=i.closest("li");li.classList.add("tpend");li.style.setProperty("--tleft",TICKMS+"ms");}});}
+addEventListener("pagehide",()=>{const ks=Object.keys(PEND);if(!ks.length)return;ks.forEach(k=>{clearTimeout(PEND[k].t);delete PEND[k];tdone[k]=true;});save();});
 function taskLi(st,extra){
   const k=taskKey(st[0],st[1]); const id="t_"+k.replace(/[^A-Za-z0-9]/g,"_")+(extra?"_c":"");
   if(edHide(st)) return ""; const lw=lockWhy(st); if(lw&&!lockShow(st)) return "";
-  return `<li class="task${tdone[k]?" tdone":""}${lw?" locked":""}"><label for="${id}"><input type="checkbox" id="${id}" data-k="${esc(k)}" ${tdone[k]?"checked":""}> <span>${esc(st[0])}</span></label>${pdots(k)} <span class="tag">${TPIC[st[1]]?`<a class="wl" href="${wikiUrl(st[0])}" target="_blank" rel="noopener" title="${esc(st[1])}: open the wiki guide"><img class="tpic" src="${tp(st[1])}" alt="${st[1]}"></a>`:`<a class="wl" href="${wikiUrl(st[0])}" target="_blank" rel="noopener">${st[1]}</a> `}LL${st[2]}${extra?` · from step ${extra}`:""}</span>${TASKKEY[st[0]]?` <span class="keyname">${esc(TASKKEY[st[0]])}</span>`:""}${UNLOCKS[st[0]]?` <span class="unlock">Unlocks ${esc(UNLOCKS[st[0]])}</span>`:""}<br>${lw?`<span class="lockn">Not unlocked yet: ${esc(lw)}. </span>`:""}${OPTMAPS.has(baseOf(st[0]))&&Array.isArray(st[4])?`<span class="mapopt">${st[4].slice(0,-1).map(esc).join(", ")} or ${esc(st[4][st[4].length-1])}:</span> `:""}<span class="muted" style="font-size:13px">${lootHi(st,keyHi(esc(st[3])))}</span>${progBox(st)}</li>`;
+  const pd=PEND[k],left=pd?Math.max(0,TICKMS-(Date.now()-pd.at)):0;
+  return `<li class="task${tdone[k]?" tdone":""}${lw?" locked":""}${pd?" tpend":""}"${pd?` style="--tleft:${left}ms;--tpast:-${TICKMS-left}ms"`:""}><label for="${id}"><input type="checkbox" id="${id}" data-k="${esc(k)}" ${tdone[k]||pd?"checked":""}> <span>${esc(st[0])}</span></label>${pdots(k)} <span class="tag">${TPIC[st[1]]?`<a class="wl" href="${wikiUrl(st[0])}" target="_blank" rel="noopener" title="${esc(st[1])}: open the wiki guide"><img class="tpic" src="${tp(st[1])}" alt="${st[1]}"></a>`:`<a class="wl" href="${wikiUrl(st[0])}" target="_blank" rel="noopener">${st[1]}</a> `}LL${st[2]}${extra?` · from step ${extra}`:""}</span>${TASKKEY[st[0]]?` <span class="keyname">${esc(TASKKEY[st[0]])}</span>`:""}${UNLOCKS[st[0]]?` <span class="unlock">Unlocks ${esc(UNLOCKS[st[0]])}</span>`:""}<br>${lw?`<span class="lockn">Not unlocked yet: ${esc(lw)}. </span>`:""}${OPTMAPS.has(baseOf(st[0]))&&Array.isArray(st[4])?`<span class="mapopt">${st[4].slice(0,-1).map(esc).join(", ")} or ${esc(st[4][st[4].length-1])}:</span> `:""}<span class="muted" style="font-size:13px">${lootHi(st,keyHi(esc(st[3])))}</span>${progBox(st)}</li>`;
 }
 
 const TRLL={Prapor:[[6,0.7],[21,2.7],[36,7.9]],Therapist:[[5,0.6],[18,2.1],[37,5.8]],Skier:[[7,0.6],[22,2.1],[38,5.8]],Peacekeeper:[[8,0.5],[19,2.2],[37,6]],Mechanic:[[12,0.6],[26,2.3],[40,7.6]],Ragman:[[12,0.5],[27,2],[42,6.5]],Jaeger:[[9,0.6],[17,2.1],[33,7.3]],Ref:[[15,0.25],[25,0.5],[35,1.2]]};
@@ -1809,6 +1825,7 @@ function logIndex(){const I={};const add=k=>{const n=k.slice(k.indexOf("|")+1);c
   ORDER.forEach(r=>(r.stackAll||r.stack).forEach(st=>{if(!st.chain)add(taskKey(st[0],st[1]));}));
   Object.keys(CHAINS).forEach(cn=>{const c=CHAINS[cn];c.parts.forEach((p,k)=>add(taskKey(chainName(cn,k),c.tr)));});
   document.querySelectorAll("#gunsmith .gscb").forEach(cb=>add(cb.dataset.k));Object.keys(GSREP).forEach(n=>add(taskKey(n,"Mechanic")));return I;}
+let LOGREADY=false;
 const LOGOK=(()=>{try{return "showDirectoryPicker" in window&&window.top===window}catch(e){return false}})();
 let LOGH=null,LOGSTATE="off",LOGBUSY=false,LOGLAST=0,LOGERR="",LOGTICKED=[],LOGNAMES=null,LOGIDX=null,LOGMODES={};
 let LOGSEEN={};try{LOGSEEN=JSON.parse(localStorage.getItem("tsr_logseen")||"{}")}catch(e){}
@@ -1916,12 +1933,35 @@ async function logConnect(){LOGERR="";try{const h=await window.showDirectoryPick
 async function logReconnect(){if(!LOGH)return logConnect();try{if(await LOGH.requestPermission({mode:"read"})==="granted")await logStart(LOGH,false);}catch(e){}logUI();}
 async function logDisconnect(){LOGH=null;LOGSTATE="off";LOGSEEN={};saveSeen();await kvSet("logdir",undefined);setStatus(null);logUI();}
 function logToast(t){let b=document.getElementById("logtoast");if(!b){b=document.createElement("div");b.id="logtoast";b.className="updtoast logtoast";document.body.appendChild(b);}b.textContent=t;b.hidden=false;clearTimeout(b._t);b._t=setTimeout(()=>{b.hidden=true;},7000);}
-function logUI(){const b=document.getElementById("logtog");if(!b)return;b.hidden=!LOGOK;b.textContent=LOGSTATE==="on"?"Game logs ●":LOGSTATE==="need"?"Game logs: reconnect":"Game logs";b.classList.toggle("on",LOGSTATE==="on");
+// The guide works best with game logs connected, so say so up front until they are.
+function logCTA(){const C=document.getElementById("logcta");if(!C)return;if(!LOGREADY||LOGSTATE==="on"){C.hidden=true;return;}
+  let mini=false;try{mini=localStorage.getItem("tsr_ctamini")==="1"}catch(e){}
+  const live="https://nottoscalestudio.github.io/tarky/",onLive=location.hostname==="nottoscalestudio.github.io"||/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  const phone=/Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
+  let h;
+  if(LOGSTATE==="need")h=`<p><b>Game logs paused.</b> Chrome needs your OK again to read the logs folder. <button type="button" class="ctabtn" id="ctare">Allow again</button></p>`;
+  else if(mini)h=`<p><b>Tip:</b> connect your game logs and tasks tick themselves. <button type="button" class="lreset" id="ctamore">Show me how</button></p>`;
+  else if(LOGOK&&!phone)h=`<h2>Let the game tick your tasks</h2>
+    <p>Connect Tarkov's log folder once. From then on, finished tasks tick themselves, your phone and party stay in sync, and each account and game mode keeps its own checklist. About two minutes, one time.</p>
+    <ol><li><b>Steam players</b> (game under Program Files): download <a href="Tarky-log-setup.bat" download>Tarky-log-setup.bat</a>, right-click it and choose <b>Run as administrator</b>. Official launcher or another drive: skip this.</li>
+    <li>Click <b>Connect game logs</b> and pick <b>TarkovLogs</b> in your user folder, or the game's own <b>Logs</b> folder if you skipped step 1.</li></ol>
+    <p><button type="button" class="ctabtn" id="ctago">Connect game logs</button> <button type="button" class="lreset" id="ctahow">Details and privacy</button> <button type="button" class="lreset" id="ctamin">Not now</button></p>
+    <p class="small muted">Open source (GPL-3.0): <a href="https://github.com/nottoscalestudio/tarky#your-log-data" target="_blank" rel="noopener">see exactly what it reads and sends</a>.</p>`;
+  else h=`<h2>Let the game tick your tasks</h2>
+    <p>${phone?"Automatic ticking runs on the PC that plays Tarkov.":"Automatic ticking needs desktop Chrome or Edge on the PC that plays Tarkov."} Open <a href="${live}" target="_blank" rel="noopener">${onLive?"this guide":"the guide"}</a> there, click <b>Connect game logs</b>, then tap <b>Link device</b> in its Loot panel and scan the QR code with ${phone?"this phone":"this device"}. Ticks then sync here automatically.</p>
+    <p><button type="button" class="lreset" id="ctamin">Not now</button></p>`;
+  C.className="logcta"+(mini||LOGSTATE==="need"?" mini":"");C.innerHTML=h;C.hidden=false;}
+document.addEventListener("click",e=>{const t=e.target;if(!t||!t.id||!/^cta/.test(t.id))return;
+  if(t.id==="ctago")logConnect();if(t.id==="ctare")logReconnect();
+  if(t.id==="ctahow"){const P=document.getElementById("logpanel");if(!P||P.hidden){const g=document.getElementById("logtog");if(g)g.click();}}
+  if(t.id==="ctamin"||t.id==="ctamore"){try{t.id==="ctamin"?localStorage.setItem("tsr_ctamini","1"):localStorage.removeItem("tsr_ctamini")}catch(x){}logCTA();}});
+function logUI(){logCTA();const b=document.getElementById("logtog");if(!b)return;b.hidden=!LOGOK;b.textContent=LOGSTATE==="on"?"Game logs ●":LOGSTATE==="need"?"Game logs: reconnect":"Game logs";b.classList.toggle("on",LOGSTATE==="on");
   const P=document.getElementById("logpanel");if(!P||P.hidden)return;const ago2=LOGLAST?Math.round((Date.now()-LOGLAST)/1000)+" s ago":"not yet";
   P.innerHTML=`<div class="lhead"><b>Game logs</b><button type="button" class="lreset" id="logclose">Close</button></div>
   ${LOGSTATE==="on"?`<p class="small">Watching your Tarkov logs. Finished tasks tick themselves${PCODE?", and your party sees your raid status":""}. Last check: ${ago2}.</p>`
    :LOGSTATE==="need"?`<p class="small">Chrome needs your OK again to read the logs folder.</p><button type="button" class="lreset" id="logre">Allow again</button>`
    :`<p class="small">The guide ticks tasks as the game logs them as completed (between raids), and shows your party when you're in a raid. Nothing is uploaded except those ticks and your status.</p>
+   <p class="small">The whole guide is open source under the <a href="https://github.com/nottoscalestudio/tarky/blob/main/LICENSE" target="_blank" rel="noopener">GPL-3.0 licence</a>, so you or anyone you trust can check exactly what it does with your logs: <a href="https://github.com/nottoscalestudio/tarky" target="_blank" rel="noopener">source code</a> · <a href="https://github.com/nottoscalestudio/tarky#your-log-data" target="_blank" rel="noopener">how your log data is handled</a>.</p>
    <p class="small"><b>Steam players</b> (game under Program Files, which Chrome won't share): download <a href="Tarky-log-setup.bat" download>Tarky-log-setup.bat</a>, right-click it and choose <b>Run as administrator</b>. It copies the logs every minute into <b>C:\\Users\\you\\TarkovLogs</b> and keeps the last 30 days by default; pick that folder below. <a href="https://github.com/nottoscalestudio/tarky/blob/main/Tarky-log-setup.bat" target="_blank" rel="noopener">Read what it does</a> · <a href="https://github.com/nottoscalestudio/tarky#why-the-setup-file" target="_blank" rel="noopener">why a setup file?</a> · <a href="Tarky-log-remove.bat" download>undo file</a></p>
    <p class="small"><b>Game installed elsewhere</b> (official launcher, or a Steam library outside Program Files): pick its <b>Logs</b> folder directly.</p>
    <button type="button" class="lreset" id="logpick">Choose Logs folder</button>
@@ -1942,7 +1982,7 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
 document.addEventListener("change",e=>{if(e.target&&e.target.id==="logslot"){switchSlot(e.target.value,"Showing");logUI();}});
 document.addEventListener("change",e=>{if(e.target&&e.target.id==="logmode"){LOGMODE=e.target.value;try{localStorage.setItem("tsr_logmode",LOGMODE)}catch(x){}}});
 setInterval(()=>{if(LOGSTATE==="on")logScan();else if(document.getElementById("logpanel")&&!document.getElementById("logpanel").hidden)logUI();},5000);
-(async()=>{if(!LOGOK){logUI();return;}const h=await kvGet("logdir");if(h){LOGH=h;let p="prompt";try{p=await h.queryPermission({mode:"read"})}catch(e){}if(p==="granted")logStart(h,false);else{LOGSTATE="need";}}logUI();})();
+(async()=>{if(!LOGOK){LOGREADY=true;logUI();return;}const h=await kvGet("logdir");if(h){LOGH=h;let p="prompt";try{p=await h.queryPermission({mode:"read"})}catch(e){}if(p==="granted")await logStart(h,false);else{LOGSTATE="need";}}LOGREADY=true;logUI();})();
 
 // ---- Prestige tracking: next New Beginning target, its objectives, and its figurines in the loot list (wiki, Nov 2026)
 const NBFIG10=["BEAR operative figurine","USEC operative figurine","Scav figurine","Cultist figurine","Killa figurine","Reshala figurine","Tagilla figurine","Ryzhy figurine","Den figurine","Politician Mutkevich figurine"];
@@ -2018,13 +2058,13 @@ function render(){
       ${pull.some(c=>!ANY(c.st))?`<div><span class="label">Also open on this map (routed to a later step)</span><ul class="tasks">${pull.filter(c=>!ANY(c.st)).map(c=>taskLi(c.st,"")).join("")}</ul></div>`:""}${carry.some(c=>!ANY(c.st))?`<div><span class="label carry">Carried over (missed earlier)</span><ul class="tasks">${carry.filter(c=>!ANY(c.st)).map(c=>taskLi(c.st,c.from)).join("")}</ul></div>`:""}</div>
       ${r.menu?`<div class="menu">${keyHi(r.menu)}</div>`:""}</div>`;
     el.querySelector(".rdone")?.addEventListener("change",e=>{done[r.n]=e.target.checked;save();render();});
-    el.querySelectorAll("input[data-k]").forEach(cb=>cb.addEventListener("change",e=>{tdone[cb.dataset.k]=e.target.checked;save();render();}));
+    el.querySelectorAll("input[data-k]").forEach(cb=>cb.addEventListener("change",()=>tickTask(cb)));
     document.getElementById(r.slot).appendChild(el);
   });
   const lo=leftovers(), box=document.getElementById("leftovers");
   box.hidden=!lo.length;
   box.querySelector("ul").innerHTML=lo.map(c=>taskLi(c.st,c.from)).join("");
-  box.querySelectorAll("input[data-k]").forEach(cb=>cb.addEventListener("change",e=>{tdone[cb.dataset.k]=e.target.checked;save();render();}));
+  box.querySelectorAll("input[data-k]").forEach(cb=>cb.addEventListener("change",()=>tickTask(cb)));
   ["r1","r2","r3"].forEach(sl=>{const box=document.getElementById(sl),L=ORDER.filter(r=>r.slot===sl);if(!box||!L.length)return;
     const all=L.every(r=>done[r.n]);box.classList.toggle("phasedone",all&&!PHASEOPEN[sl]);
     if(all){const b=document.createElement("button");b.type="button";b.className="phasetog";b.textContent=PHASEOPEN[sl]?"Hide completed steps":"All "+L.length+" steps done · show them";b.addEventListener("click",()=>{PHASEOPEN[sl]=!PHASEOPEN[sl];render();});box.prepend(b);}});
