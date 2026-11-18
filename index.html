@@ -219,7 +219,7 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
   <div class="eyebrow">Escape from Tarkov · tasks updated Nov 18, 2026 for build 1.3.0.2.48779<span id="mybuild"></span><span id="gver"></span></div>
   <h1>Tarkov Story Route</h1>
   <p><b>The numbers are route steps, not a raid count.</b> Each step is one raid when it goes very well; repeat a step as often as you need, and only tick it off when you move on.</p>
-  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a class="chap chap-tour" data-chap="Tour" target="_blank" rel="noopener">Tour</a><a class="chap chap-fs" data-chap="Falling Skies" target="_blank" rel="noopener">Falling Skies</a><a class="chap chap-ticket" data-chap="The Ticket" target="_blank" rel="noopener">The Ticket</a><a class="chap chap-aw" data-chap="Accidental Witness" target="_blank" rel="noopener">Accidental Witness</a><a class="chap chap-ba" data-chap="Batya" target="_blank" rel="noopener">Batya</a><a class="chap chap-bf" data-chap="Blue Fire" target="_blank" rel="noopener">Blue Fire</a><a class="chap chap-bo" data-chap="Boreas" target="_blank" rel="noopener">Boreas</a><a class="chap chap-lb" data-chap="The Labyrinth" target="_blank" rel="noopener">The Labyrinth</a><a class="chap chap-un" data-chap="The Unheard" target="_blank" rel="noopener">The Unheard</a><a class="chap chap-ta" data-chap="They Are Already Here" target="_blank" rel="noopener">They Are Already Here</a><span class="muted" style="font-size:13px">Colored names are story chapters; click one for its wiki guide.</span><span class="progress" id="prog"></span> <button type="button" class="rst" data-reset="route">Reset route</button><button class="reset" id="reset" type="button">Clear checkmarks</button> <button type="button" class="reset" id="expbtn" title="Save your checkmarks and settings to a file">Export progress</button><button type="button" class="reset" id="impbtn" title="Load a progress file">Import progress</button><input type="file" id="impfile" accept=".json,application/json" hidden></div>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a class="chap chap-tour" data-chap="Tour" target="_blank" rel="noopener">Tour</a><a class="chap chap-fs" data-chap="Falling Skies" target="_blank" rel="noopener">Falling Skies</a><a class="chap chap-ticket" data-chap="The Ticket" target="_blank" rel="noopener">The Ticket</a><a class="chap chap-aw" data-chap="Accidental Witness" target="_blank" rel="noopener">Accidental Witness</a><a class="chap chap-ba" data-chap="Batya" target="_blank" rel="noopener">Batya</a><a class="chap chap-bf" data-chap="Blue Fire" target="_blank" rel="noopener">Blue Fire</a><a class="chap chap-bo" data-chap="Boreas" target="_blank" rel="noopener">Boreas</a><a class="chap chap-lb" data-chap="The Labyrinth" target="_blank" rel="noopener">The Labyrinth</a><a class="chap chap-un" data-chap="The Unheard" target="_blank" rel="noopener">The Unheard</a><a class="chap chap-ta" data-chap="They Are Already Here" target="_blank" rel="noopener">They Are Already Here</a><span class="muted" style="font-size:13px">Colored names are story chapters; click one for its wiki guide.</span><span class="progress" id="prog"></span> <button type="button" class="rst" data-reset="route">Reset route</button><button class="reset" id="reset" type="button">Clear checkmarks</button> <button type="button" class="reset" id="expbtn" title="Save your checkmarks and settings to a file">Export progress</button><button type="button" class="reset" id="impbtn" title="Load a progress file">Import progress</button><input type="file" id="impfile" accept=".json,application/json" hidden> <label class="spoiltog" title="Hide later phases until you reach them, and the big story choices until you open them"><input type="checkbox" id="spoiltog"> Hide spoilers</label></div>
 </header>
 <section id="logcta" class="logcta" hidden aria-live="polite"></section>
 
@@ -462,7 +462,7 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
   </div>
 </section>
 
-<section class="phase">
+<section class="phase" data-spoil="r2" data-after="r1" data-pname="Phase 1">
   <hr class="rule">
   <div class="phasehead"><h2>Phase 2 · Falling Skies</h2><span class="progress">Steps 8–11</span></div>
   <p class="muted">Timed waits are real time. Run side raids during them.</p>
@@ -484,7 +484,7 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
   </div>
 </section>
 
-<section class="phase">
+<section class="phase" data-spoil="r3" data-after="r2" data-pname="Phase 2">
   <hr class="rule">
   <div class="phasehead"><h2>Phase 3 · The Ticket (kept-case route)</h2><span class="progress">Steps 12–13</span></div>
   <div id="r3"></div>
@@ -659,39 +659,7 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
   <p><b>Unofficial fan project.</b> Not affiliated with or endorsed by Battlestate Games. "Escape from Tarkov", "Tarkov" and related names, art and content are trademarks and copyrights of Battlestate Games.</p>
   <p>Task details adapted from the <a href="https://escapefromtarkov.fandom.com/" target="_blank" rel="noopener">Escape from Tarkov Wiki</a> (Fandom) and corrected from in-game play; rep rewards and item data from <a href="https://tarkov.dev/" target="_blank" rel="noopener">tarkov.dev</a>.</p>
   <p><b>Licences:</b> the guide's code is <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener">GPL-3.0</a> (<a href="https://github.com/nottoscalestudio/tarky" target="_blank" rel="noopener">source on GitHub</a>), with <a href="https://github.com/nottoscalestudio/tarky#additional-terms-gpl-30-section-7" target="_blank" rel="noopener">additional terms</a> on name use and liability. Task text adapted from the wiki stays under <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>, so you can reuse it with credit under the same licence. Free to use and share.</p>
-  <details class="whatsnew" id="whatsnew"><summary>What's new</summary><ul><li><b>v368</b>: easier start, and a safety net for ticks
-  <ul>
-   <li><b>Let the game tick your tasks</b>: a card at the top walks you through connecting game logs until they're connected.
-    <ul><li>Phones get how to link to the gaming PC instead.</li><li>"Not now" shrinks it to one line.</li></ul></li>
-   <li>Chapters sits between faction and ending in the bottom bar.</li>
-   <li>Importing past completions shows a short result in the Game logs panel instead of a big pop-up, with a reminder to tick finished story steps (the logs don't record those).</li>
-   <li>Ticking a task fades it out over 5 seconds before it disappears; click it again to undo a mis-tap.</li>
-   <li>Everything but <b>Before you start</b> starts collapsed, and Prestige targets moved below the route, so new players meet Before you start and then step 1 first.</li>
-   <li>The Game logs panel links the open-source code (GPL-3.0) and how your log data is handled, so anyone can check it before connecting.</li>
-   <li>The header shows when the tasks were last updated and for which game build, plus <b>your own game build</b> once game logs are connected (marked <i>newer</i> if the guide hasn't caught up yet).</li>
-   <li>Removed the old task-groups note above step 1: each task now shows how many tasks from its loyalty group it needs.</li>
-  </ul></li>
- <li><b>v367</b>: accounts, safer parties, problem reports and a wiki check
-  <ul>
-   <li><b>One checklist per account and game mode</b> (PvE, PvP, a season), read from game logs.
-    <ul><li>The guide shows the checklist from your latest session, so a shared PC or a seasonal character never mixes progress.</li>
-     <li>Each checklist has its own party code, name, faction, ending and hideout wishlist: switching to a roommate's account moves this device into their party.</li>
-     <li>Tasks the guide lacks are listed from every mode.</li></ul></li>
-   <li><b>Party sync</b>
-    <ul><li>Linked devices recognise each other with a private key that other party members never see. <b>Link your phone again once</b> after updating.</li>
-     <li>Party codes are longer (two groups of four, like K7QM-3XHP); existing codes still work.</li>
-     <li>A party stays open for a week between sessions and reopens itself under the same code.</li></ul></li>
-   <li><b>Report a problem</b> (footer): one tap sends a report of your setup and what the guide saw, with account numbers removed and an optional note in any language; or save it as a file.</li>
-   <li><b>Checked against build 1.3.0.2.48779 and the wiki</b> (Nov 18)
-    <ul><li>63 tasks show how many tasks from their loyalty group they need first.</li><li>Thirsty - Hounds is LL2.</li><li>Big Sale no longer needs one raid.</li></ul></li>
-   <li><b>Fixes</b>
-    <ul><li>War Never Changes, A Wedge Between Us, Fresh Stock and Oil Change stay locked until the Boreas step where you hand Mechanic the C-1 hard drives, as in the game.</li>
-     <li>Sanitary Standards' gas analyzers are split: 2 found in raid for the hand-in, plus 1 that can be any (it's stashed in raid), tagged non-FiR.</li>
-     <li>The Any map box no longer shows its heading and note when every task in it is hidden.</li></ul></li>
-   <li>Task names in the Loot list jump to that task.</li>
-   <li>Shorter header: the game build last played, when the wiki was last checked, and the guide version.</li>
-  </ul></li>
- <li><b>v366</b>: <b>Your Prestige</b> selector in Prestige targets: it highlights your next rank, lists that New Beginning's objectives (figurines scale from 1 any, to 2 and 3 found-in-raid, to 10 specific ones at Prestige 5–6), and adds those figurines to the Loot list. Raising it offers to clear your ticks for the new run. Added <b>Immunity</b> (Fence).</li><li><b>v365</b>: Removed 32 tasks the wiki marks as removed from the game (Historical content), such as Private Clinic, Perfect Mediator, Flint, Athlete and An Apple a Day Keeps the Doctor Away. Collector now opens after the wiki's current requirements.</li><li><b>v364</b>: <b>Before you start</b> is reorganised into cards, with trader unlocks as a table. The Trader tally now starts collapsed. Steam players can now use <b>Game logs</b> too: a one-time setup file copies the logs out of Program Files, where Chrome can't read them. If several accounts play on one PC, Game logs follows one of them (switch in the panel).</li><li><b>v363</b>: <b>Game logs</b> (desktop Chrome/Edge): point the guide at Tarkov's Logs folder and finished tasks tick themselves, with your raid status shown to your party. Choose PvE, PvP or both, and import past completions since a date. It also flags when your game is on a newer build than the guide, and lists tasks your game has that the guide doesn't yet.</li><li><b>v362</b>: Each party member has an <b>in my raid</b> switch: turn it off for anyone not raiding with you, since found-in-raid items can only change hands in the same raid. Party sync now shares finished tasks: coloured dots on a task show which party members have done it. New <b>Link device</b> QR code: scan it with your phone to join as you, with ticks synced both ways. <b>Invite</b> now shows a QR code too.</li><li><b>v359–v361 · public release</b>
+  <details class="whatsnew" id="whatsnew"><summary>What's new</summary><ul><li><b>v366</b>: <b>Your Prestige</b> selector in Prestige targets: it highlights your next rank, lists that New Beginning's objectives (figurines scale from 1 any, to 2 and 3 found-in-raid, to 10 specific ones at Prestige 5–6), and adds those figurines to the Loot list. Raising it offers to clear your ticks for the new run. Added <b>Immunity</b> (Fence).</li><li><b>v365</b>: Removed 32 tasks the wiki marks as removed from the game (Historical content), such as Private Clinic, Perfect Mediator, Flint, Athlete and An Apple a Day Keeps the Doctor Away. Collector now opens after the wiki's current requirements.</li><li><b>v364</b>: <b>Before you start</b> is reorganised into cards, with trader unlocks as a table. The Trader tally now starts collapsed. Steam players can now use <b>Game logs</b> too: a one-time setup file copies the logs out of Program Files, where Chrome can't read them. If several accounts play on one PC, Game logs follows one of them (switch in the panel).</li><li><b>v363</b>: <b>Game logs</b> (desktop Chrome/Edge): point the guide at Tarkov's Logs folder and finished tasks tick themselves, with your raid status shown to your party. Choose PvE, PvP or both, and import past completions since a date. It also flags when your game is on a newer build than the guide, and lists tasks your game has that the guide doesn't yet.</li><li><b>v362</b>: Each party member has an <b>in my raid</b> switch: turn it off for anyone not raiding with you, since found-in-raid items can only change hands in the same raid. Party sync now shares finished tasks: coloured dots on a task show which party members have done it. New <b>Link device</b> QR code: scan it with your phone to join as you, with ticks synced both ways. <b>Invite</b> now shows a QR code too.</li><li><b>v359–v361 · public release</b>
   <ul>
    <li><b>Licence:</b> the code is GPL-3.0, with section 7 terms covering use of the guide's name and liability for redistributors' warranties; wiki-derived task text is CC BY-SA 3.0 (see the footer and README).</li>
    <li><b>Launched with</b>
@@ -701,6 +669,8 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
      <li>The guide version in the header, with a reload prompt when an update arrives.</li></ul></li>
   </ul></li></ul></details>
 </footer>
+
+
 <div class="rptpanel" id="rptpanel" hidden role="dialog" aria-label="Report a problem">
   <div class="lhead"><b>Report a problem</b><button type="button" id="rptclose" aria-label="Close">×</button></div>
   <p class="small">No need to explain anything: the report below describes your setup and what the guide saw. Add a note in any language if you like.</p>
@@ -810,7 +780,7 @@ r1:[
  ["4B","Interchange (rerun)",[],
   [["Long Line","Ragman","1","4 PMC kills on Interchange"],["A Big Loss","Ragman","1","OLI cargo route documents in the OLI logistics department office, first floor of the ULTRA mall"],["Informed Means Armed (Interchange half)","Skier","1 q1","WI-FI camera (Mechanic) on top of a box in the Brutal store in ULTRA; stand still 20 s. Skier group 2"]],
   "Any time after Mechanic opens."],
- [5,"Woods",["Tour: 3 kills and extract","Falling Skies: locate the crashed plane (east side)","Batya: at the convoy (Search Mission), pick up and read the {{Bogatyrs patch}} on the ground near the dead PMC by the BRDM; keep it in your off-raid task item stash (starts Batya)","They Are Already Here: read the note at the marked circle in the dilapidated village in the north (starts They Are Already Here)"],
+ [5,"Woods",["Tour: 3 kills and extract","Falling Skies: locate the crashed plane (east side)","Batya: at the convoy (Search Mission), pick up and read the {{Bogatyrs patch}} on the ground near the dead PMC by the BRDM; keep it; it goes to your off-raid task item stash after you extract (starts Batya)","They Are Already Here: read the note at the marked circle in the dilapidated village in the north (starts They Are Already Here)"],
   [["Acquaintance","Jaeger","1","Hand-in: 10 food items (collect ahead)"],["First Aid","Jaeger","1","Hand-in: injury treatment items (collect ahead)"],["Search Mission","Prapor","1","Get close to the convoy (north road between the lakes) and USEC camp (northwest; west approaches are mined)"],["Debut","Prapor","1","5 Scavs",["Woods","Ground Zero","Interchange","Customs"]],["Chumming (Woods half)","Skier","2","Stash 3 Golden neck chains on the bed in the middle cabin (#2) at the sawmill. Needs Skier LL2"],["Rough Tarkov (Woods half)","Jaeger","1","Sandbags between the big rocks, west side of USEC camp. Enter from the north, east or south: west and north-west are mined"],["All This Filth...","Jaeger","1","20 Scavs; the same kills count for Debut and Polikhim Hobo",["Woods","Ground Zero","Interchange","Customs"]],["Swift","Jaeger","1","Opens after any Jaeger task. Kills on Woods with no armor vest, armored rig or armored helmet on: PvP 15 PMCs, PvE any 10 targets",["Woods"]],["The Huntsman Path - Woods Keeper","Jaeger","1","Opens after any Jaeger task. Kill Shturman at the sawmill and extract with his key",["Woods"]]],
   "<b>Menu:</b> talk to Skier (Peacekeeper + Shoreline unlock). Ask Therapist, Skier, Mechanic and Jaeger about the plane. Accept Peacekeeper LL1."],
  [6,"Ground Zero",["Prapor rep run — optional on Prepare for Escape, The Unheard and Edge of Darkness editions"],
@@ -898,16 +868,16 @@ ch_aw:[
   "Chapter complete."]
 ],
 ch_ba:[
- ["BA1","Woods",[ "Batya: {{Bogatyrs patch}} on the ground by the BRDM in the cargo convoy; read it and keep it (off-raid task item stash); this starts the chapter. Also on Customs (cabin on the hill SW of the new gas station), Reserve (white king roof) or Lighthouse (BEAR camp) (skip if picked up on step 5)"],
+ ["BA1","Woods",[ "Batya: {{Bogatyrs patch}} on the ground by the BRDM in the cargo convoy; read it and keep it (it goes to your off-raid task item stash after you extract); this starts the chapter. Also on Customs (cabin on the hill SW of the new gas station), Reserve (white king roof) or Lighthouse (BEAR camp) (skip if picked up on step 5)"],
   [],
   "<b>Menu:</b> ask Jaeger about the BEAR patch."],
- ["BA2","Woods",["Batya: Ryabina outpost north of the sawmill: read the hostage evacuation report, take {{Strelets' amulet}} and move it to your off-raid task item stash"],
+ ["BA2","Woods",["Batya: Ryabina outpost north of the sawmill: read the hostage evacuation report, take {{Strelets' amulet}} (it goes to your off-raid task item stash after you extract)"],
   [],
   ""],
  ["BA3","Interchange",["Batya: Carousel outpost inside ULTRA, opposite the IDEA checkout: take {{Taran's postcard}} and {{Voevoda's audio recorder}}, read the 4 notes, take the audio tape", "Batya: Gnezdo outpost east of ULTRA: read the 5 notes and take the audio tape"],
   [],
-  "Move the postcard and recorder to your off-raid task item stash."],
- ["BA4","Woods",["Batya: Moreman's grave by the ZB-016 extract (east): read the note, take {{Moreman's phone}} and {{Moreman's dogtag}} (dogtag to the off-raid task item stash)"],
+  "The postcard and recorder go to your off-raid task item stash after you extract."],
+ ["BA4","Woods",["Batya: Moreman's grave by the ZB-016 extract (east): read the note, take {{Moreman's phone}} and {{Moreman's dogtag}} (the dogtag goes to your off-raid task item stash after you extract)"],
   [],
   "<b>Menu:</b> craft Moreman's audio tapes #1 and #2 at Workbench 1 (keep the power on) and listen. Build Intelligence Center 3, then radio 35.70, code 27.893.2000."],
  ["BA5","Lighthouse",["Batya: hand Lightkeeper the patch, amulet, postcard, recorder and Moreman's dogtag (needs Lightkeeper access: the DSP transmitter from To the Light)"],
@@ -2054,7 +2024,7 @@ document.addEventListener("change",e=>{if(!e.target||e.target.id!=="prestsel")re
   if(old!==""&&v!==""&&+v>+old&&confirm(`Prestige ${v}: the game resets your tasks and traders. Clear this guide's task ticks too, for the new run? (Cancel keeps them.)`)){Object.keys(tdone).forEach(k=>delete tdone[k]);Object.keys(done).forEach(k=>delete done[k]);Object.keys(PROG).forEach(k=>{if(!k.startsWith("NB|"))delete PROG[k];});try{localStorage.setItem("tsr_prog",JSON.stringify(PROG))}catch(x){}save();}
   render();renderPrest();});
 // Loot list → task: jump to the task in the guide (prefer a visible copy), open anything folded around it, flash it.
-function goTask(tn){const nm=String(tn).replace(/ \(next LL\)$/,"");
+function goTask(tn){const nm=String(tn).replace(/ \(next LL\)$/,"");try{const cand=[...document.querySelectorAll("li.task input[data-k]")].filter(i=>i.dataset.k.slice(i.dataset.k.indexOf("|")+1)===nm);if(cand.length&&cand.every(i=>i.closest("section.spoiled")))window.spoilReveal(cand[0]);}catch(e){}
   if(/^New Beginning \(Prestige/.test(nm)){const d=document.getElementById("prestigebox");if(d){d.open=true;d.scrollIntoView({behavior:"smooth",block:"start"});}return;}
   const nameOf=k=>k.slice(k.indexOf("|")+1);
   const c=[...document.querySelectorAll("li.task input[data-k]")].filter(i=>nameOf(i.dataset.k)===nm);
@@ -2225,5 +2195,30 @@ document.querySelectorAll('.wrap > header, .wrap > section:not(.phase), .phase >
 b.addEventListener("click",()=>{const y=innerHeight*0.3;let at=null;document.querySelectorAll("[id^=step-]").forEach(el=>{const q=el.getBoundingClientRect();if(q.height>0&&q.top<=y&&q.bottom>y)at=el.id;});ANYMIN=!ANYMIN;try{localStorage.setItem("tsr_anymin",ANYMIN?"1":"0")}catch(e){}lab();render();const t=at&&document.getElementById(at);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});});})();
 </script>
 
+<script>(function(){
+  // Spoilers: later phases stay hidden until the phase before is finished, and each point of no return
+  // shows only its heading until opened. "Hide spoilers" (header) turns all of it off.
+  let ON=true,OPEN={};try{ON=localStorage.getItem("tsr_spoil")!=="0";OPEN=JSON.parse(localStorage.getItem("tsr_spoilopen")||"{}")}catch(e){}
+  const keep=()=>{try{localStorage.setItem("tsr_spoil",ON?"1":"0");localStorage.setItem("tsr_spoilopen",JSON.stringify(OPEN))}catch(e){}};
+  // Point-of-no-return blocks: everything after the heading goes behind a button.
+  document.querySelectorAll(".stop[id^=pnr]").forEach(st=>{const h=st.querySelector("h3");if(!h)return;const w=document.createElement("div");w.className="spoilbody";
+    while(h.nextSibling)w.appendChild(h.nextSibling);st.appendChild(w);const b=document.createElement("p");b.className="spoilph";
+    b.innerHTML=`<span class="muted">A permanent story choice. Read it before you act on the step that leads here.</span> <button type="button" class="lreset" data-spopen="${st.id}">Show the choice</button>`;st.insertBefore(b,w);});
+  const phaseDone=sl=>{const L=ORDER.filter(r=>r.slot===sl);return L.length>0&&L.every(r=>done[r.n]);};
+  function spoilUpdate(){const cb=document.getElementById("spoiltog");if(cb)cb.checked=ON;
+    document.querySelectorAll("section[data-spoil]").forEach(sec=>{const id=sec.dataset.spoil,hide=ON&&!OPEN[id]&&!phaseDone(sec.dataset.after);
+      sec.classList.toggle("spoiled",hide);let ph=sec.querySelector(":scope>.spoilph");
+      if(hide&&!ph){ph=document.createElement("div");ph.className="spoilph stop";const h=sec.querySelector(".phasehead h2");
+        ph.innerHTML=`<p><b>${h?h.textContent:"Next phase"}</b> unlocks when you finish ${sec.dataset.pname}. <button type="button" class="lreset" data-spopen="${id}">Show anyway</button></p>`;sec.insertBefore(ph,sec.children[1]||null);}
+      if(!hide&&ph)ph.remove();});
+    document.querySelectorAll(".stop[id^=pnr]").forEach(st=>st.classList.toggle("spoiled",ON&&!OPEN[st.id]));}
+  window.spoilUpdate=spoilUpdate;window.spoilReveal=el=>{const sec=el&&el.closest&&el.closest("section.spoiled[data-spoil]");if(sec){OPEN[sec.dataset.spoil]=1;keep();spoilUpdate();}};
+  document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-spopen]");if(!b)return;OPEN[b.dataset.spopen]=1;keep();spoilUpdate();});
+  document.addEventListener("change",e=>{if(e.target&&e.target.id==="spoiltog"){ON=e.target.checked;keep();spoilUpdate();}});
+  const R=render;render=function(){const x=R.apply(this,arguments);try{spoilUpdate()}catch(e){}return x;};
+  spoilUpdate();
+})();</script>
+<style>section.spoiled>:not(.spoilph):not(hr){display:none!important}.stop.spoiled>.spoilbody{display:none}.spoilph{margin:10px 0}.stop:not(.spoiled)>.spoilph{display:none}
+section>.spoilph.stop{border-style:dashed}.spoiltog{font-size:13px;color:var(--muted);white-space:nowrap;cursor:pointer;margin-left:6px}</style>
 </html>
 <script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
