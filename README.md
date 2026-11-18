@@ -22,13 +22,19 @@ An unofficial Escape from Tarkov guide: story progression plus a trader-loyalty 
 - Up to 12 connected devices per party. A party's shared data is deleted after 7 days with nobody connected and no updates; any activity restarts the clock. Each device keeps its own progress, and the first one back reopens the party under the same code.
 - Party codes are 8 characters, shown as two groups of four (like K7QM-3XHP). The relay has protections against misuse.
 
+**If a stranger ever got into your party** (very unlikely):
+- They'd see what party members see: display names, open loot lists, ticked tasks and route steps, and *in raid · map* while someone is raiding. If you stream PvP, use a display name that isn't your in-game name.
+- They couldn't see account or profile numbers, log files, your network address or where you are. None of that is ever sent to the party.
+- They couldn't change your progress. Your own devices recognise each other with a private key the party never sees, so nobody else can pose as one of them.
+- At most they'd show up as an extra member with their own list. Start a new party and invite your friends again to leave them behind.
+
 **Offline:** *Offline share* creates a share string friends can paste in, no connection needed.
 
 **Game logs: automatic ticking and raid status** (desktop Chrome or Edge on the PC running the game)
 1. **Steam players:** Chrome won't let websites read anything under Program Files, where Steam installs Tarkov (moving the game doesn't help on a single drive, since Steam allows one library per drive). Download [Tarky-log-setup.bat](Tarky-log-setup.bat), right-click it and choose **Run as administrator**. It finds your Tarkov Logs folder and creates a hidden scheduled task that copies the three needed log files every minute into `C:\Users\<you>\TarkovLogs`. It asks how many days of copies to keep (default 30, or 0 for all): older copies are deleted every hour by a second hidden task, and aren't copied back. It never changes the game's files; [Tarky-log-remove.bat](Tarky-log-remove.bat) undoes it. ([Why a setup file?](#why-the-setup-file)) **Game installed outside Program Files** (official launcher, or another drive): skip this.
 2. Tap **Game logs** in the bottom bar, then **Choose Logs folder**, and pick `TarkovLogs` (or the game's own `Logs` folder if you skipped step 1).
 3. From then on, tasks tick themselves when the game logs them as completed, and your party sees *in raid · map* while you're in a raid. Ticks reach your phone and party through live sync.
-4. Choose which sessions tick tasks: PvE, PvP, any other mode the game has used (such as a seasonal mode) or all modes. Tasks from every mode that the guide doesn't have yet are listed regardless, tagged with their mode, which is how new seasonal content gets noticed. To catch up, use **Import past completions** with the date of your last wipe or prestige. With the setup file, Import can only reach back as far as the copies you keep, so run it right after setup (or choose 0 days during setup, import, then run setup again with 30).
+4. Every session ticks the checklist of the account and mode that played it (see below). Tasks the guide doesn't have yet are listed from every mode, tagged with their mode, which is how new seasonal content gets noticed. To catch up, use **Import past completions** with the date of your last wipe or prestige. With the setup file, Import can only reach back as far as the copies you keep, so run it right after setup (or choose 0 days during setup, import, then run setup again with 30).
 
 **One checklist per account and game mode:** each session's log records which account played and in which mode (PvE, PvP or a season), and the game keeps their progress separate, so the guide does too. It shows the checklist of your most recent session and switches by itself when someone else, or another mode, plays next. On a shared PC or with a seasonal character, progress never mixes. A **Checklist** picker in the Game logs panel lets you look at the others. Each checklist is a whole character: it also keeps its own party code, display name, faction, ending and hideout wishlist. When the guide switches to another account, this device moves to that account's party, and the previous character stays listed (offline) in its own party with its phone still linked.
 
@@ -38,9 +44,20 @@ Requirements and limits:
 - The game only writes to its logs between raids, so ticks arrive after you extract. Items you pick up are never logged, so loot counts stay manual. Logs don't untick anything.
 - The guide must stay open in a tab or the installed app. Chrome checks background tabs about once a minute.
 - Chrome may ask again for permission to read the folder after a restart; tap **Game logs → Allow again**.
-- Only the push-notification, backend and application log files are read, on your PC. Nothing is uploaded except your ticks and raid status.
+- Only the push-notification, backend and application log files are read, on your PC. See [Your log data](#your-log-data).
 - Task names come from [tarkov.dev](https://tarkov.dev/) (refreshed every few days).
 - The Game logs panel also warns when your game is on a newer build than the guide was checked against, and lists tasks your game has started or finished that the guide doesn't include yet (hide event or edition-only ones with ×).
+
+### Your log data
+
+The game's logs hold more than the guide needs: account and profile numbers, game server addresses and request details. This is how that stays with you:
+
+- **It stays on your PC.** The setup task copies files from one folder to another on the same PC with Windows' own copy tool (robocopy). Nothing in it touches the network.
+- **Only three kinds of file are copied:** push-notifications, backend and application logs. Everything else in the Logs folder is left alone.
+- **The copies are private.** They go into your own user folder, which only you and the PC's administrators can open.
+- **They're kept only as long as you choose.** The cleanup task deletes copies older than the days you picked, every hour. [Tarky-log-remove.bat](Tarky-log-remove.bat) removes both tasks and, if you say yes, the copies too.
+- **Only this site can read them, and only inside your browser.** Chrome gives folder access to this one site, only after you pick the folder yourself. Turn it off any time with **Game logs → Disconnect**, or in Chrome's site settings. The guide reads the files on your PC; their contents are never sent anywhere. You can check this yourself: the whole guide is one open-source file, [index.html](https://github.com/nottoscalestudio/tarky/blob/main/index.html). Search it for `readNew` to see what's read from the logs, and `livePush` to see everything party sync sends.
+- **What does leave your PC** is what party sync shares, and only if you've joined a party or linked a device: your display name, ticked tasks and route steps, loot counts, and *in raid · map*. Account and profile numbers stay on the device: the guide uses them only to keep each account's checklist separate.
 
 ### Why the setup file?
 
@@ -55,6 +72,10 @@ We tried the simpler routes first (tested Nov 17, 2026, Chrome on Windows):
    - The task runs as SYSTEM so it stays hidden; a task under your own account would flash a window over the game every minute. That's why setup needs administrator rights once.
    - Old copies are cleaned up after the number of days you choose (default 30). The guide only reads the newest sessions, so older copies are just clutter once you've imported.
    - Paths are written into the task directly. An earlier version used Command Prompt variables, which silently stayed blank when pasted line by line.
+
+## Report a problem
+
+**Report a problem** at the bottom of the guide sends a short report of your setup and what the guide saw: guide and game version, browser, whether Game logs and party sync are working and their last error, recent page errors, and the task lines the guide read from your last two game sessions. You don't need to describe anything, and an optional note can be in any language. Account and profile numbers, party codes, names and whole log files are never included; tap *See exactly what will be sent* to check before sending. Reports go to a private issue tracker only the author can read. If sending isn't possible, **Save as file** gives you the same report to attach wherever you get in touch.
 
 ## Licences
 
