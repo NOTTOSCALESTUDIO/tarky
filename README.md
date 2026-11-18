@@ -4,6 +4,39 @@ An unofficial Escape from Tarkov guide: story progression plus a trader-loyalty 
 
 **Live guide:** https://nottoscalestudio.github.io/tarky/ (installable as an app on Android, iPhone and desktop)
 
+## Party and device sync
+
+**What you need**
+- Internet on every device, with the guide open at https://nottoscalestudio.github.io/tarky/ (live sync only connects from this address).
+- Any current browser: Chrome, Edge, Safari or Firefox, on desktop or phone.
+
+**Your own devices (PC + phone)**
+1. On the device with your progress, open **Loot → Link device**.
+2. Scan the QR code with your phone camera (or open the link on another PC). It joins as you, and its checklist is replaced with yours.
+3. Ticks then sync both ways within about a second. If two devices change ticks at almost the same moment, the later change wins.
+
+**Your party**
+- **Invite** shows a QR code and link; friends who open it join your party.
+- Everyone's open hand-ins merge into one colour-coded loot list, and coloured dots on a task show who has finished it.
+- Turn **in my raid** off for members not raiding with you: found-in-raid items can only change hands in the same raid.
+- Up to 12 connected devices per party. A party's shared data is deleted 12 hours after its last activity; each device keeps its own progress.
+
+**Offline:** *Offline share* creates a share string friends can paste in, no connection needed.
+
+**Game logs: automatic ticking and raid status** (desktop Chrome or Edge on the PC running the game)
+1. Tap **Game logs** in the bottom bar, then **Choose Logs folder**, and pick `Escape from Tarkov\build\Logs`.
+2. From then on, tasks tick themselves when the game logs them as completed, and your party sees *in raid · map* while you're in a raid. Ticks reach your phone and party through live sync.
+3. Choose whether completions count from PvE sessions, PvP sessions or both. To catch up, use **Import past completions** with the date of your last wipe or prestige.
+
+Requirements and limits:
+- **The game must not be installed under Program Files.** Chrome refuses to share that folder with websites. Move the game to a Steam library elsewhere (Steam → game Properties → Installed Files → Move install folder), for example `C:\Games\SteamLibrary`.
+- The game only writes to its logs between raids, so ticks arrive after you extract. Items you pick up are never logged, so loot counts stay manual. Logs don't untick anything.
+- The guide must stay open in a tab or the installed app. Chrome checks background tabs about once a minute.
+- Chrome may ask again for permission to read the folder after a restart; tap **Game logs → Allow again**.
+- Only the push-notification and backend log files are read, on your PC. Nothing is uploaded except your ticks and raid status.
+- Task names come from [tarkov.dev](https://tarkov.dev/) (refreshed every few days).
+- The Game logs panel also warns when your game is on a newer build than the guide was checked against, and lists tasks your game has started or finished that the guide doesn't include yet (hide event or edition-only ones with ×).
+
 ## Licences
 
 - **Code** (HTML, CSS, JavaScript, service worker): [GPL-3.0](LICENSE).
