@@ -45,6 +45,7 @@ window.__ERRS=[];(function(){const k=m=>{try{__ERRS.push({t:Date.now(),m:String(
 
 /* Reduced motion (an operating-system setting the browser passes on): every animation and transition finishes at once. */
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}}
+.phaseskip{opacity:.85;font-size:.92em}
 </style>
 <script>try{var t=localStorage.getItem("tsr_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -694,7 +695,8 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
    <ul>
     <li><b>Maps on the bar:</b> the map buttons now stay on the bar all the time, each showing how many tasks you can take there. Tap one for its view: Bring into raid first (keys, items to place and gear, with totals like 6 MS2000 markers or 7 WI-FI cameras when a map needs several), then its tasks under their traders. Any-map tasks are tagged "any map" and listed only on maps where they can progress. Trader rep, experience and the loyalty levels in reach sit in a folded section, which stays folded while the Loot list is open. During the story's long waits, the guide suggests the best map for your character.</li>
     <li><b>The Labyrinth and Icebreaker</b> get their own map buttons once you've started their chapters (or if you show spoilers), with that chapter's steps inside.</li>
-    <li><b>The route now runs to the end of the story,</b> with steps, bring lists and tips for every path. Each path stays hidden until you reach its choice.</li>
+    <li><b>Already further along?</b> Each phase has a button to check off all its steps at once, with their tasks and story items, and fold it away, so you can pick up where you are in the game.</li>
+<li><b>The route now runs to the end of the story,</b> with steps, bring lists and tips for every path. Each path stays hidden until you reach its choice.</li>
     <li><b>Trader tally:</b> rep from story choices now counts. Type your in-game rep to square up with the game: <b>Dailies &amp; extras</b> shows how far it is from what your checked tasks add up to, and the guide then uses your number. The tally now fits on screen without sideways scrolling, and on phones each trader gets a small card.</li>
     <li><b>Hide spoilers is now an intel folder</b> in the header. Closed, it hides later phases, route steps more than two ahead of you (never past the end of your current phase), and each big story choice until you check off the step that leads to it. Closing it again re-hides anything you opened early. Open it and the file slides out while a pen sweeps the redaction bars away. Puzzle answers like door codes and radio frequencies stay blacked out until you hover over or tap them.</li>
     <li><b>Backups before big changes:</b> if you have progress checked, resetting the route, raising Prestige, importing from game logs, loading a progress file or linking a device now offers to save a backup first.</li>
@@ -2506,7 +2508,13 @@ function render(){
   box.querySelectorAll("input[data-k]").forEach(cb=>cb.addEventListener("change",()=>tickTask(cb)));
   ["r1","r2","r3"].forEach(sl=>{const box=document.getElementById(sl),L=ORDER.filter(r=>r.slot===sl);if(!box||!L.length)return;
     const all=L.every(r=>done[r.n]);box.classList.toggle("phasedone",all&&!PHASEOPEN[sl]);
-    if(all){const b=document.createElement("button");b.type="button";b.className="phasetog";b.textContent=PHASEOPEN[sl]?"Hide completed steps":"All "+L.length+" steps done · show them";b.addEventListener("click",()=>{PHASEOPEN[sl]=!PHASEOPEN[sl];render();});box.prepend(b);}});
+    if(all){const b=document.createElement("button");b.type="button";b.className="phasetog";b.textContent=PHASEOPEN[sl]?"Hide completed steps":"All "+L.length+" steps done · show them";b.addEventListener("click",()=>{PHASEOPEN[sl]=!PHASEOPEN[sl];render();});box.prepend(b);}
+      // Already past this phase in the game (opening the guide for the first time mid-story): one tap checks every
+      // step in it, with its tasks and story items, and folds it away like a finished phase.
+      else{const left=L.filter(r=>!done[r.n]).length;const b=document.createElement("button");b.type="button";b.className="phasetog phaseskip";b.textContent="Already past these? Check off all "+L.length+" steps";
+        b.addEventListener("click",()=>{window.backupAsk(`Check off all ${L.length} steps in this phase (${left} still open), with every task and story item in them? Use this if you're already past them in the game. You can uncheck anything you haven't actually done.`,"Check them all",()=>{
+          L.forEach(r=>{done[r.n]=true;(r.stack||[]).forEach(st=>{tdone[taskKey(st[0],st[1])]=true;});(r.story||[]).forEach((t,j)=>{const k=(typeof startKey==="function"&&startKey(t))||("S|"+r.n+"|"+j);tdone[k]=true;});});
+          PHASEOPEN[sl]=false;save();render();});});box.prepend(b);}});
   prog(); tally(); gsInit(); gsSync();
   ORDER.forEach(r=>{}); document.querySelectorAll('#r1,#r2,#r3,#r4,#leftovers,#ch_aw,#ch_ba,#ch_bf,#ch_bo,#ch_lb,#ch_un,#ch_ta').forEach(markStory);
   renderLoot();if(typeof renderPrest==="function")renderPrest();
