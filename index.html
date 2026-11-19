@@ -2226,9 +2226,8 @@ document.addEventListener("click",e=>{const t=e.target;if(!t||!t.id||!/^cta/.tes
 function myBuild(){const el=document.getElementById("mybuild");if(!el)return;if(!LOGVER){el.textContent="";return;}
   const nw=GUIDEBUILD&&verGt(LOGVER,GUIDEBUILD);el.innerHTML=" · your game "+esc(LOGVER)+(nw?' <b class="newer" title="Your game is on a newer build than the guide was checked against; new or changed tasks may be missing until the next update.">newer</b>':"");}
 function logUI(){logCTA();myBuild();const b=document.getElementById("logtog");if(!b)return;b.hidden=!LOGOK;b.textContent=LOGSTATE==="on"?"Game logs ●":LOGSTATE==="need"?"Game logs: reconnect":"Game logs";b.classList.toggle("on",LOGSTATE==="on");
-  const P=document.getElementById("logpanel");if(!P||P.hidden)return;const ago2=LOGLAST?Math.round((Date.now()-LOGLAST)/1000)+" s ago":"not yet";
-  P.innerHTML=`<div class="lhead"><b>Game logs</b><button type="button" class="lreset" id="logclose">Close</button></div>
-  ${LOGSTATE==="on"?`<p class="small">Watching your Tarkov logs. Finished tasks check themselves${PCODE?", and your party sees your raid status":""}. Last check: <span id="loglast">${ago2}</span>.</p><p class="small logkeep"><b>Keep the guide open.</b> Logs are only read while the guide is open in a Chrome or Edge tab or the installed app. Minimized or in a background tab is fine; closed, nothing gets checked. Reopening catches up on your last two game sessions; for longer gaps use <b>Import past completions</b>.</p>`
+  const P=document.getElementById("logpanel");if(!P||P.hidden)return;P.innerHTML=`<div class="lhead"><b>Game logs</b><button type="button" class="lreset" id="logclose">Close</button></div>
+  ${LOGSTATE==="on"?`<p class="small">Watching your Tarkov logs. Finished tasks check themselves${PCODE?", and your party sees your raid status":""}. Checked about once a minute.</p><p class="small logkeep"><b>Keep the guide open.</b> Logs are only read while the guide is open in a Chrome or Edge tab or the installed app. Minimized or in a background tab is fine; closed, nothing gets checked. Reopening catches up on your last two game sessions; for longer gaps use <b>Import past completions</b>.</p>`
    :LOGSTATE==="need"?`<p class="small">Chrome needs your OK again to read the logs folder.</p><button type="button" class="lreset" id="logre">Allow again</button>`
    :`<p class="small">The guide checks off tasks as the game logs them as completed (between raids), and shows your party when you're in a raid. Nothing is uploaded except those checkmarks and your status.</p>
    <p class="small">The whole guide is open source under the <a href="https://github.com/nottoscalestudio/tarky/blob/main/LICENSE" target="_blank" rel="noopener">GPL-3.0 licence</a>, so you or anyone you trust can check exactly what it does with your logs: <a href="https://github.com/nottoscalestudio/tarky" target="_blank" rel="noopener">source code</a> · <a href="https://github.com/nottoscalestudio/tarky#your-log-data" target="_blank" rel="noopener">how your log data is handled</a>.</p>
@@ -2261,9 +2260,11 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".lmissx");if(!b)return;const n=LOGMISS[+b.dataset.mi];if(n){LOGIGN.add(n);LOGMISS.splice(+b.dataset.mi,1);try{localStorage.setItem("tsr_logmiss",JSON.stringify(LOGMISS));localStorage.setItem("tsr_logign",JSON.stringify([...LOGIGN]))}catch(x){}logUI();}});
 document.addEventListener("change",e=>{if(e.target&&e.target.id==="logslot"){switchSlot(e.target.value,"Showing");logUI();}});
 document.addEventListener("change",e=>{if(e.target&&e.target.id==="logmode"){LOGMODE=e.target.value;try{localStorage.setItem("tsr_logmode",LOGMODE)}catch(x){}}});
-setInterval(()=>{if(LOGSTATE==="on")logScan();else if(document.getElementById("logpanel")&&!document.getElementById("logpanel").hidden)logUI();},8000);
-  // The panel's "Last check" counts up live while it's open.
-  setInterval(()=>{const e=document.getElementById("loglast");if(e&&LOGLAST)e.textContent=Math.round((Date.now()-LOGLAST)/1000)+" s ago";},1000);
+// Logs are read once a minute (the Steam setup copies them once a minute too), plus once whenever the guide comes back
+// into view. While logs aren't connected yet, the panel still refreshes its setup state every few seconds.
+setInterval(()=>{if(LOGSTATE==="on")logScan();},60e3);
+setInterval(()=>{if(LOGSTATE!=="on"&&document.getElementById("logpanel")&&!document.getElementById("logpanel").hidden)logUI();},8000);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&LOGSTATE==="on"&&Date.now()-(LOGLAST||0)>15e3)logScan();});
 (async()=>{if(!LOGOK){LOGREADY=true;logUI();return;}const h=await kvGet("logdir");if(h){LOGH=h;let p="prompt";try{p=await h.queryPermission({mode:"read"})}catch(e){}if(p==="granted")await logStart(h,false);else{LOGSTATE="need";}}LOGREADY=true;logUI();})();
 
 // ---- Prestige tracking: next New Beginning target, its objectives, and its figurines in the loot list (wiki, Nov 2026)
@@ -2512,7 +2513,7 @@ function render(){
       // Already past this phase in the game (opening the guide for the first time mid-story): one tap checks every
       // step in it, with its tasks and story items, and folds it away like a finished phase.
       else{const left=L.filter(r=>!done[r.n]).length;const b=document.createElement("button");b.type="button";b.className="phasetog phaseskip";b.textContent="Already past these? Check off all "+L.length+" steps";
-        b.addEventListener("click",()=>{window.backupAsk(`Check off all ${L.length} steps in this phase (${left} still open), with every task and story item in them? Use this if you're already past them in the game. You can uncheck anything you haven't actually done.`,"Check them all",()=>{
+        b.addEventListener("click",()=>{ask(`Check off all ${L.length} steps in this phase (${left} still open), with every task and story item in them? Use this if you're already past them in the game. You can uncheck anything you haven't actually done.`,"Check them all",()=>{
           L.forEach(r=>{done[r.n]=true;(r.stack||[]).forEach(st=>{tdone[taskKey(st[0],st[1])]=true;});(r.story||[]).forEach((t,j)=>{const k=(typeof startKey==="function"&&startKey(t))||("S|"+r.n+"|"+j);tdone[k]=true;});});
           PHASEOPEN[sl]=false;save();render();});});box.prepend(b);}});
   prog(); tally(); gsInit(); gsSync();
