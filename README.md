@@ -38,7 +38,7 @@ Desktop Chrome or Edge on the PC running the game.
 1. **Get the Logs folder somewhere Chrome can read it.** Chrome won't let websites read anything under Program Files, which is where Steam puts Tarkov by default. Pick the first option that fits:
    - **Official launcher, default install** (`C:\Battlestate Games\…`): it isn't under Program Files, so you can pick its Logs folder as is. Go to step 2.
    - **Steam, and you have a second drive or partition:** move the game there with Steam itself, no administrator needed. Steam → Settings → Storage → add a library folder on the other drive (a plain folder like `D:\Games\SteamLibrary`), select Escape from Tarkov and choose **Move**. Steam keeps updating it there. The move copies the whole game (50 GB+), so start it before a chore or before bed, and set your PC to sleep after a few hours rather than right away so it can finish. If the Battlestate launcher can't find the game afterwards, use its **Set path to existing game installation**.
-   - **Steam on a single drive,** or you'd rather not move the game: download [Tarky-log-setup.bat](Tarky-log-setup.bat), right-click it and choose **Run as administrator**. It finds your Tarkov Logs folder and creates a hidden scheduled task that copies the three needed log files every minute into `C:\Users\<you>\TarkovLogs`. It asks how many days of copies to keep (default 30, or 0 for all): older copies are deleted every hour by a second hidden task, and aren't copied back. It never changes the game's files, installs no programs and doesn't use the internet; both tasks show in Windows' Task Scheduler, every line of the file is commented, and [Tarky-log-remove.bat](Tarky-log-remove.bat) undoes it. ([Why a setup file?](#why-the-setup-file))
+   - **Steam on a single drive,** or you'd rather not move the game: download [Tarky-log-setup.bat](Tarky-log-setup.bat), right-click it and choose **Run as administrator**. It finds your Tarkov Logs folder and creates a hidden scheduled task that copies the three needed log files every minute into `C:\Users\<you>\TarkovLogs`. It asks how many days of copies to keep (default 30, or 0 for all): older copies are deleted every hour by a second hidden task, and aren't copied back. It never changes the game's files, installs no programs and doesn't use the internet; both tasks show in Windows' Task Scheduler, every line of the file is commented, and [Tarky-log-remove.bat](Tarky-log-remove.bat) undoes it. ([Why a setup file?](#steam-users-why-the-setup-file))
 
    **When none of these work:**
    - *Not enough free space:* Steam copies the game before deleting the old one, so the other drive needs room for a full copy during the move.
@@ -65,16 +65,21 @@ Requirements and limits:
 
 ### Your log data
 
-The game's logs hold more than the guide needs: account and profile numbers, game server addresses and request details. This is how that stays with you:
+The game's logs hold more than the guide needs: account and profile numbers, game server addresses and request details. This is how that stays with you.
+
+#### Steam users with the setup file
 
 - **It stays on your PC.** The setup task copies files from one folder to another on the same PC with Windows' own copy tool (robocopy). Nothing in it touches the network.
 - **Only three kinds of file are copied:** push-notifications, backend and application logs. Everything else in the Logs folder is left alone.
 - **The copies are private.** They go into your own user folder, which only you and the PC's administrators can open.
 - **They're kept only as long as you choose.** The cleanup task deletes copies older than the days you picked, every hour. [Tarky-log-remove.bat](Tarky-log-remove.bat) removes both tasks, and the log copies too if you say yes.
-- **Only this site can read them, and only inside your browser.** Chrome gives folder access to this one site, only after you pick the folder yourself. Turn it off any time with **Game logs → Disconnect**, or in Chrome's site settings. The guide reads the files on your PC; their contents are never sent anywhere. You can check this yourself: the whole guide is one open-source file, [index.html](https://github.com/nottoscalestudio/tarky/blob/main/index.html). Search it for `readNew` to see what's read from the logs, and `livePush` to see everything party sync sends.
+
+#### Everyone
+
+- **Only this site can read the logs, and only inside your browser.** Chrome gives folder access to this one site, only after you pick the folder yourself. Turn it off any time with **Game logs → Disconnect**, or in Chrome's site settings. The guide reads the files on your PC; their contents are never sent anywhere. You can check this yourself: the whole guide is one open-source file, [index.html](https://github.com/nottoscalestudio/tarky/blob/main/index.html). Search it for `readNew` to see what's read from the logs, and `livePush` to see everything party sync sends.
 - **What does leave your PC** is what party sync shares, and only if you've joined a party or linked a device: your display name, checked tasks and route steps, loot counts, and *in raid · map* (not with streamer mode on). Account and profile numbers stay on the device: the guide uses them only to keep each account's checklist separate.
 
-### Why the setup file?
+### Steam users: why the setup file?
 
 We tried the simpler routes first (tested Nov 17, 2026, Chrome on Windows):
 
@@ -97,7 +102,7 @@ No. It never opens the game's own files, memory or network traffic. With Game lo
 So there's nothing to download, run or trust with your PC. Desktop trackers that read the logs are programs you install and run; this guide runs in the browser with no installer and no administrator rights, and updates itself. You can still install it as an app from Chrome or Edge's menu (per-user, no administrator needed). The whole guide is one open-source file, [index.html](https://github.com/nottoscalestudio/tarky/blob/main/index.html): read it yourself, or hand it to an AI to check for you.
 
 **Does anything need administrator rights?**
-Only Steam on a single drive: Chrome won't read Program Files, Steam can't move the game within one drive, so a one-time setup file copies the logs to your user folder. Official-launcher installs and Steam with a second drive need nothing. [Why a setup file?](#why-the-setup-file) lists every route we tried first.
+Only Steam on a single drive: Chrome won't read Program Files, Steam can't move the game within one drive, so a one-time setup file copies the logs to your user folder. Official-launcher installs and Steam with a second drive need nothing. [Why a setup file?](#steam-users-why-the-setup-file) lists every route we tried first.
 
 **Why do I still count items by hand?**
 The logs don't record everything that happens. They note when a task starts, finishes or fails, and whether you're in a raid, but not items you pick up or hand in. So item counts stay manual until the game logs that task as completed; then it checks itself off and its items drop off your list.
