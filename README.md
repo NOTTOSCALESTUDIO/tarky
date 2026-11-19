@@ -23,7 +23,7 @@ An unofficial Escape from Tarkov guide: story progression plus a trader-loyalty 
 - Party codes are 8 characters, shown as two groups of four (like K7QM-3XHP). The relay has protections against misuse.
 
 **If a stranger ever got into your party** (very unlikely):
-- They'd see what party members see: display names, open loot lists, checked tasks and route steps, and *in raid · map* while someone is raiding. If you stream PvP, use a display name that isn't your in-game name.
+- They'd see what party members see: display names, open loot lists, checked tasks and route steps, and *in raid · map* while someone is raiding (unless they turn on streamer mode). If you stream PvP, use a display name that isn't your in-game name.
 - They couldn't see account or profile numbers, log files, your network address or where you are. None of that is ever sent to the party.
 - They couldn't change your progress. Your own devices recognise each other with a private key the party never sees, so nobody else can pose as one of them.
 - At most they'd show up as an extra member with their own list. Start a new party and invite your friends again to leave them behind.
@@ -46,7 +46,7 @@ Desktop Chrome or Edge on the PC running the game.
    - *Why not a second partition?* It works (Steam treats it as another drive), but creating one needs administrator rights too, and it should be about twice the install size so big updates have room to download. On one drive, the setup file is the simpler route.
    - *Firefox, Safari or a phone* can't read folders at all. Open the guide in Chrome or Edge on the gaming PC, connect there, and link your other devices to it.
 2. Tap **Game logs** in the bottom bar (or **Connect game logs** in the card at the top), and pick the game's own `build\Logs` folder, or `TarkovLogs` if you used the setup file.
-3. From then on, tasks check themselves when the game logs them as completed, and your party sees *in raid · map* while you're in a raid. Checkmarks reach your phone and party through live sync.
+3. From then on, tasks check themselves when the game logs them as completed, and your party sees *in raid · map* while you're in a raid (unless you turn on streamer mode). Checkmarks reach your phone and party through live sync.
 4. Every session checks off tasks on the checklist of the account and mode that played it (see below). Tasks the guide doesn't have yet are listed from every mode, tagged with their mode, which is how new seasonal content gets noticed. To catch up, use **Import past completions** with the date of your last wipe or prestige. With the setup file, Import can only reach back as far as the copies you keep, so run it right after setup (or choose 0 days during setup, import, then run setup again with 30).
 
 **One checklist per account and game mode:** each session's log records which account played and in which mode (PvE, PvP or a season), and the game keeps their progress separate, so the guide does too. It shows the checklist of your most recent session and switches by itself when someone else, or another mode, plays next. On a shared PC or with a seasonal character, progress never mixes. A **Checklist** picker in the Game logs panel lets you look at the others. Each checklist is a whole character: it also keeps its own party code, display name, faction, ending and hideout wishlist. When the guide switches to another account, this device moves to that account's party, and the previous character stays listed (offline) in its own party with its phone still linked.
@@ -70,7 +70,7 @@ The game's logs hold more than the guide needs: account and profile numbers, gam
 - **The copies are private.** They go into your own user folder, which only you and the PC's administrators can open.
 - **They're kept only as long as you choose.** The cleanup task deletes copies older than the days you picked, every hour. [Tarky-log-remove.bat](Tarky-log-remove.bat) removes both tasks, and the log copies too if you say yes.
 - **Only this site can read them, and only inside your browser.** Chrome gives folder access to this one site, only after you pick the folder yourself. Turn it off any time with **Game logs → Disconnect**, or in Chrome's site settings. The guide reads the files on your PC; their contents are never sent anywhere. You can check this yourself: the whole guide is one open-source file, [index.html](https://github.com/nottoscalestudio/tarky/blob/main/index.html). Search it for `readNew` to see what's read from the logs, and `livePush` to see everything party sync sends.
-- **What does leave your PC** is what party sync shares, and only if you've joined a party or linked a device: your display name, checked tasks and route steps, loot counts, and *in raid · map*. Account and profile numbers stay on the device: the guide uses them only to keep each account's checklist separate.
+- **What does leave your PC** is what party sync shares, and only if you've joined a party or linked a device: your display name, checked tasks and route steps, loot counts, and *in raid · map* (not with streamer mode on). Account and profile numbers stay on the device: the guide uses them only to keep each account's checklist separate.
 
 ### Why the setup file?
 
