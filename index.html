@@ -847,9 +847,15 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
 @media (hover:hover) and (pointer:fine){.kbdh{display:inline-block}}
 kbd{font:600 .85em ui-monospace,monospace;padding:0 5px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;background:var(--bg)}
 .hktip{position:fixed;z-index:80;right:16px;bottom:120px;max-width:340px;font-size:13.5px;padding:10px 12px;border-radius:8px;background:var(--ink);color:var(--bg);box-shadow:0 6px 24px rgba(0,0,0,.3)}.hktip kbd{color:var(--ink)}.hktip .lreset{margin-left:6px}
+
+/* Panels share the screen: see the docking script. The one-time hotkey tip steps aside while any panel is open. */
+body.lootopen .hktip,body:has(#logpanel:not([hidden])) .hktip,body:has(#mapview:not([hidden])) .hktip{display:none}
 .hkt{border-collapse:collapse;margin-top:8px;font-size:14px}.hkt td{padding:3px 10px 3px 0;vertical-align:top}.hkt kbd{display:inline-block;min-width:1.6em;text-align:center;font:600 12.5px ui-monospace,monospace;padding:1px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;background:var(--bg)}
 .tcard{box-sizing:border-box;width:min(520px,calc(100vw - 20px));max-height:min(80vh,720px);overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);padding:14px 16px;box-shadow:0 10px 40px rgba(0,0,0,.35)}.tcard::backdrop{background:rgba(0,0,0,.45)}
-.tcard h3{margin:0 28px 4px 0;font-size:18px}.tcard .tpic{width:22px;height:22px;border-radius:3px;vertical-align:-6px}.tcx{position:absolute;top:8px;right:10px;font-size:20px;line-height:1;background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 8px}
+.tcard h3{margin:0 28px 4px 0;font-size:18px}.tcard .tpic{width:22px;height:22px;border-radius:3px;vertical-align:-6px}/* Same for the map view's and Game logs panel's title bars (with their close buttons). */
+#mapview>.lhead,#logpanel>.lhead{position:sticky;top:-10px;z-index:3;background:var(--panel);margin:-10px -12px 6px;padding:10px 12px 6px;border-bottom:1px solid var(--line)}
+/* The × stays in view while a long card (hotkeys, task) scrolls. */
+.tcx{position:sticky;top:0;float:right;z-index:3;margin:-6px -8px 0 8px;font-size:20px;line-height:1;background:var(--panel);border:1px solid var(--line);border-radius:50%;width:32px;height:32px;padding:0;color:var(--ink);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18)}
 .tcsec{margin-top:10px}.tcsec>b{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.tcob,.tcl{margin:4px 0 0;padding-left:20px;font-size:14px}.tcob li,.tcl li{margin:2px 0}
 .tcs{display:inline-block;font-size:11.5px;font-weight:600;padding:0 6px;border-radius:3px;border:1px solid currentColor}.tcs.ok{color:#2e8b57}.tcs.bad{color:#c0392b}.tcs.open{color:var(--accent)}
 .tcbtns{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}.tcbtns .lreset{text-decoration:none}.tcqrbox{width:180px;margin:10px auto 0;background:#fff;padding:6px;border-radius:6px}
@@ -2220,7 +2226,7 @@ function myBuild(){const el=document.getElementById("mybuild");if(!el)return;if(
 function logUI(){logCTA();myBuild();const b=document.getElementById("logtog");if(!b)return;b.hidden=!LOGOK;b.textContent=LOGSTATE==="on"?"Game logs ●":LOGSTATE==="need"?"Game logs: reconnect":"Game logs";b.classList.toggle("on",LOGSTATE==="on");
   const P=document.getElementById("logpanel");if(!P||P.hidden)return;const ago2=LOGLAST?Math.round((Date.now()-LOGLAST)/1000)+" s ago":"not yet";
   P.innerHTML=`<div class="lhead"><b>Game logs</b><button type="button" class="lreset" id="logclose">Close</button></div>
-  ${LOGSTATE==="on"?`<p class="small">Watching your Tarkov logs. Finished tasks check themselves${PCODE?", and your party sees your raid status":""}. Last check: ${ago2}.</p><p class="small logkeep"><b>Keep the guide open.</b> Logs are only read while the guide is open in a Chrome or Edge tab or the installed app. Minimized or in a background tab is fine; closed, nothing gets checked. Reopening catches up on your last two game sessions; for longer gaps use <b>Import past completions</b>.</p>`
+  ${LOGSTATE==="on"?`<p class="small">Watching your Tarkov logs. Finished tasks check themselves${PCODE?", and your party sees your raid status":""}. Last check: <span id="loglast">${ago2}</span>.</p><p class="small logkeep"><b>Keep the guide open.</b> Logs are only read while the guide is open in a Chrome or Edge tab or the installed app. Minimized or in a background tab is fine; closed, nothing gets checked. Reopening catches up on your last two game sessions; for longer gaps use <b>Import past completions</b>.</p>`
    :LOGSTATE==="need"?`<p class="small">Chrome needs your OK again to read the logs folder.</p><button type="button" class="lreset" id="logre">Allow again</button>`
    :`<p class="small">The guide checks off tasks as the game logs them as completed (between raids), and shows your party when you're in a raid. Nothing is uploaded except those checkmarks and your status.</p>
    <p class="small">The whole guide is open source under the <a href="https://github.com/nottoscalestudio/tarky/blob/main/LICENSE" target="_blank" rel="noopener">GPL-3.0 licence</a>, so you or anyone you trust can check exactly what it does with your logs: <a href="https://github.com/nottoscalestudio/tarky" target="_blank" rel="noopener">source code</a> · <a href="https://github.com/nottoscalestudio/tarky#your-log-data" target="_blank" rel="noopener">how your log data is handled</a>.</p>
@@ -2253,7 +2259,9 @@ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".lmissx");if(!b)return;const n=LOGMISS[+b.dataset.mi];if(n){LOGIGN.add(n);LOGMISS.splice(+b.dataset.mi,1);try{localStorage.setItem("tsr_logmiss",JSON.stringify(LOGMISS));localStorage.setItem("tsr_logign",JSON.stringify([...LOGIGN]))}catch(x){}logUI();}});
 document.addEventListener("change",e=>{if(e.target&&e.target.id==="logslot"){switchSlot(e.target.value,"Showing");logUI();}});
 document.addEventListener("change",e=>{if(e.target&&e.target.id==="logmode"){LOGMODE=e.target.value;try{localStorage.setItem("tsr_logmode",LOGMODE)}catch(x){}}});
-setInterval(()=>{if(LOGSTATE==="on")logScan();else if(document.getElementById("logpanel")&&!document.getElementById("logpanel").hidden)logUI();},5000);
+setInterval(()=>{if(LOGSTATE==="on")logScan();else if(document.getElementById("logpanel")&&!document.getElementById("logpanel").hidden)logUI();},8000);
+  // The panel's "Last check" counts up live while it's open.
+  setInterval(()=>{const e=document.getElementById("loglast");if(e&&LOGLAST)e.textContent=Math.round((Date.now()-LOGLAST)/1000)+" s ago";},1000);
 (async()=>{if(!LOGOK){LOGREADY=true;logUI();return;}const h=await kvGet("logdir");if(h){LOGH=h;let p="prompt";try{p=await h.queryPermission({mode:"read"})}catch(e){}if(p==="granted")await logStart(h,false);else{LOGSTATE="need";}}LOGREADY=true;logUI();})();
 
 // ---- Prestige tracking: next New Beginning target, its objectives, and its figurines in the loot list (wiki, Nov 2026)
@@ -3178,6 +3186,28 @@ li.task.anyt>label::after{content:"any map";font-size:10.5px;font-weight:600;let
     buf=(buf+String(e.key||"").toLowerCase()).slice(-3);if(buf!=="crt")return;buf="";const on=!document.body.classList.contains("glow");
     document.body.classList.toggle("glow",on);try{localStorage.setItem("tsr_crtglow",on?"1":"0")}catch(x){}
     if(on){document.body.classList.remove("glowon");void document.body.offsetWidth;document.body.classList.add("glowon");setTimeout(()=>document.body.classList.remove("glowon"),700);}});})();
+</script>
+<script>
+// Panel docking. Any two of the Loot list, the Game logs panel and a map view can be open together: side by side
+// when the screen has room (Game logs to the left of Loot, the map view shrinking to leave space), otherwise stacked
+// with the one opened last on top. Opening a third closes the oldest.
+(function(){let order=[];const ids=["lootpanel","logpanel","mapview"];const vis=id=>{const e=document.getElementById(id);return !!(e&&!e.hidden&&e.getClientRects().length)};
+  function dock(){const L=document.getElementById("lootpanel"),G=document.getElementById("logpanel"),V=document.getElementById("mapview");
+    [L,G,V].forEach(e=>{if(e){e.style.right="";e.style.zIndex="";}});
+    const lo=vis("lootpanel"),go=vis("logpanel"),vo=vis("mapview"),W=innerWidth;
+    order=order.filter(vis);ids.forEach(id=>{if(vis(id)&&!order.includes(id))order.push(id);});
+    // Two at a time: opening a third closes the one that's been open longest.
+    if(order.length>2){const old=order.shift();if(old==="lootpanel"){const b=document.getElementById("lootbtn");if(b)b.click();}else{const e=document.getElementById(old);if(e)e.hidden=true;}return;}
+    let left=W;let side=true;
+    if(lo){left=L.getBoundingClientRect().left;}
+    if(go){if(lo){const gw=G.getBoundingClientRect().width;if(left-gw-16>=(vo?560:12)){G.style.right=(W-left+12)+"px";left=left-gw-12;}else side=false;}else left=G.getBoundingClientRect().left;}
+    if(vo&&(lo||go)){if(side&&left>=600){V.style.right=(W-left+12)+"px";}else side=false;}
+    if(!side){order.forEach((id,i)=>{const e=document.getElementById(id);if(e)e.style.zIndex=String(60+i);});}}
+  window.dockPanels=dock;
+  const mo=new MutationObserver(()=>requestAnimationFrame(dock));
+  const watch=()=>ids.forEach(id=>{const e=document.getElementById(id);if(e&&!e.dataset.dockw){e.dataset.dockw="1";mo.observe(e,{attributes:true,attributeFilter:["hidden"]});}});
+  new MutationObserver(()=>{watch();requestAnimationFrame(dock);}).observe(document.body,{childList:true});watch();
+  addEventListener("resize",()=>requestAnimationFrame(dock));dock();})();
 </script>
 <script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 <script>
