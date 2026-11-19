@@ -750,6 +750,7 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
 .rptpanel textarea{width:100%;box-sizing:border-box;font:inherit;font-size:13px;margin:4px 0}.rptpanel pre{max-height:220px;overflow:auto;font-size:11px;white-space:pre-wrap;word-break:break-all;background:var(--bg);padding:6px;border-radius:4px}
 .logtoast{white-space:normal!important;top:max(12px,env(safe-area-inset-top,0px))!important;bottom:auto!important;height:auto;left:12px!important;right:12px;margin:0 auto;transform:none!important;width:fit-content;max-width:460px;box-sizing:border-box;text-align:center}
 .eyebrow .newer{color:var(--accent);font-weight:700}
+.logkeep{border-left:3px solid var(--accent);padding:6px 10px;margin:8px 0;background:rgba(127,127,127,.08)}
 .logcta{margin:14px 0 4px;padding:12px 14px;border:2px solid var(--accent);border-radius:8px;background:var(--panel)}.logcta h2{margin:0 0 6px;font-size:20px}.logcta p,.logcta ol{margin:6px 0}.logcta ol{padding-left:20px}.logcta li{margin:3px 0}.logcta.mini{border-width:1px;padding:7px 12px;font-size:14px}.logcta.mini p{margin:0}.logcta .lreset{display:inline-block;width:auto}
 .ctabtn{font:inherit;font-weight:700;padding:7px 14px;border-radius:6px;border:0;background:var(--accent);color:#fff;cursor:pointer}
 #logtog:not(.on){font-weight:700}
@@ -841,7 +842,7 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
 .scover{filter:blur(6px);cursor:pointer;user-select:none}.scoverbox .pqr,.scoverbox textarea{filter:blur(10px);pointer-events:none}.scoverbox::after{content:"Covered for streamer mode: click to show";display:block;font-size:12px;color:var(--muted);margin-top:4px}
 #mapnav button.mvon{opacity:1;background-image:linear-gradient(rgba(60,20,0,.28),rgba(60,20,0,.28));box-shadow:inset 0 3px 6px rgba(0,0,0,.4),inset 0 -1px 0 rgba(255,255,255,.15);transform:translateY(1px)}
 @media (hover:hover) and (pointer:fine){.hkl{font-weight:800;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:2px}}
-@media (hover:hover) and (pointer:fine){#mapnav button[data-hk]{position:relative}#mapnav button[data-hk]::before{content:attr(data-hk);position:absolute;top:2px;left:5px;font:600 9px/1 ui-monospace,monospace;opacity:.5;pointer-events:none}}
+@media (hover:hover) and (pointer:fine){#mapnav button[data-hk]{position:relative}#mapnav button[data-hk]::before{content:attr(data-hk);position:absolute;top:2px;left:5px;font:700 10px/1 ui-monospace,monospace;color:#fff;opacity:.78;text-shadow:0 0 2px rgba(0,0,0,.45);pointer-events:none}}
 .kbdh{display:none;font:600 10px ui-monospace,monospace;line-height:1;padding:1px 4px;margin-left:5px;border:1px solid currentColor;border-bottom-width:2px;border-radius:3px;opacity:.75}
 @media (hover:hover) and (pointer:fine){.kbdh{display:inline-block}}
 kbd{font:600 .85em ui-monospace,monospace;padding:0 5px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;background:var(--bg)}
@@ -2200,7 +2201,7 @@ function logCTA(){const C=document.getElementById("logcta");if(!C)return;if(!LOG
       <li><b>Steam with a second drive:</b> Steam → Settings → Storage → add a library on that drive and <b>Move</b> the game there. No administrator needed; it copies 50 GB+, so start it before a chore or bed.</li>
       <li><b>Steam on one drive:</b> download <a href="Tarky-log-setup.bat" download>Tarky-log-setup.bat</a>, right-click it and choose <b>Run as administrator</b>.</li></ul>
       <a href="https://github.com/nottoscalestudio/tarky#game-logs-automatic-checking-and-raid-status" target="_blank" rel="noopener">Which applies to me?</a></li>
-    <li>Click <b>Connect game logs</b> and pick the game's <b>build\\Logs</b> folder, or <b>TarkovLogs</b> in your user folder if you used the setup file.</li></ol>
+    <li>Click <b>Connect game logs</b> and pick the game's <b>build\\Logs</b> folder, or <b>TarkovLogs</b> in your user folder if you used the setup file.</li></ol><p class="small logkeep"><b>Keep the guide open.</b> Logs are only read while the guide is open in a Chrome or Edge tab or the installed app. Minimized or in a background tab is fine; closed, nothing gets checked. Reopening catches up on your last two game sessions; for longer gaps use <b>Import past completions</b>.</p>
     <p><button type="button" class="ctabtn" id="ctago">Connect game logs</button> <button type="button" class="lreset" id="ctahow">Details and privacy</button> <button type="button" class="lreset" id="ctamin">Not now</button></p>
     <p class="small muted">Open source (GPL-3.0): <a href="https://github.com/nottoscalestudio/tarky#your-log-data" target="_blank" rel="noopener">see exactly what it reads and sends</a>.</p>`;
   else h=`<h2>Let the game check off your tasks</h2>
@@ -2219,7 +2220,7 @@ function myBuild(){const el=document.getElementById("mybuild");if(!el)return;if(
 function logUI(){logCTA();myBuild();const b=document.getElementById("logtog");if(!b)return;b.hidden=!LOGOK;b.textContent=LOGSTATE==="on"?"Game logs ●":LOGSTATE==="need"?"Game logs: reconnect":"Game logs";b.classList.toggle("on",LOGSTATE==="on");
   const P=document.getElementById("logpanel");if(!P||P.hidden)return;const ago2=LOGLAST?Math.round((Date.now()-LOGLAST)/1000)+" s ago":"not yet";
   P.innerHTML=`<div class="lhead"><b>Game logs</b><button type="button" class="lreset" id="logclose">Close</button></div>
-  ${LOGSTATE==="on"?`<p class="small">Watching your Tarkov logs. Finished tasks check themselves${PCODE?", and your party sees your raid status":""}. Last check: ${ago2}.</p>`
+  ${LOGSTATE==="on"?`<p class="small">Watching your Tarkov logs. Finished tasks check themselves${PCODE?", and your party sees your raid status":""}. Last check: ${ago2}.</p><p class="small logkeep"><b>Keep the guide open.</b> Logs are only read while the guide is open in a Chrome or Edge tab or the installed app. Minimized or in a background tab is fine; closed, nothing gets checked. Reopening catches up on your last two game sessions; for longer gaps use <b>Import past completions</b>.</p>`
    :LOGSTATE==="need"?`<p class="small">Chrome needs your OK again to read the logs folder.</p><button type="button" class="lreset" id="logre">Allow again</button>`
    :`<p class="small">The guide checks off tasks as the game logs them as completed (between raids), and shows your party when you're in a raid. Nothing is uploaded except those checkmarks and your status.</p>
    <p class="small">The whole guide is open source under the <a href="https://github.com/nottoscalestudio/tarky/blob/main/LICENSE" target="_blank" rel="noopener">GPL-3.0 licence</a>, so you or anyone you trust can check exactly what it does with your logs: <a href="https://github.com/nottoscalestudio/tarky" target="_blank" rel="noopener">source code</a> · <a href="https://github.com/nottoscalestudio/tarky#your-log-data" target="_blank" rel="noopener">how your log data is handled</a>.</p>

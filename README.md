@@ -32,6 +32,8 @@ An unofficial Escape from Tarkov guide: story progression plus a trader-loyalty 
 
 ### Game logs: automatic checking and raid status
 
+> **⚠ Keep the guide open.** Logs are only read while the guide is open in a Chrome or Edge tab, or the installed app. It can sit minimized or in a background tab the whole time, but if it's closed, nothing gets checked off. Reopening it catches up on your last two game sessions; for longer gaps, use **Import past completions**.
+
 Desktop Chrome or Edge on the PC running the game.
 1. **Get the Logs folder somewhere Chrome can read it.** Chrome won't let websites read anything under Program Files, which is where Steam puts Tarkov by default. Pick the first option that fits:
    - **Official launcher, default install** (`C:\Battlestate Games\…`): it isn't under Program Files, so you can pick its Logs folder as is. Go to step 2.
@@ -55,7 +57,7 @@ Requirements and limits:
 - Setup file only: if you aren't an administrator on your PC and someone else's admin login is used to run it, the copies land in *their* user folder instead of yours.
 - Setup file only: it needs administrator rights once, because its task runs as SYSTEM: that keeps it hidden, with no window popping up over your game. Copies can lag the game by up to a minute.
 - The game only writes to its logs between raids, so checkmarks arrive after you extract. Items you pick up are never logged, so loot counts stay manual. Logs don't uncheck anything.
-- The guide must stay open in a tab or the installed app. Chrome checks background tabs about once a minute.
+- **The guide must stay open** (minimized or in a background tab is fine): see the note at the top of this section. Chrome checks background tabs about once a minute.
 - Chrome may ask again for permission to read the folder after a restart; tap **Game logs → Allow again**.
 - Only the push-notification, backend and application log files are read, on your PC. See [Your log data](#your-log-data).
 - Task names come from [tarkov.dev](https://tarkov.dev/) (refreshed every few days).
