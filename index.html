@@ -51,6 +51,13 @@ window.__ERRS=[];(function(){const k=m=>{try{__ERRS.push({t:Date.now(),m:String(
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}}
 .phaseskip{opacity:.85;font-size:.92em}
 .rtag{display:inline-block;font-size:11px;line-height:1.3;padding:0 6px;border-radius:9px;background:rgba(214,178,94,.16);color:#d6b25e;border:1px solid rgba(214,178,94,.35);vertical-align:1px;white-space:nowrap}
+.pnrpick{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.pnrpick label{display:inline-flex;gap:7px;align-items:center;padding:5px 11px;border:1px solid var(--line);border-radius:6px;cursor:pointer;background:var(--panel)}
+.pnrpick label:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.stop.pnrfold>*:not(h3):not(.pnrsum):not(.spoilbody):not(.spoilph){display:none}.stop.pnrfold>.spoilbody>*:not(.pnrsum){display:none}
+.pnrsum{margin:6px 0 0}.pnrlock{color:var(--accent);font-weight:700}
+.pnrneed{margin:0 0 8px;padding:6px 10px;border-left:3px solid var(--accent);font-weight:600}
+@keyframes pnrFlash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 3px var(--accent)}}.pnrflash{animation:pnrFlash 1.2s 2}
 </style>
 <script>try{var t=localStorage.getItem("tsr_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -231,7 +238,7 @@ tr.endsel td{background:color-mix(in srgb,var(--accent) 14%,transparent)} tr.end
 #clist table td:first-child{min-width:14em;max-width:28em}#clist table td:nth-child(2){white-space:nowrap}#clist table td:nth-child(4){min-width:8em;max-width:11em}#clist table td:nth-child(5){min-width:13em;max-width:18em}.fig{margin:6px 0 0;padding-left:18px}.fig li{margin:2px 0}
 </style>
 
-<nav class="fnav" aria-label="Quick navigation"><button type="button" id="go-maps" title="Show the map selector: open tasks and reputation per map">Maps</button><div class="frow frow-maps"><span id="mapnav" hidden><button type="button" class="main" data-go="step-C6" data-map="Customs">Customs</button><button type="button" class="main" data-go="step-C7" data-map="Woods">Woods</button><button type="button" class="main" data-go="step-C8" data-map="Shoreline">Shoreline</button><button type="button" class="main" data-go="step-C3" data-map="Interchange">Interchange</button><button type="button" class="main" data-go="step-C1" data-map="Factory">Factory</button><button type="button" class="main" data-go="step-C2" data-map="Streets">Streets</button><button type="button" class="main" data-go="step-C4" data-map="Lighthouse">Lighthouse</button><button type="button" class="main" data-go="step-C9" data-map="Reserve">Reserve</button><button type="button" class="main" data-go="step-C10" data-map="Ground Zero">Ground Zero</button><button type="button" class="main" data-go="step-C5" data-map="The Lab">The Lab</button><button type="button" class="main" data-go="step-C8" data-map="The Labyrinth" data-gate="The Labyrinth" hidden>Labyrinth</button><button type="button" class="main" data-go="step-C8" data-map="Icebreaker" data-gate="Boreas" hidden>Icebreaker</button><button type="button" class="main" data-go="step-C11" hidden>Off-raid</button></span></div><div class="frow frow-tools"><span class="fpin"><span class="splitbtn"><button type="button" class="main" id="go-step" aria-label="Current step (hotkey C)"><span class="hkl">C</span>urrent step</button><button type="button" class="main anytog" id="anytog" title="Go to the any-map tasks (in the Off-raid step); tap again to go back"><span class="hkl">A</span>ny map</button></span><span class="splitbtn"><button type="button" id="lootbtn" aria-label="Show or hide the loot to look out for (hotkey L)"><span class="hkl">L</span>oot</button><button type="button" id="lootfind" aria-label="Search the loot list" title="Search items, tasks and people (shortcut: /; Shift + / lists all hotkeys)"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 10l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><kbd class="kbdh" aria-hidden="true">/</kbd></button></span></span><button type="button" id="logtog" hidden title="Read Tarkov's log files to check off finished tasks automatically">Game logs</button><button type="button" id="locktog" title="Locked tasks: hidden, next loyalty level only, or all">Locked: hidden</button><button type="button" id="faction" aria-label="Switch faction">USEC</button><button type="button" id="go-ch">Chapters</button><span class="endsw"><button type="button" id="end-prev" aria-label="Previous ending">‹</button><span id="end-label">Savior</span><button type="button" id="end-next" aria-label="Next ending">›</button></span><button type="button" id="go-tally">Tally</button><button type="button" id="go-items" aria-label="Item list (hotkey I)"><span class="hkl">I</span>tem list</button><button type="button" id="go-wish" aria-label="Wish lists (hotkey W)"><span class="hkl">W</span>ish lists</button><button type="button" id="go-gun" aria-label="Gunsmith (hotkey G)"><span class="hkl">G</span>unsmith</button><button type="button" id="themebtn" aria-label="Toggle light or dark theme">Theme</button><a id="supnav" class="supnav" target="_blank" rel="noopener" hidden>♥ Support</a></div></nav><div id="lootpanel" class="lootpanel" hidden></div>
+<nav class="fnav" aria-label="Quick navigation"><button type="button" id="go-maps" title="Show the map selector: open tasks and reputation per map">Maps</button><div class="frow frow-maps"><span id="mapnav" hidden><button type="button" class="main" data-go="step-C6" data-map="Customs">Customs</button><button type="button" class="main" data-go="step-C7" data-map="Woods">Woods</button><button type="button" class="main" data-go="step-C8" data-map="Shoreline">Shoreline</button><button type="button" class="main" data-go="step-C3" data-map="Interchange">Interchange</button><button type="button" class="main" data-go="step-C1" data-map="Factory">Factory</button><button type="button" class="main" data-go="step-C2" data-map="Streets">Streets</button><button type="button" class="main" data-go="step-C4" data-map="Lighthouse">Lighthouse</button><button type="button" class="main" data-go="step-C9" data-map="Reserve">Reserve</button><button type="button" class="main" data-go="step-C10" data-map="Ground Zero">Ground Zero</button><button type="button" class="main" data-go="step-C5" data-map="The Lab">The Lab</button><button type="button" class="main" data-go="step-C8" data-map="The Labyrinth" data-gate="The Labyrinth" hidden>Labyrinth</button><button type="button" class="main" data-go="step-C8" data-map="Icebreaker" data-gate="Boreas" hidden>Icebreaker</button><button type="button" class="main" data-go="step-C11" hidden>Off-raid</button></span></div><div class="frow frow-tools"><span class="fpin"><span class="splitbtn"><button type="button" class="main" id="go-step" aria-label="Current step (hotkey C)"><span class="hkl">C</span>urrent step</button><button type="button" class="main anytog" id="anytog" title="Go to the any-map tasks (in the Off-raid step); tap again to go back"><span class="hkl">A</span>ny map</button></span><span class="splitbtn"><button type="button" id="lootbtn" aria-label="Show or hide the loot to look out for (hotkey L)"><span class="hkl">L</span>oot</button><button type="button" id="lootfind" aria-label="Search the loot list" title="Search items, tasks and people (shortcut: /; Shift + / lists all hotkeys)"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 10l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><kbd class="kbdh" aria-hidden="true">/</kbd></button></span></span><button type="button" id="logtog" hidden title="Read Tarkov's log files to check off finished tasks automatically">Game logs</button><button type="button" id="locktog" title="Locked tasks: hidden, next loyalty level only, or all">Locked: hidden</button><button type="button" id="faction" aria-label="Switch faction">USEC</button><button type="button" id="go-ch">Chapters</button><button type="button" id="go-tally">Tally</button><button type="button" id="go-items" aria-label="Item list (hotkey I)"><span class="hkl">I</span>tem list</button><button type="button" id="go-wish" aria-label="Wish lists (hotkey W)"><span class="hkl">W</span>ish lists</button><button type="button" id="go-gun" aria-label="Gunsmith (hotkey G)"><span class="hkl">G</span>unsmith</button><button type="button" id="themebtn" aria-label="Toggle light or dark theme">Theme</button><a id="supnav" class="supnav" target="_blank" rel="noopener" hidden>♥ Support</a></div></nav><div id="lootpanel" class="lootpanel" hidden></div>
 <script>/* In-page yes/no and text prompts. Browser confirm()/prompt() are silently blocked inside some app viewers
    (the Claude app's artifact frame among them), which made buttons like × on a party member do nothing. */
 window.ask=(msg,yes,go,no)=>{let d=document.getElementById("askdlg");if(!d||typeof d.showModal!=="function"){if(!d){d=document.createElement("dialog");d.id="askdlg";d.className="bkdlg";document.body.appendChild(d);}}
@@ -487,6 +494,7 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
   <div id="r2"></div>
   <div class="stop" id="pnr1">
     <h3>Point of no return 1 · The armored case</h3>
+    <div class="pnrsum" hidden></div>
     <p class="inv">Read the consequences below before you talk to Prapor. If Intelligence Center 1 happens to be built already, the give-it-up payout is 5% higher.</p>
     <div class="scroll"><table>
       <thead><tr><th></th><th>Keep the case</th><th>Give it to Prapor</th></tr></thead>
@@ -498,7 +506,7 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
         <tr><td>Later chapters</td><td>Boreas asks 3 FiR Military power filters for transport</td><td>No extra cost in Boreas</td></tr>
       </tbody>
     </table></div>
-    <p class="casepick"><b>Your choice:</b> <label><input type="radio" name="casech" value=""> not made yet</label> <label><input type="radio" name="casech" value="keep"> kept the case</label> <label><input type="radio" name="casech" value="give"> gave it to Prapor</label> <span class="muted small">(keeping it costs 0.70 Prapor rep, counted in the trader tally and map rep)</span></p>
+    <p class="casepick pnrpick"><b>Your choice, before step 12:</b> <label><input type="checkbox" data-case="keep"> I kept the case</label> <label><input type="checkbox" data-case="give"> I gave it to Prapor</label> <span class="muted small">(keeping it costs 0.70 Prapor rep, counted in the trader tally and map rep)</span></p>
     <p><b>For the fastest story, keep the case.</b> Giving it adds the whole Lightkeeper gate to The Ticket. The −0.70 Prapor rep can drop you below his LL2 threshold; finish two or three more Prapor tasks afterward to recover it.<span class="endrow"> Savior and Debtor are reachable from either choice; the choice only changes what you do before you get the case back. Debtor needs Lightkeeper access later either way.</span></p>
     <p class="casehint"><b>Which to pick:</b> keep it for the quickest way through the rest of the story. Give it if you'd rather avoid big costs at the very end: of the ways the story can finish, only one is better with the case kept, and you choose that much later. <button type="button" class="lreset endhint" data-spopen="ending">Show which finish is which</button> <span class="muted small endhint">(names the endings)</span></p>
   </div>
@@ -510,6 +518,7 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
   <div id="r3"></div>
   <div class="stop" id="pnr2">
     <h3>Point of no return 2 · Mr. Kerman's offer</h3>
+    <div class="pnrsum" hidden></div>
     <p class="inv">This choice locks your ending route. Every ending finishes at the Shoreline Terminal intercom between 21:00 and 06:00. Before that final raid, check your task objectives for anything you have to carry in. Dying or extracting resets the Terminal run, but the entry item is gone either way, so price in a spare for each attempt.</p>
     <div class="scroll"><table>
       <thead><tr><th>Choice</th><th>Ending</th><th>What it still takes</th><th>Terminal entry (used up on every attempt)</th></tr></thead>
@@ -520,6 +529,7 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
         <tr data-end="Debtor"><td>Accept, dig, stop after 2</td><td>Debtor</td><td>Shared accept steps, Lightkeeper access (level 27 + LL3 ×6), topographic intel from five maps, 30 PMCs on Woods, 100 dogtags, six amulets stashed on Lighthouse. <b class="inv">Bring the encoded DSP radio transmitter (special slot) on every Lightkeeper trip.</b></td><td><b>RFID keycard with unknown name</b>: 1 TerraGroup "Blue Folders" materials to Lightkeeper, once per raid (needs a free special slot).</td></tr>
       </tbody>
     </table></div>
+    <p class="pnrpick endchoose"><b>The ending you're going for:</b> <label><input type="checkbox" data-endch="Survivor"> Survivor</label> <label><input type="checkbox" data-endch="Fallen"> Fallen</label> <label><input type="checkbox" data-endch="Savior"> Savior</label> <label><input type="checkbox" data-endch="Debtor"> Debtor</label> <span class="muted small">Steps 14 onward follow it. You can change it later.</span></p>
     <p class="small" style="margin:12px 0 4px"><b>How the case choice (point of no return 1) changes each ending</b></p>
     <div class="scroll"><table>
       <thead><tr><th>Ending</th><th>Keep the case</th><th>Give it to Prapor</th><th>Better pick</th></tr></thead>
@@ -537,8 +547,8 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
 <section class="phase" id="endings" data-spoil="rE" data-after="r3" data-pname="Phase 3">
   <hr class="rule">
   <div class="phasehead"><h2>Phase 4 · The last steps</h2><span class="progress" id="endprog"></span></div>
-  <p class="muted">Steps 14 onward follow the ending picked in the bottom bar. The last step is the Terminal raid itself.</p>
-  <p class="small endpick" hidden>Open <b>Point of no return 2</b> above and pick your ending in the bottom bar to see its steps.</p>
+  <p class="muted">Steps 14 onward follow the ending you lock in at Point of no return 2. The last step is the Terminal raid itself.</p>
+  <p class="small endpick" hidden>Lock in the ending you're going for at <b>Point of no return 2</b> above to see its steps.</p>
   <div id="e_acc"></div><div id="e_Savior"></div><div id="e_Fallen"></div><div id="e_Debtor"></div><div id="e_Survivor"></div>
 </section>
 
@@ -701,6 +711,8 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
     <li><b>Maps on the bar:</b> the map buttons now stay on the bar all the time, each showing how many tasks you can take there. Tap one for its view: Bring into raid first (keys, items to place and gear, with totals like 6 MS2000 markers or 7 WI-FI cameras when a map needs several), then its tasks under their traders. Any-map tasks are tagged "any map" and listed only on maps where they can progress. Trader rep, experience and the loyalty levels in reach sit in a folded section, which stays folded while the Loot list is open. During the story's long waits, the guide suggests the best map for your character.</li>
     <li><b>The Labyrinth and Icebreaker</b> get their own map buttons once you've started their chapters (or if you show spoilers), with that chapter's steps inside.</li>
     <li><b>Story-only steps:</b> route steps now carry just the story. Side tasks live in the map buttons on the bar, and the ones the route counts on are tagged with the story step they come before, plus the trader loyalty level they help reach. The side-task-only reruns (2A, 3B, 4B, 6B) are gone.</li>
+<li><b>Points of no return:</b> lock in your choice right on the card (tick it, then confirm), and it folds down to one line you can open again to change it. Step 12 waits for the case choice. The ending is now chosen at the second point of no return, and steps 14 onward appear once it's locked in; the ending switcher on the bottom bar is gone.</li>
+<li><b>Steps check themselves:</b> tick every story item on a step and the step checks off too.</li>
 <li><b>Already further along?</b> Each phase has a button to check off all its steps at once, with their tasks and story items, and fold it away, so you can pick up where you are in the game.</li>
 <li><b>The route now runs to the end of the story,</b> with steps, bring lists and tips for every path. Each path stays hidden until you reach its choice.</li>
     <li><b>Trader tally:</b> rep from story choices now counts. Type your in-game rep to square up with the game: <b>Dailies &amp; extras</b> shows how far it is from what your checked tasks add up to, and the guide then uses your number. The tally now fits on screen without sideways scrolling, and on phones each trader gets a small card.</li>
@@ -2110,7 +2122,7 @@ const saveAcct=()=>{try{localStorage.setItem("tsr_logacct",LOGACCT);localStorage
 // ---- One checklist per account + game mode ("slot"). The guide shows the slot of the most recent session;
 // other slots keep their own ticks, route steps, loot counts and Prestige.
 // Everything that belongs to one character: progress, plan choices, and its party identity (code, name, device id, linked owner).
-const SLOTK=["tsr_tasks","tsr_done","tsr_prog","tsr_lootclr","tsr_prestige","tsr_syncts","tsr_faction","tsr_ending","tsr_hw","tsr_pcode","tsr_myname","tsr_pid","tsr_owner","tsr_party","tsr_pex","tsr_spoilopen","tsr_plevel","tsr_case","tsr_eod","tsr_failed","tsr_colwant"];
+const SLOTK=["tsr_tasks","tsr_done","tsr_prog","tsr_lootclr","tsr_prestige","tsr_syncts","tsr_faction","tsr_ending","tsr_hw","tsr_pcode","tsr_myname","tsr_pid","tsr_owner","tsr_party","tsr_pex","tsr_spoilopen","tsr_plevel","tsr_case","tsr_endlock","tsr_eod","tsr_failed","tsr_colwant"];
 let SLOTS={},SLOT="",LOGAUTO="";try{SLOTS=JSON.parse(localStorage.getItem("tsr_slots")||"{}");SLOT=localStorage.getItem("tsr_slot")||"";LOGAUTO=localStorage.getItem("tsr_logauto")||"";}catch(e){}
 const saveSlots=()=>{try{localStorage.setItem("tsr_slots",JSON.stringify(SLOTS));localStorage.setItem("tsr_slot",SLOT);localStorage.setItem("tsr_logauto",LOGAUTO)}catch(e){}};
 function slotLabel(k){const [p,m]=k.split("|");const a=(LOGACCTS[p]||{}).a;return (a?"Account "+a:p==="?"?"Unknown account":"Account "+p.slice(-4))+" · "+modeLab(m);}
@@ -2300,7 +2312,7 @@ function renderPrest(){const sel=document.getElementById("prestsel");if(sel&&sel
   const B=document.getElementById("nbbox");if(!B)return;const n=nbNext();if(!n){B.innerHTML=PREST==="6"?`<p class="small lnote">Prestige 6 reached: nothing further to prestige for.</p>`:"";return;}const d=NB[n];const k="NB|"+n;
   B.innerHTML=`<div class="lnote small"><b>Next: New Beginning (Prestige ${n})</b><br>${esc(d.lvl)}.<ul style="margin:4px 0 0">${d.obj.map(o=>`<li>${esc(o)}</li>`).join("")}<li>Hand in ${d.items.map(([q,nm,f])=>{const left=Math.max(0,q-progGet(k,"h"+d.items.findIndex(x=>x[1]===nm)));return `${q>1?q+"× ":""}${f?"FiR ":""}${esc(nm)}${left<q?` <span class="muted">(${left} left)</span>`:""}`;}).join(", ")}</li></ul><span class="muted">The figurines are in the Loot list while this is your target.</span></div>`;}
 document.addEventListener("change",e=>{if(!e.target||e.target.id!=="prestsel")return;const v=e.target.value,old=PREST;PREST=v;try{localStorage.setItem("tsr_prestige",v)}catch(x){}
-  if(old!==""&&v!==""&&+v>+old)window.backupAsk(`Prestige ${v}: the game resets your tasks and traders. Clear this guide's task checkmarks too, for the new run? (Cancel keeps them.)`,"Clear",()=>{Object.keys(tdone).forEach(k=>delete tdone[k]);Object.keys(done).forEach(k=>delete done[k]);Object.keys(PROG).forEach(k=>{if(!k.startsWith("NB|"))delete PROG[k];});try{localStorage.setItem("tsr_prog",JSON.stringify(PROG))}catch(x){}save();window.spoilReset&&window.spoilReset();render();renderPrest();});
+  if(old!==""&&v!==""&&+v>+old)window.backupAsk(`Prestige ${v}: the game resets your tasks and traders. Clear this guide's task checkmarks too, for the new run? (Cancel keeps them.)`,"Clear",()=>{Object.keys(tdone).forEach(k=>delete tdone[k]);Object.keys(done).forEach(k=>delete done[k]);Object.keys(PROG).forEach(k=>{if(!k.startsWith("NB|"))delete PROG[k];});try{localStorage.setItem("tsr_prog",JSON.stringify(PROG));localStorage.removeItem("tsr_case");localStorage.removeItem("tsr_endlock")}catch(x){}save();window.spoilReset&&window.spoilReset();render();renderPrest();});
   render();renderPrest();});
 // Loot list → task: jump to the task in the guide (prefer a visible copy), open anything folded around it, flash it.
 function goTask(tn,quiet){const nm=String(tn).replace(/ \(next LL\)$/,"");try{const cand=[...document.querySelectorAll("li.task input[data-k]")].filter(i=>i.dataset.k.slice(i.dataset.k.indexOf("|")+1)===nm);if(cand.length&&cand.every(i=>i.closest("section.spoiled")))window.spoilReveal(cand[0]);}catch(e){}
@@ -2506,8 +2518,12 @@ function routeTags(){const out={},saved=Object.assign({},tdone);let prev=compute
   finally{Object.keys(tdone).forEach(k=>{if(!(k in saved))delete tdone[k];});Object.assign(tdone,saved);syncChains();}
   return out;}
 const routeTag=st=>{const t=ROUTETAG[taskKey(st[0],st[1])];return t?` <span class="rtag" title="The story route lines this task up before step ${esc(t.n)}">Route step ${esc(t.n)}${t.ll?` · toward ${esc(st[1])} LL${t.ll}`:""}</span>`:"";};
+const STORYRE=/^(Tour|Falling Skies|The Ticket|Accidental Witness|Batya|Blue Fire|Boreas|The Labyrinth|The Unheard|They Are Already Here)(?:\s*prep)?:/;
+const SALL={};
+function storyAuto(){let ch=false;ORDER.forEach(r=>{if(!/^r[123]$/.test(r.slot)&&!r.slot.startsWith("e_"))return;const K=r.story.map((t,j)=>STORYRE.test(t)?(startKey(t)||"S|"+r.n+"|"+j):null).filter(Boolean);if(!K.length)return;
+  const all=K.every(k=>tdone[k]),was=SALL[r.n];SALL[r.n]=all;if(was===undefined)return;if(all&&!was&&!done[r.n]){done[r.n]=true;ch=true;}else if(!all&&was&&done[r.n]){done[r.n]=false;ch=true;}});if(ch)save();}
 function render(){
-  syncChains(); GI=gateIndex(); TLL=computeTLL(); ROUTETAG=routeTags(); TLL=computeTLL();
+  storyAuto(); syncChains(); GI=gateIndex(); TLL=computeTLL(); ROUTETAG=routeTags(); TLL=computeTLL();
   const CUR=ORDER.findIndex(r=>MAIN(r)&&!done[r.n]); const PULL=[],PK=new Set();
   const ANYALL=[],AK=new Set();ORDER.forEach(r=>{if(r.slot.startsWith("ch_")||/tutorial/i.test(r.route))return;r.stack.forEach(st=>{if(!ANY(st))return;const k=taskKey(st[0],st[1]);if(tdone[k]||AK.has(k)||lockWhy(st))return;AK.add(k);ANYALL.push(st);});});
   if(CUR>=0&&!/tutorial/i.test(ORDER[CUR].route)) ORDER.forEach((r,j)=>{ if(j<=CUR||r.slot.startsWith("ch_")) return; r.stack.forEach(st=>{const k=taskKey(st[0],st[1]);
@@ -2543,7 +2559,7 @@ function render(){
       // Already past this phase in the game (opening the guide for the first time mid-story): one tap checks every
       // step in it, with its tasks and story items, and folds it away like a finished phase.
       else{const left=L.filter(r=>!done[r.n]).length;const b=document.createElement("button");b.type="button";b.className="phasetog phaseskip";b.textContent="Already past these? Check off all "+L.length+" steps";
-        b.addEventListener("click",()=>{ask(`Check off all ${L.length} steps in this phase (${left} still open), with their story items? Use this if you're already past them in the game. You can uncheck anything you haven't actually done. Side tasks aren't touched: check off the ones you've done in the map views${LOGSTATE==="on"?" (Game logs ticks them for you)":""}.`,"Check them all",()=>{
+        b.addEventListener("click",()=>{if(sl==="r3"){let c="";try{c=localStorage.getItem("tsr_case")||""}catch(x){}if(!c){const P=document.getElementById("pnr1");if(P){P.scrollIntoView({behavior:SMB(),block:"start"});P.classList.remove("pnrflash");void P.offsetWidth;P.classList.add("pnrflash");}return;}}ask(`Check off all ${L.length} steps in this phase (${left} still open), with their story items? Use this if you're already past them in the game. You can uncheck anything you haven't actually done. Side tasks aren't touched: check off the ones you've done in the map views${LOGSTATE==="on"?" (Game logs ticks them for you)":""}.`,"Check them all",()=>{
           L.forEach(r=>{done[r.n]=true;(r.story||[]).forEach((t,j)=>{const k=(typeof startKey==="function"&&startKey(t))||("S|"+r.n+"|"+j);tdone[k]=true;});});
           PHASEOPEN[sl]=false;save();render();});});box.prepend(b);}});
   prog(); tally(); gsInit(); gsSync();
@@ -2609,7 +2625,8 @@ document.querySelectorAll('.wrap > header, .wrap > section:not(.phase), .phase >
     IDS.forEach(id=>{const d=document.getElementById(id);if(!d)return;if(id in st)d.open=st[id];d.addEventListener("toggle",()=>{st[id]=d.open;try{localStorage.setItem("tsr_sec",JSON.stringify(st))}catch(e){}});});})();
   // Current step works like Any map and the task links: the first tap jumps there, a second tap while you're still at the step takes you back.
 let CSBACK=null;
-document.getElementById("go-step").addEventListener("click",()=>{{const V=document.getElementById("mapview");if(V)V.hidden=true;}const r=ORDER.find(r=>MAIN(r)&&!done[r.n])||ORDER.find(r=>!done[r.n])||ORDER[ORDER.length-1];const el=document.getElementById("step-"+r.n);
+document.getElementById("go-step").addEventListener("click",()=>{{const V=document.getElementById("mapview");if(V)V.hidden=true;}const r=ORDER.find(r=>MAIN(r)&&!done[r.n])||ORDER.find(r=>!done[r.n])||ORDER[ORDER.length-1];let el=document.getElementById("step-"+r.n);
+  {let c="",lk="";try{c=localStorage.getItem("tsr_case")||"";lk=localStorage.getItem("tsr_endlock")||""}catch(x){}if(r.n==="12"&&!c)el=document.getElementById("pnr1")||el;else if(r.slot.startsWith("e_")&&!lk)el=document.getElementById("pnr2")||el;}
   if(CSBACK&&CSBACK.n===r.n&&el){const q=el.getBoundingClientRect();if(q.top<innerHeight*0.6&&q.bottom>0){const y=CSBACK.y;CSBACK=null;window.scrollTo({top:y,behavior:SMB()});return;}}
   CSBACK={n:r.n,y:scrollY};go(el);});
   // Tally, Item list, Wish lists, Gunsmith and Chapters: pop in, glance, pop back. The first tap remembers where you
@@ -2649,12 +2666,12 @@ document.getElementById("go-step").addEventListener("click",()=>{{const V=docume
     b.addEventListener("click",()=>{const n=cur()==="dark"?"light":"dark";r.setAttribute("data-theme",n);try{localStorage.setItem("tsr_theme",n)}catch(e){}lab();});})();
   (function(){const f=document.getElementById("faction");const lab=()=>{f.textContent=FACTION;f.title="Showing "+FACTION+" tasks; click to switch";};lab();window.__facLab=lab;
     f.addEventListener("click",()=>{setFaction(FACTION==="USEC"?"BEAR":"USEC");lab();});})();
-  (function(){const ENDS=["Survivor","Fallen","Savior","Debtor"],lab=document.getElementById("end-label");let e="Savior";try{e=localStorage.getItem("tsr_ending")||"Savior"}catch(x){}if(!ENDS.includes(e))e="Savior";const sel={get value(){return e}};lab.textContent=e;window.__setEnd=v=>{e=ENDS.includes(v)?v:"Savior";apply();};
+  (function(){const ENDS=["Survivor","Fallen","Savior","Debtor"],lab=document.getElementById("end-label")||{};let e="Savior";try{e=localStorage.getItem("tsr_ending")||"Savior"}catch(x){}if(!ENDS.includes(e))e="Savior";const sel={get value(){return e}};lab.textContent=e;window.__setEnd=v=>{e=ENDS.includes(v)?v:"Savior";apply();};
     const apply=()=>{const v=sel.value;lab.textContent=v;const ch=ENDING!==v;ENDING=v;if(ch)render();try{localStorage.setItem("tsr_ending",v)}catch(x){}
       document.querySelectorAll("tr[data-end]").forEach(tr=>{tr.classList.toggle("endsel",tr.dataset.end===v);tr.classList.toggle("enddim",tr.dataset.end!==v);});
       const need=v==="Savior";
       document.getElementById("endnote").innerHTML=need?"<b>Savior:</b> hand Mr. Kerman 8 of the 9 major evidence (marked MAJOR EVIDENCE in the steps): Accidental Witness, Batya, Blue Fire, Boreas, The Labyrinth, The Unheard (2), They Are Already Here, and the Ms. A. transcript (UN8). You can skip one, but not They Are Already Here's ARRS specifications: missing those puts The Ticket on a separate second-chance branch. The usual skip is Boreas (Icebreaker) or the Ms. A. transcript (black keycard). Each chapter starts from a checkbox on the main route, and every chapter's next step shows on the route steps for its map automatically.":"<b>"+v+":</b> these chapters aren't needed for this ending; they're here for the XP and achievements. Open a chapter below to put its next step on your route.";};
-    const step=d=>{e=ENDS[(ENDS.indexOf(e)+d+ENDS.length)%ENDS.length];apply();};document.getElementById("end-prev").addEventListener("click",()=>step(-1));document.getElementById("end-next").addEventListener("click",()=>step(1));apply();})();
+    const step=d=>{e=ENDS[(ENDS.indexOf(e)+d+ENDS.length)%ENDS.length];apply();};apply();})();
   document.getElementById("go-ch").addEventListener("click",()=>go(document.getElementById("chapters")));
   document.querySelectorAll("#chapters details.chapter").forEach(d=>{d.open=!!CHOPEN[d.dataset.ch];d.addEventListener("toggle",()=>{if(!!CHOPEN[d.dataset.ch]===d.open)return;CHOPEN[d.dataset.ch]=d.open;try{localStorage.setItem("tsr_chopen",JSON.stringify(CHOPEN))}catch(e){}render();});});
   render();
@@ -3098,13 +3115,38 @@ li.task.anyt>label::after{content:"any map";font-size:10.5px;font-weight:600;let
 .mvgood{color:#3a8a3a;font-weight:700}.mvwarn{color:var(--accent);font-weight:600}#mapnav .mcount.mshared{outline:2px solid rgba(255,255,255,.9)}#go-maps{font-weight:600}@keyframes mglow{0%,100%{box-shadow:0 0 0 0 rgba(222,140,40,0)}50%{box-shadow:0 0 0 4px rgba(222,140,40,.55)}}#go-maps.nudge{animation:mglow 2.2s ease-in-out infinite}#mapnav.mflash button[data-map]{animation:mglow 1.1s ease-in-out 2}
 #mapnav button.jumped{outline:2px dashed rgba(255,255,255,.85);outline-offset:-4px}.fnav button.jumped{outline:2px dashed var(--accent);outline-offset:-4px}</style>
 
-<script>(function(){const sync=()=>{let c="";try{c=localStorage.getItem("tsr_case")||""}catch(e){}document.querySelectorAll('input[name=casech]').forEach(r=>{r.checked=r.value===c;});};
-  document.addEventListener("change",e=>{if(!e.target||e.target.name!=="casech")return;try{localStorage.setItem("tsr_case",e.target.value)}catch(x){}render();if(typeof tally==="function")try{tally()}catch(x){}});
-  const R0=render;render=function(){const x=R0.apply(this,arguments);try{sync()}catch(e){}return x;};sync();})();</script>
+<script>
+// Points of no return: the choice is two (or four) checkboxes; ticking one asks to confirm, then locks it in and folds
+// the card down to one line, which can be unfolded to read it again or change the choice. Step 12 waits for the case
+// choice; the ending steps (14 on) wait for the ending choice.
+(function(){const get=k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}},put=(k,v)=>{try{v?localStorage.setItem(k,v):localStorage.removeItem(k)}catch(e){}};
+  let UNF={};try{UNF=JSON.parse(sessionStorage.getItem("tsr_pnrunf")||"{}")}catch(e){}const saveU=()=>{try{sessionStorage.setItem("tsr_pnrunf",JSON.stringify(UNF))}catch(e){}};
+  // Older checklists already past the choice: an ending step checked off means the ending was chosen.
+  if(!get("tsr_endlock")&&ORDER.some(r=>r.slot.startsWith("e_")&&done[r.n]))put("tsr_endlock","1");
+  const CASEL={keep:"You kept the case.",give:"You gave the case to Prapor."};
+  const card=(id,chosen,txt)=>{const c=document.getElementById(id);if(!c)return;const f=!!chosen&&!UNF[id];c.classList.toggle("pnrfold",f);const sm=c.querySelector(".pnrsum");if(!sm)return;sm.hidden=!chosen;
+    if(chosen)sm.innerHTML=`<span class="pnrlock">✓ Locked in</span> ${txt} <button type="button" class="lreset" data-pnrtog="${id}">${f?"Show":"Fold"}</button>`;};
+  function sync(){const c=get("tsr_case"),lk=get("tsr_endlock")==="1";
+    document.querySelectorAll("input[data-case]").forEach(x=>{x.checked=x.dataset.case===c;});
+    document.querySelectorAll("input[data-endch]").forEach(x=>{x.checked=lk&&x.dataset.endch===ENDING;});
+    card("pnr1",c,CASEL[c]||"");card("pnr2",lk,`Going for the <b>${esc(ENDING)}</b> ending.`);
+    // Step 12 can't be checked off before the case choice.
+    const s12=document.getElementById("step-12");if(s12){const cb=s12.querySelector(".rdone");const need=!c&&!(cb&&cb.checked);if(cb){cb.disabled=need;cb.title=need?"Lock in your case choice at Point of no return 1 first":"";}
+      let n=s12.querySelector(".pnrneed");if(need&&!n){n=document.createElement("p");n.className="pnrneed";n.innerHTML='Lock in your choice at <a href="#pnr1">Point of no return 1</a> above first.';const b=s12.querySelector(".body");if(b)b.prepend(n);}else if(!need&&n)n.remove();}}
+  const after=()=>{render();if(typeof tally==="function")try{tally()}catch(x){}};
+  document.addEventListener("change",e=>{const t=e.target;if(!t||!t.matches)return;
+    if(t.matches("input[data-case]")){const v=t.dataset.case,cur=get("tsr_case");t.checked=cur===v;
+      if(cur===v)ask("Clear your case choice? Pick again once you've made it in the game.","Clear it",()=>{put("tsr_case","");UNF.pnr1=false;saveU();after();});
+      else ask(v==="keep"?"Lock it in: you kept the armored case? (−0.70 Prapor rep; next is the signal jammer in The Lab.)":"Lock it in: you gave the armored case to Prapor? (+1,000,000 roubles; the Lightkeeper arc comes next.)","Lock it in",()=>{put("tsr_case",v);UNF.pnr1=false;saveU();after();});return;}
+    if(t.matches("input[data-endch]")){const v=t.dataset.endch,lk=get("tsr_endlock")==="1";t.checked=lk&&ENDING===v;
+      if(lk&&ENDING===v)ask("Clear your ending choice? Steps 14 onward stay hidden until you pick one.","Clear it",()=>{put("tsr_endlock","");UNF.pnr2=false;saveU();render();});
+      else ask(`Go for the ${v} ending? Steps 14 onward follow it. You can change it later from this card.`,"Lock it in",()=>{put("tsr_endlock","1");UNF.pnr2=false;saveU();if(window.__setEnd)window.__setEnd(v);render();});}});
+  document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-pnrtog]");if(!b)return;const id=b.dataset.pnrtog;UNF[id]=!UNF[id];saveU();sync();});
+  window.pnrSync=sync;const R0=render;render=function(){const x=R0.apply(this,arguments);try{sync()}catch(e){}return x;};sync();})();</script>
 
 <script>(function(){
   let wasFin=null;
-  function endView(){const eh=!!window.__endHidden;const pick=document.querySelector("#endings .endpick");if(pick)pick.hidden=!eh;
+  function endView(){let lk=false;try{lk=localStorage.getItem("tsr_endlock")==="1"}catch(e){}const eh=!!window.__endHidden||!lk;const pick=document.querySelector("#endings .endpick");if(pick)pick.hidden=!eh;
     ["e_acc","e_Savior","e_Fallen","e_Debtor","e_Survivor"].forEach(id=>{const box=document.getElementById(id);if(!box)return;const L=ORDER.filter(r=>r.slot===id);box.hidden=eh||!L.some(endOn);
       L.forEach(r=>{const el=document.getElementById("step-"+r.n);if(el)el.hidden=!endOn(r);});});
     const L=ORDER.filter(r=>r.slot.startsWith("e_")&&endOn(r)),p=document.getElementById("endprog");if(p)p.textContent=eh?"":`${L.filter(r=>done[r.n]).length} / ${L.length} steps · ${ENDING}`;
