@@ -1,6 +1,6 @@
 # Tarkov Story Route
 
-An unofficial Escape from Tarkov guide: story progression plus a trader-loyalty routing plan, with task tracking, a loot lookout list and live party sync.
+An unofficial Escape from Tarkov guide where the story route runs in the background. Cycle through the tasks open on each map and pick whichever raid is most worth it, while the guide keeps the story and trader loyalty on track. Includes task tracking, a loot lookout list and live party sync.
 
 **Live guide:** https://nottoscalestudio.github.io/tarky/ (installable as an app on Android, iPhone and desktop)
 

@@ -1,7 +1,7 @@
 {
   "name": "Tarkov Story Route",
   "short_name": "Tarkov Route",
-  "description": "Escape from Tarkov story and trader-loyalty routing guide",
+  "description": "An Escape from Tarkov guide where the story route runs in the background. Cycle through the tasks open on each map and pick whichever raid is most worth it.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
