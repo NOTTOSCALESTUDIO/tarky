@@ -50,7 +50,6 @@ window.__ERRS=[];(function(){const k=m=>{try{__ERRS.push({t:Date.now(),m:String(
 /* Reduced motion (an operating-system setting the browser passes on): every animation and transition finishes at once. */
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}}
 .phaseskip{opacity:.85;font-size:.92em}
-.rtag{display:inline-block;font-size:11px;line-height:1.3;padding:0 6px;border-radius:9px;background:rgba(214,178,94,.16);color:#d6b25e;border:1px solid rgba(214,178,94,.35);vertical-align:1px;white-space:nowrap}
 .pnrpick{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
 .pnrpick label{display:inline-flex;gap:7px;align-items:center;padding:5px 11px;border:1px solid var(--line);border-radius:6px;cursor:pointer;background:var(--panel)}
 .pnrpick label:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
@@ -58,6 +57,10 @@ window.__ERRS=[];(function(){const k=m=>{try{__ERRS.push({t:Date.now(),m:String(
 .pnrsum{margin:6px 0 0}.pnrlock{color:var(--accent);font-weight:700}
 .pnrneed{margin:0 0 8px;padding:6px 10px;border-left:3px solid var(--accent);font-weight:600}
 @keyframes pnrFlash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 3px var(--accent)}}.pnrflash{animation:pnrFlash 1.2s 2}
+.crtbtn{transition:opacity .18s ease}.crtbtn.crtfade{opacity:0}.crtbtn.crtarmed{border-color:var(--accent);color:var(--accent);font-weight:700}
+section.phase .phasehead h2[role=button]{cursor:pointer;user-select:none}
+.pharrow{display:inline-block;width:1.1em;color:var(--muted);font-size:.8em;vertical-align:.08em}
+section.phase.phasemin>:not(hr):not(.phasehead):not(.spoilph){display:none!important}
 </style>
 <script>try{var t=localStorage.getItem("tsr_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -254,7 +257,7 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
 <header>
   <div class="eyebrow">Escape from Tarkov · tasks updated Nov 18, 2026 for build 1.3.0.2.48779<span id="mybuild"></span><span id="gver" data-v="369"></span><span id="hpulse"></span></div>
   <h1>Tarkov Story Route</h1>
-  <p><b>The numbers are route steps, not a raid count.</b> Repeat a step as often as you need, and only check it off when you move on. The steps carry the story; side tasks are in the map buttons on the bar, and the ones the route counts on are tagged <span class="rtag">Route step N</span>.</p>
+  <p><b>The numbers are route steps, not a raid count.</b> Repeat a step as often as you need, and only check it off when you move on. The steps carry the story; side tasks are in the map buttons on the bar.</p>
   <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a class="chap chap-tour" data-chap="Tour" target="_blank" rel="noopener">Tour</a><a class="chap chap-fs" data-chap="Falling Skies" target="_blank" rel="noopener">Falling Skies</a><a class="chap chap-ticket" data-chap="The Ticket" target="_blank" rel="noopener">The Ticket</a><a class="chap chap-aw" data-chap="Accidental Witness" target="_blank" rel="noopener">Accidental Witness</a><a class="chap chap-ba" data-chap="Batya" target="_blank" rel="noopener">Batya</a><a class="chap chap-bf" data-chap="Blue Fire" target="_blank" rel="noopener">Blue Fire</a><a class="chap chap-bo" data-chap="Boreas" target="_blank" rel="noopener">Boreas</a><a class="chap chap-lb" data-chap="The Labyrinth" target="_blank" rel="noopener">The Labyrinth</a><a class="chap chap-un" data-chap="The Unheard" target="_blank" rel="noopener">The Unheard</a><a class="chap chap-ta" data-chap="They Are Already Here" target="_blank" rel="noopener">They Are Already Here</a><span class="muted" style="font-size:13px">Colored names are story chapters; click one for its wiki guide. A task's trader portrait opens its details (on desktop, its wiki page).</span><span class="progress" id="prog"></span> <span class="toolrow"><button type="button" class="rst" data-reset="route">Reset route</button> <button type="button" class="reset" id="expbtn" title="Save your checkmarks and settings to a file">Export progress</button><button type="button" class="reset" id="impbtn" title="Load a progress file">Import progress</button><input type="file" id="impfile" accept=".json,application/json" hidden> <button type="button" class="hcmode" id="hcmode" data-m="0" title="Play style: Regular. Click for Hardcore"><svg class="sc" viewBox="0 0 56 44" aria-hidden="true"><defs><linearGradient id="scgB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#58605f"/><stop offset=".55" stop-color="#3a4143"/><stop offset="1" stop-color="#262b2d"/></linearGradient><linearGradient id="scgL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7576"/><stop offset="1" stop-color="#40474a"/></linearGradient><linearGradient id="scgS" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8d1d18"/><stop offset=".5" stop-color="#c0352b"/><stop offset="1" stop-color="#8d1d18"/></linearGradient><radialGradient id="scgW" cx=".38" cy=".35" r=".7"><stop offset="0" stop-color="#d0473b"/><stop offset=".7" stop-color="#8e1b16"/><stop offset="1" stop-color="#5e110d"/></radialGradient></defs>
 <ellipse class="scshadow" cx="28" cy="41.5" rx="22" ry="1.6"/>
 <g class="scin"><rect x="8" y="11.5" width="40" height="8" rx="1.5"/><path class="scglow" d="M10 18.6h36"/><rect class="scdoc" x="12" y="13" width="9" height="5.5" rx=".6" transform="rotate(-6 16 15.7)"/><path class="scchain" d="M25 17.5c2-3 5-3 7 0s5 3 7 0"/><rect class="scgpu" x="38" y="14" width="7" height="4.2" rx=".6"/></g>
@@ -710,9 +713,10 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
    <ul>
     <li><b>Maps on the bar:</b> the map buttons now stay on the bar all the time, each showing how many tasks you can take there. Tap one for its view: Bring into raid first (keys, items to place and gear, with totals like 6 MS2000 markers or 7 WI-FI cameras when a map needs several), then its tasks under their traders. Any-map tasks are tagged "any map" and listed only on maps where they can progress. Trader rep, experience and the loyalty levels in reach sit in a folded section, which stays folded while the Loot list is open. During the story's long waits, the guide suggests the best map for your character.</li>
     <li><b>The Labyrinth and Icebreaker</b> get their own map buttons once you've started their chapters (or if you show spoilers), with that chapter's steps inside.</li>
-    <li><b>Story-only steps:</b> route steps now carry just the story. Side tasks live in the map buttons on the bar, and the ones the route counts on are tagged with the story step they come before, plus the trader loyalty level they help reach. The side-task-only reruns (2A, 3B, 4B, 6B) are gone.</li>
+    <li><b>Story-only steps:</b> route steps now carry just the story. Side tasks live in the map buttons on the bar. The side-task-only reruns (2A, 3B, 4B, 6B) are gone.</li>
 <li><b>Points of no return:</b> lock in your choice right on the card (tick it, then confirm), and it folds down to one line you can open again to change it. Step 12 waits for the case choice. The ending is now chosen at the second point of no return, and steps 14 onward appear once it's locked in; the ending switcher on the bottom bar is gone.</li>
-<li><b>Steps check themselves:</b> tick every story item on a step and the step checks off too.</li>
+<li><b>Fold any phase:</b> click a phase heading to tuck its steps away, and again to bring them back. Finished phases still fold by themselves.</li>
+<li><b>Steps check themselves:</b> tick every story item on a step and the step checks off too. The Story wish list follows the route the same way: each hand-in item ticks itself once you pass the step where it's handed over.</li>
 <li><b>Already further along?</b> Each phase has a button to check off all its steps at once, with their tasks and story items, and fold it away, so you can pick up where you are in the game.</li>
 <li><b>The route now runs to the end of the story,</b> with steps, bring lists and tips for every path. Each path stays hidden until you reach its choice.</li>
     <li><b>Trader tally:</b> rep from story choices now counts. Type your in-game rep to square up with the game: <b>Dailies &amp; extras</b> shows how far it is from what your checked tasks add up to, and the guide then uses your number. The tally now fits on screen without sideways scrolling, and on phones each trader gets a small card.</li>
@@ -739,7 +743,7 @@ window.askText=(msg,def,go)=>{let d=document.getElementById("askdlg");if(!d){d=d
     <li><b>Task cards:</b> tap a task link for its status, maps, objectives, guide note, items to bring and rewards, with buttons for the wiki, a link, a QR code for your phone, and its place in the guide. Choose there whether task links open the card or the wiki.</li>
     <li><b>Play style</b> (the secure container beside the spoiler folder): open is Regular, as before. Shut it for <b>Hardcore</b> (zero to hero): a rules card at step 1, no flea market tags, and Collect ahead and Prestige targets put away (one tap brings them back).</li>
     <li><b>Key list:</b> the keys your tasks need at the loyalty levels you've reached, grouped by the trader level that opens each task, in the order the route reaches them; more appear as your checked tasks raise your traders (in Regular, show spoilers to see every key ahead). Keys shared by several tasks are listed once, and a key whose tasks are all done says it's safe to sell.</li>
-    <li><b>Jump and back:</b> Current step, Any map (now with its open-task count), Tally, Item list, Wish lists, Gunsmith, Chapters and the task links in the Loot list remember where you were; tap the same one again to go back, and anything they opened folds up again. Wish lists steps through its three lists one at a time (Story, Key, Hideout), then folds them up and takes you back. A link to a task that isn't on your list (a party member's, one you've done, or one not open to you yet) says why.</li>
+    <li><b>Jump and back:</b> Current step, Any map (now with its open-task count), Tally, Item list, Wish lists, Gunsmith, Chapters and the task links in the Loot list remember where you were; tap the same one again to go back, and anything they opened folds up again. Wish lists opens the Key list; tap again to fold all the wish lists and go back. A link to a task that isn't on your list (a party member's, one you've done, or one not open to you yet) says why.</li>
     <li><b>Hotkeys</b> for alt-tabbing: / search the loot list, L loot list, C current step, A any-map tasks, I item list, W wish lists, G gunsmith, 1–9 and 0 the maps (also the number pad, or Shift + 1–0 while searching), Esc to close. Press Shift + / (that is, ?) for the list. They only work while the guide has focus, never in the game.</li>
     <li><b>On phones,</b> the bottom bar is two rows you swipe sideways: the maps on top, and below them Current step and Loot stay pinned while the other buttons scroll past. Map views and panels get most of the screen.</li>
     <li>Animations follow your system's reduced-motion setting: with it on, everything switches instantly.</li>
@@ -2122,7 +2126,7 @@ const saveAcct=()=>{try{localStorage.setItem("tsr_logacct",LOGACCT);localStorage
 // ---- One checklist per account + game mode ("slot"). The guide shows the slot of the most recent session;
 // other slots keep their own ticks, route steps, loot counts and Prestige.
 // Everything that belongs to one character: progress, plan choices, and its party identity (code, name, device id, linked owner).
-const SLOTK=["tsr_tasks","tsr_done","tsr_prog","tsr_lootclr","tsr_prestige","tsr_syncts","tsr_faction","tsr_ending","tsr_hw","tsr_pcode","tsr_myname","tsr_pid","tsr_owner","tsr_party","tsr_pex","tsr_spoilopen","tsr_plevel","tsr_case","tsr_endlock","tsr_eod","tsr_failed","tsr_colwant"];
+const SLOTK=["tsr_tasks","tsr_done","tsr_prog","tsr_lootclr","tsr_prestige","tsr_syncts","tsr_faction","tsr_ending","tsr_hw","tsr_hwauto","tsr_pcode","tsr_myname","tsr_pid","tsr_owner","tsr_party","tsr_pex","tsr_spoilopen","tsr_plevel","tsr_case","tsr_endlock","tsr_eod","tsr_failed","tsr_colwant"];
 let SLOTS={},SLOT="",LOGAUTO="";try{SLOTS=JSON.parse(localStorage.getItem("tsr_slots")||"{}");SLOT=localStorage.getItem("tsr_slot")||"";LOGAUTO=localStorage.getItem("tsr_logauto")||"";}catch(e){}
 const saveSlots=()=>{try{localStorage.setItem("tsr_slots",JSON.stringify(SLOTS));localStorage.setItem("tsr_slot",SLOT);localStorage.setItem("tsr_logauto",LOGAUTO)}catch(e){}};
 function slotLabel(k){const [p,m]=k.split("|");const a=(LOGACCTS[p]||{}).a;return (a?"Account "+a:p==="?"?"Unknown account":"Account "+p.slice(-4))+" · "+modeLab(m);}
@@ -2508,22 +2512,12 @@ function renderLoot(){const P=document.getElementById("lootpanel"),B=document.ge
   {const pl=document.getElementById("partylegend");if(pl)pl.innerHTML=partyHTML();const lb=document.getElementById("plivebar");if(lb)lb.innerHTML=liveBar();if(!RELAY){const t=document.getElementById("ptoggle"),o=document.getElementById("poffbtns");if(t&&o){t.hidden=true;o.hidden=false;}}}
   const nav=document.querySelector(".fnav");if(nav){const bt=nav.offsetHeight+24;P.style.bottom=bt+"px";P.style.maxHeight=(innerHeight-bt-16)+"px";}}
 
-// For the map views: each open side task the route lines up before a story step gets "Route step N", plus
-// "Trader LLx" when the route's tasks up to that step are what take the trader to that loyalty level.
-let ROUTETAG={};
-function routeTags(){const out={},saved=Object.assign({},tdone);let prev=computeTLL();
-  try{const RS=ORDER.filter(r=>/^r[123x]$/.test(r.slot)),nextN=j=>{for(let x=j;x<RS.length;x++)if(RS[x].slot!=="rx")return RS[x].n;return RS[RS.length-1].n;};
-    RS.forEach((r,j)=>{if(r.slot!=="rx"&&done[r.n])return;r.stack.forEach(st=>{tdone[taskKey(st[0],st[1])]=true;});syncChains();const now=computeTLL();
-    r.stack.forEach(st=>{const k=taskKey(st[0],st[1]);if(saved[k]||out[k])return;const up=(now[st[1]]||1)>(prev[st[1]]||1);out[k]={n:String(nextN(j)).replace(/[sfdv]$/,""),ll:up?now[st[1]]:0};});prev=now;});}
-  finally{Object.keys(tdone).forEach(k=>{if(!(k in saved))delete tdone[k];});Object.assign(tdone,saved);syncChains();}
-  return out;}
-const routeTag=st=>{const t=ROUTETAG[taskKey(st[0],st[1])];return t?` <span class="rtag" title="The story route lines this task up before step ${esc(t.n)}">Route step ${esc(t.n)}${t.ll?` · toward ${esc(st[1])} LL${t.ll}`:""}</span>`:"";};
 const STORYRE=/^(Tour|Falling Skies|The Ticket|Accidental Witness|Batya|Blue Fire|Boreas|The Labyrinth|The Unheard|They Are Already Here)(?:\s*prep)?:/;
 const SALL={};
 function storyAuto(){let ch=false;ORDER.forEach(r=>{if(!/^r[123]$/.test(r.slot)&&!r.slot.startsWith("e_"))return;const K=r.story.map((t,j)=>STORYRE.test(t)?(startKey(t)||"S|"+r.n+"|"+j):null).filter(Boolean);if(!K.length)return;
   const all=K.every(k=>tdone[k]),was=SALL[r.n];SALL[r.n]=all;if(was===undefined)return;if(all&&!was&&!done[r.n]){done[r.n]=true;ch=true;}else if(!all&&was&&done[r.n]){done[r.n]=false;ch=true;}});if(ch)save();}
 function render(){
-  storyAuto(); syncChains(); GI=gateIndex(); TLL=computeTLL(); ROUTETAG=routeTags(); TLL=computeTLL();
+  storyAuto(); syncChains(); GI=gateIndex(); TLL=computeTLL(); 
   const CUR=ORDER.findIndex(r=>MAIN(r)&&!done[r.n]); const PULL=[],PK=new Set();
   const ANYALL=[],AK=new Set();ORDER.forEach(r=>{if(r.slot.startsWith("ch_")||/tutorial/i.test(r.route))return;r.stack.forEach(st=>{if(!ANY(st))return;const k=taskKey(st[0],st[1]);if(tdone[k]||AK.has(k)||lockWhy(st))return;AK.add(k);ANYALL.push(st);});});
   if(CUR>=0&&!/tutorial/i.test(ORDER[CUR].route)) ORDER.forEach((r,j)=>{ if(j<=CUR||r.slot.startsWith("ch_")) return; r.stack.forEach(st=>{const k=taskKey(st[0],st[1]);
@@ -2604,6 +2598,18 @@ document.querySelectorAll('.wrap > header, .wrap > section:not(.phase), .phase >
   const f=()=>{h5.hidden=+sel.value<5;};sel.addEventListener("change",f);f();
 })();
 
+// Story wish list ticks itself off from the route: each hand-in item is checked once the step where it's handed over
+// is checked off (or its story line is ticked), and unchecked again if that step is unchecked. Tour: roubles at step 1,
+// building materials at 3, weapons at 4, dogtags and USD at 12, the Labs keycard at 13. Falling Skies: everything goes
+// to Prapor at step 9 (the Workbench 2 parts were only a backup for crafting those batteries).
+(function(){const WHEN={"story|Tour|Roubles":["1"],"story|Tour|Building materials or tools":["3","S|3|1"],"story|Tour|Weapons":["4"],
+    "story|Tour|PMC dogtags":["12","S|12|1"],"story|Tour|USD":["12","S|12|1"],"story|Tour|TerraGroup Labs access keycard":["13"]};
+  ["Printed circuit board","Rechargeable battery","Toolset","WB2 Bolts","WB2 Toolset (build)","WB2 Set of files","WB2 Electric drill","WB2 Weapon parts","WB2 Illumination 1"].forEach(n=>WHEN["story|Falling Skies|"+n]=["9"]);
+  function sync(){let hw={},auto={};try{hw=JSON.parse(localStorage.getItem("tsr_hw")||"{}");auto=JSON.parse(localStorage.getItem("tsr_hwauto")||"{}")}catch(e){}let ch=false;
+    Object.entries(WHEN).forEach(([k,[st,sk]])=>{const met=!!done[st]||!!(sk&&tdone[sk]);if(met&&!hw[k]){hw[k]=true;auto[k]=1;ch=true;}else if(!met&&auto[k]){delete auto[k];ch=true;if(hw[k])delete hw[k];}});
+    if(ch){try{localStorage.setItem("tsr_hw",JSON.stringify(hw));localStorage.setItem("tsr_hwauto",JSON.stringify(auto))}catch(e){}if(window.__hwLoad)window.__hwLoad();}}
+  const R0=render;render=function(){const x=R0.apply(this,arguments);try{sync()}catch(e){}return x;};sync();})();
+
 (function(){
   const PFX={story:["story|"],keys:["keys|"],hideout:["p5|","p14|"]};
   document.querySelectorAll("button.rst").forEach(b=>{const idle=b.textContent;let tm;
@@ -2635,11 +2641,11 @@ document.getElementById("go-step").addEventListener("click",()=>{{const V=docume
      "go-items":[()=>document.getElementById("clist"),()=>[document.getElementById("clist")]],
      // Wish lists steps through its three lists one at a time (Story, Key, Hideout); the next tap folds them all
      // back to how they were and returns you.
-     "go-wish":[()=>document.getElementById("hwish"),()=>[...document.querySelectorAll("#hwish details.wl")],()=>[document.getElementById(document.body.classList.contains("m-sil")?"wl-keys":"wl-story")]],
+     "go-wish":[()=>document.getElementById("hwish"),()=>[...document.querySelectorAll("#hwish details.wl")],()=>[document.getElementById("wl-keys")]],
      "go-gun":[()=>document.getElementById("gunsmith"),()=>[document.querySelector("#gunsmith details")]],
      "go-ch":[()=>document.getElementById("chapters"),()=>[]]};
    let PB=null;const WLA=["wl-story","wl-keys","wl-hideout"],WLNA=["Story","Keys","Hideout"];let WLS=WLA,WLN=WLNA;
-   const wlSet=()=>{const sil=document.body.classList.contains("m-sil");WLS=sil?["wl-keys"]:WLA;WLN=sil?["Keys"]:WLNA;};
+   const wlSet=()=>{WLS=["wl-keys"];WLN=["Keys"];};
    const wsub=i=>{const w=document.getElementById("go-wish");if(!w)return;let x=w.querySelector(".wsub");if(i<0){if(x)x.remove();w.title="";return;}
      if(!x){x=document.createElement("span");x.className="wsub";w.appendChild(x);}x.textContent=WLN[i];w.title=i<WLN.length-1?"Next: "+WLN[i+1]+" list":"Next: back to where you were";};
    document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("button[id]");if(!b||!POP[b.id])return;const [tgt,dets]=POP[b.id];const t=tgt();
@@ -2647,7 +2653,7 @@ document.getElementById("go-step").addEventListener("click",()=>{{const V=docume
      if(b.id==="go-wish"&&PB&&PB.id==="go-wish"&&PB.wi<WLS.length-1){e.stopImmediatePropagation();e.preventDefault();PB.wi++;
        WLS.forEach((id,i)=>{const d=document.getElementById(id);if(d)d.open=i===PB.wi;});wsub(PB.wi);const d=document.getElementById(WLS[PB.wi]);if(d)requestAnimationFrame(()=>d.scrollIntoView({behavior:SMB(),block:"start"}));return;}
      if(b.id==="go-wish"&&PB&&PB.id==="go-wish"){e.stopImmediatePropagation();e.preventDefault();wsub(-1);
-       PB.open.forEach(([d,o])=>{if(d)d.open=o;});const y=PB.y;PB=null;b.classList.remove("jumped");requestAnimationFrame(()=>window.scrollTo({top:y,behavior:SMB()}));return;}
+       document.querySelectorAll("#hwish details.wl").forEach(d=>d.open=false);const y=PB.y;PB=null;b.classList.remove("jumped");requestAnimationFrame(()=>window.scrollTo({top:y,behavior:SMB()}));return;}
      if(PB&&PB.id===b.id&&t){const q=t.getBoundingClientRect();if(q.top<innerHeight*0.7&&q.bottom>0){e.stopImmediatePropagation();e.preventDefault();
        PB.open.forEach(([d,o])=>{if(d)d.open=o;});const y=PB.y;PB=null;b.classList.remove("jumped");requestAnimationFrame(()=>window.scrollTo({top:y,behavior:SMB()}));return;}}
      document.querySelectorAll(".fnav button.jumped").forEach(x=>x.classList.remove("jumped"));
@@ -3048,7 +3054,7 @@ const expOf=st=>{const x=meta(st);return x?x[0]:(EXPFIX[st[0]]||0);};
       <p class="small muted">Untick a player with <b>in my raid</b> in the Loot panel to leave them out.</p>`:"";
     const byTrAll={};mineH.forEach(([k,st])=>(byTrAll[st[1]]=byTrAll[st[1]]||[]).push([st,0]));
     const anyH0=S.tasks.filter(([k,st])=>anyLike(st)&&anyHere(st,m)&&S.mine.has(k));anyH0.forEach(([k,st])=>(byTrAll[st[1]]=byTrAll[st[1]]||[]).push([st,1]));
-    const list=Object.keys(byTrAll).sort().map(tr=>`<h4>${esc(tr)}</h4><ul class="tasks">${byTrAll[tr].map(([st,a])=>{const h=taskLi(st,"mv").replace('<span class="tag">',routeTag(st)+' <span class="tag">');return a?h.replace(/^<li class="task/,'<li class="task anyt').replace(/,\s*any map\b|\s+on any map\b/gi,""):h;}).join("")}</ul>`).join("");
+    const list=Object.keys(byTrAll).sort().map(tr=>`<h4>${esc(tr)}</h4><ul class="tasks">${byTrAll[tr].map(([st,a])=>{const h=taskLi(st,"mv");return a?h.replace(/^<li class="task/,'<li class="task anyt').replace(/,\s*any map\b|\s+on any map\b/gi,""):h;}).join("")}</ul>`).join("");
     // Any-map tasks (kills, survives and the like) count on this raid too.
     const anyH=S.tasks.filter(([k,st])=>anyLike(st)&&anyHere(st,m)&&S.mine.has(k));
     // What to carry in for the tasks open here, progress-aware: the guide's own placement counts (minus what you've
@@ -3260,8 +3266,14 @@ li.task.anyt>label::after{content:"any map";font-size:10.5px;font-weight:600;let
 // Official record without the Hardcore ruleset: "I'm here for the CRT vision" folds the rules card down to one line.
 (function(){const set=v=>{document.body.classList.toggle("crt",v);try{localStorage.setItem("tsr_crt",v?"1":"0")}catch(e){}};
   try{document.body.classList.toggle("crt",localStorage.getItem("tsr_crt")==="1")}catch(e){}
-  document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-crt]");if(!b)return;if(b.dataset.crt!=="1"){set(false);return;}
-    ask("Fold away the Hardcore rules and keep just the PDA screen?","Yes, I'm afraid of a real challenge",()=>set(true));});})();
+  // "I'm just here for the PDA screen" asks in place: the first click fades its words into the confirmation, the
+  // second folds the card. Clicking elsewhere (or waiting) puts the button back.
+  const L0="I'm just here for the PDA screen",L1="Yes, I'm afraid of a real challenge";let armT=0;
+  const swap=(b,t,armed)=>{b.classList.add("crtfade");setTimeout(()=>{b.textContent=t;b.classList.toggle("crtarmed",armed);b.classList.remove("crtfade");},180);};
+  const disarm=()=>{clearTimeout(armT);document.querySelectorAll(".crtbtn.crtarmed").forEach(b=>swap(b,L0,false));};
+  document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-crt]");if(!b){disarm();return;}if(b.dataset.crt!=="1"){set(false);return;}
+    if(b.classList.contains("crtarmed")){clearTimeout(armT);b.textContent=L0;b.classList.remove("crtarmed");set(true);return;}
+    swap(b,L1,true);clearTimeout(armT);armT=setTimeout(disarm,8000);});})();
 </script>
 <script>
 (function(){let buf="";try{document.body.classList.toggle("glow",localStorage.getItem("tsr_crtglow")==="1")}catch(e){}
@@ -3325,5 +3337,19 @@ async function pulseFetch(){if(typeof RELAY!=="string"||!RELAY||document.visibil
     if(r.ok){const d=((await r.json()).data||{}).status||{};const g=d.generalStatus,c=d.currentStatuses;const j={global:g&&{status:g.status,message:g.message||""},services:Array.isArray(c)?c.map(x=>({name:x&&x.name,status:x&&x.status})):null};if(ok(j)){PULSE={...j,t:Date.now()};pulseRender();return;}}}catch(e){}
   pulseRender();}
 setTimeout(pulseFetch,1500);setInterval(pulseFetch,5*60e3);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&(!PULSE||Date.now()-PULSE.t>5*60e3))pulseFetch();});
+</script>
+<script>
+// Phase headings fold their phase: click "Phase 2 · Falling Skies" to tuck its steps away, again to bring them back.
+// Remembered per phase. A finished phase still folds by itself; clicking its heading opens it.
+(function(){let MIN={};try{MIN=JSON.parse(localStorage.getItem("tsr_phasemin")||"{}")}catch(e){}const keep=()=>{try{localStorage.setItem("tsr_phasemin",JSON.stringify(MIN))}catch(e){}};
+  const secs=()=>[...document.querySelectorAll("section.phase")].map(sec=>{const box=sec.querySelector("#r1,#r2,#r3");const key=box?box.id:sec.id==="endings"?"rE":"";return key?{sec,box,key}:null;}).filter(Boolean);
+  function sync(){secs().forEach(({sec,box,key})=>{const h=sec.querySelector(".phasehead h2");if(!h)return;const auto=!!(box&&box.classList.contains("phasedone"));const f=!!MIN[key]||auto;
+    sec.classList.toggle("phasemin",!!MIN[key]);let a=h.querySelector(".pharrow");if(!a){a=document.createElement("span");a.className="pharrow";a.setAttribute("aria-hidden","true");h.prepend(a);h.tabIndex=0;h.setAttribute("role","button");}
+    a.textContent=f?"▸":"▾";h.setAttribute("aria-expanded",String(!f));h.title=f?"Show this phase":"Fold this phase";});}
+  const flip=h=>{const it=secs().find(x=>x.sec.contains(h));if(!it)return;const auto=!!(it.box&&it.box.classList.contains("phasedone"));
+    if(MIN[it.key]||auto){MIN[it.key]=false;if(auto)PHASEOPEN[it.key]=true;}else MIN[it.key]=true;keep();render();};
+  document.addEventListener("click",e=>{const h=e.target.closest&&e.target.closest("section.phase .phasehead h2");if(h&&h.querySelector(".pharrow"))flip(h);});
+  document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches("section.phase .phasehead h2[role=button]")){e.preventDefault();flip(e.target);}});
+  const R0=render;render=function(){const x=R0.apply(this,arguments);try{sync()}catch(e){}return x;};sync();})();
 </script>
 </html>
