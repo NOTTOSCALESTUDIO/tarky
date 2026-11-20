@@ -28,7 +28,7 @@ An unofficial Escape from Tarkov guide where the story route runs in the backgro
 - They couldn't change your progress. Your own devices recognise each other with a private key the party never sees, so nobody else can pose as one of them.
 - At most they'd show up as an extra member with their own list. Start a new party and invite your friends again to leave them behind.
 
-**Offline:** *Offline share* creates a share string friends can paste in, no connection needed.
+**No party needed:** **Share by text → Share my list** copies your loot list as a block of text. Send it to a friend; they open **Share by text → Add friend's list**, paste it and press **Add**.
 
 ### Game logs: automatic checking and raid status
 
