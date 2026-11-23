@@ -3106,7 +3106,8 @@ const expOf=st=>{const x=meta(st);return x?x[0]:(EXPFIX[st[0]]||0);};
     const party=S.mates.length?`<p class="small muted">Names after a task show who in your raid has it open too. Untick a player with <b>in my raid</b> in the Loot panel to leave them out.</p>`:"";
     const mates=st=>{const k=taskKey(st[0],st[1]);return S.mates.filter(x=>x.av.has(k)).map(x=>`<span class="mvmate" style="color:${esc(x.p.c)};border-color:${esc(x.p.c)}">${esc(PN(x.p.n))}</span>`).join("");};
     const byTrAll={};mineH.forEach(([k,st])=>(byTrAll[st[1]]=byTrAll[st[1]]||[]).push([st,0]));
-    const anyH0=S.tasks.filter(([k,st])=>anyLike(st)&&anyHere(st,m)&&S.mine.has(k));anyH0.forEach(([k,st])=>(byTrAll[st[1]]=byTrAll[st[1]]||[]).push([st,1]));
+    // A task that's on this map and also counts as "any map" is listed once, as this map's.
+    const onH=new Set(mineH.map(([k])=>k));const anyH0=S.tasks.filter(([k,st])=>anyLike(st)&&anyHere(st,m)&&S.mine.has(k)&&!onH.has(k));anyH0.forEach(([k,st])=>(byTrAll[st[1]]=byTrAll[st[1]]||[]).push([st,1]));
     const list=Object.keys(byTrAll).sort().map(tr=>`<h4>${esc(tr)}</h4><ul class="tasks">${byTrAll[tr].map(([st,a])=>{const mt=mates(st),h=mt?taskLi(st,"mv").replace(/(<span class="tag">[\s\S]*?<\/span>)/,"$1 "+mt):taskLi(st,"mv");return a?h.replace(/^<li class="task/,'<li class="task anyt').replace(/,\s*any map\b|\s+on any map\b/gi,""):h;}).join("")}</ul>`).join("");
     // Any-map tasks (kills, survives and the like) count on this raid too.
     const anyH=S.tasks.filter(([k,st])=>anyLike(st)&&anyHere(st,m)&&S.mine.has(k));
