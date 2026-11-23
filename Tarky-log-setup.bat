@@ -11,10 +11,12 @@ REM      %USERPROFILE%\TarkovLogs
 REM
 REM  WHAT IT DOES:
 REM   1. Finds Tarkov's Logs folder (Steam libraries, then the official launcher).
-REM   2. Creates a scheduled task "Tarky log mirror" that runs every minute as
-REM      SYSTEM (so no window ever pops up over your game) and runs robocopy,
-REM      which copies only new or changed push-notifications, backend and application
-REM      logs (task events, game mode, and which account was playing).
+REM   2. Writes a small copy script to %ProgramData%\Tarky\mirror.ps1 and creates a
+REM      scheduled task "Tarky log mirror" that runs it every minute as SYSTEM (so no
+REM      window ever pops up over your game). It copies only new or changed
+REM      push-notifications, backend and application logs (task events, game mode,
+REM      and which account was playing). Unlike Windows' robocopy, it can read the
+REM      logs while the game is still writing them, so copies stay current during play.
 REM   3. Optionally keeps only recent copies: the copy task skips logs older than
 REM      your chosen number of days, and a second hidden task "Tarky log cleanup"
 REM      deletes older copied sessions every hour. (The guide only reads the newest
@@ -95,15 +97,19 @@ echo !DAYS!| findstr /r "^[0-9][0-9]*$" >nul || set "DAYS=30"
 REM Strip leading zeros (cmd would read "030" as octal); all zeros means 0.
 for /f "tokens=* delims=0" %%n in ("!DAYS!") do set "DAYS=%%n"
 if "!DAYS!"=="" set "DAYS=0"
-set "AGE="
-if !DAYS! GTR 0 set "AGE= /MAXAGE:!DAYS!"
 
-REM --- 2. Create (or replace, /F) the task. Every minute, hidden, as SYSTEM.
-REM     robocopy  SOURCE  DEST  [file types]  /S = include session subfolders
-REM     /R:0 /W:0 = skip a busy file instead of retrying (it's copied next minute)
-REM     /MAXAGE:n = skip logs older than n days (so cleaned-up copies don't come back)
+REM --- 2. Write the copy script, then create (or replace, /F) the task: every minute, hidden, as SYSTEM.
+REM     The script's lines are at the bottom of this file (they start with ::PS). It opens each log
+REM     with "others may keep writing" sharing, which is what lets it copy while Tarkov is running.
 if not exist "!DST!" mkdir "!DST!"
-schtasks /Create /F /RU SYSTEM /SC MINUTE /MO 1 /TN "Tarky log mirror" /TR "robocopy \"!SRC!\" \"!DST!\" *push-notifications*.log *backend*.log *application*.log /S /R:0 /W:0!AGE!"
+set "PSDIR=%ProgramData%\Tarky"
+if not exist "!PSDIR!" mkdir "!PSDIR!"
+set "PS1=!PSDIR!\mirror.ps1"
+> "!PS1!" echo $src = '!SRC!'
+>> "!PS1!" echo $dst = '!DST!'
+>> "!PS1!" echo $days = !DAYS!
+for /f "usebackq tokens=1* delims= " %%a in (`findstr /b /c:"::PS " "%~f0"`) do >> "!PS1!" echo(%%b
+schtasks /Create /F /RU SYSTEM /SC MINUTE /MO 1 /TN "Tarky log mirror" /TR "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"!PS1!\""
 if errorlevel 1 (
   echo.
   echo  Couldn't create the task. If the paths are very long, Windows may refuse them.
@@ -140,3 +146,22 @@ if errorlevel 1 (
 )
 echo.
 pause
+exit /b 0
+
+REM ---- Copy script (written to %ProgramData%\Tarky\mirror.ps1 by step 2) ----
+::PS $cut = [datetime]::MinValue
+::PS if ($days -gt 0) { $cut = (Get-Date).AddDays(-$days) }
+::PS Get-ChildItem -LiteralPath $src -Directory -Filter 'log_*' -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -gt $cut } | ForEach-Object {
+::PS   $sub = $_.Name
+::PS   Get-ChildItem -LiteralPath $_.FullName -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -match '(push-notifications|backend|application)_\d+\.log$' } | ForEach-Object {
+::PS     $outDir = Join-Path $dst $sub
+::PS     $out = Join-Path $outDir $_.Name
+::PS     $old = Get-Item -LiteralPath $out -ErrorAction SilentlyContinue
+::PS     if ($old -and $old.Length -eq $_.Length) { return }
+::PS     try {
+::PS       New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+::PS       $in = [System.IO.File]::Open($_.FullName, 'Open', 'Read', 'ReadWrite, Delete')
+::PS       try { $o = [System.IO.File]::Create($out); try { $in.CopyTo($o) } finally { $o.Close() } } finally { $in.Close() }
+::PS     } catch { }
+::PS   }
+::PS }
