@@ -3102,9 +3102,10 @@ const expOf=st=>{const x=meta(st);return x?x[0]:(EXPFIX[st[0]]||0);};
         const at=document.getElementById("anytog");if(at)at.innerHTML='<span class="hkl">A</span>ny map'+(n?` <span class="mcount">${n}</span>`:"");return;}
       const mine=S.tasks.filter(([k,st])=>onMap(st,m)&&S.mine.has(k)).map(([k])=>k);
       const shared=S.mates.length?mine.filter(k=>S.mates.every(x=>x.av.has(k))).length:null;
-      const n=(shared===null?mine.length:shared)+(CHMAPS[m]?chOpen(m).length:0);
-      b.innerHTML=esc(b.dataset.nm)+` <span class="mcount${shared!==null?" mshared":""}">${n}</span>`;b.classList.toggle("mempty",!n);
-      b.title=shared!==null?`${shared} task${shared===1?"":"s"} everyone in your raid can do here (${mine.length} for you)`:`${mine.length} open task${mine.length===1?"":"s"} you can take here`;});
+      // The number is your own open tasks here; in a party the tooltip adds how many of them everyone in your raid shares.
+      const n=mine.length+(CHMAPS[m]?chOpen(m).length:0);
+      b.innerHTML=esc(b.dataset.nm)+` <span class="mcount">${n}</span>`;b.classList.toggle("mempty",!n);
+      b.title=`${mine.length} open task${mine.length===1?"":"s"} you can take here`+(shared!==null?` (${shared} shared by everyone in your raid)`:"");});
     const V=document.getElementById("mapview");if(V&&!V.hidden)mapView(V.dataset.map);};
   // The open map's button looks pressed in, like a held key.
   function markMap(){const V=document.getElementById("mapview");const cur=V&&!V.hidden?V.dataset.map:"";document.querySelectorAll("#mapnav button[data-map]").forEach(b=>{const on=!!cur&&b.dataset.map===cur;b.classList.toggle("mvon",on);b.setAttribute("aria-pressed",String(on));});}
