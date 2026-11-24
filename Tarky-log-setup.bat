@@ -14,7 +14,7 @@ REM   1. Finds Tarkov's Logs folder (Steam libraries, then the official launcher
 REM   2. Writes a small copy script to %ProgramData%\Tarky\mirror.ps1 and creates a
 REM      scheduled task "Tarky log mirror" that runs it every minute as SYSTEM (so no
 REM      window ever pops up over your game). It copies only new or changed
-REM      push-notifications, backend and application logs (task events, game mode,
+REM      push-notifications, backend and application logs every 15 seconds (task events, game mode,
 REM      and which account was playing). Unlike Windows' robocopy, it can read the
 REM      logs while the game is still writing them, so copies stay current during play.
 REM   3. Asks whether to remove old copies (Y/N). If yes, the copy task skips logs older
@@ -155,14 +155,20 @@ exit /b 0
 REM ---- Copy script (written to %ProgramData%\Tarky\mirror.ps1 by step 2) ----
 REM  It compares sizes from the open file, not the folder listing: Windows doesn't update a
 REM  log's listed size while the game still has it open, so the listing would say "unchanged".
+REM  Logs untouched for an hour whose copy already matches are skipped without opening.
 ::PS $cut = [datetime]::MinValue
 ::PS if ($days -gt 0) { $cut = (Get-Date).AddDays(-$days) }
+::PS # Windows runs this at most once a minute, so it copies 4 times, 15 s apart.
+::PS for ($pass = 0; $pass -lt 4; $pass++) {
+::PS if ($pass -gt 0) { Start-Sleep -Seconds 15 }
+::PS $hour = (Get-Date).AddHours(-1)
 ::PS Get-ChildItem -LiteralPath $src -Directory -Filter 'log_*' -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -gt $cut } | ForEach-Object {
 ::PS   $sub = $_.Name
 ::PS   Get-ChildItem -LiteralPath $_.FullName -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -match '(push-notifications|backend|application)_\d+\.log$' } | ForEach-Object {
 ::PS     $outDir = Join-Path $dst $sub
 ::PS     $out = Join-Path $outDir $_.Name
 ::PS     $old = Get-Item -LiteralPath $out -ErrorAction SilentlyContinue
+::PS     if ($old -and $_.LastWriteTime -lt $hour -and $old.Length -eq $_.Length) { return }
 ::PS     try {
 ::PS       $in = [System.IO.File]::Open($_.FullName, 'Open', 'Read', 'ReadWrite, Delete')
 ::PS       try {
@@ -172,4 +178,5 @@ REM  log's listed size while the game still has it open, so the listing would sa
 ::PS       } finally { $in.Close() }
 ::PS     } catch { }
 ::PS   }
+::PS }
 ::PS }

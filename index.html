@@ -2369,7 +2369,9 @@ document.addEventListener("change",e=>{if(e.target&&e.target.id==="logslot"){swi
 document.addEventListener("change",e=>{if(e.target&&e.target.id==="logmode"){LOGMODE=e.target.value;try{localStorage.setItem("tsr_logmode",LOGMODE)}catch(x){}}});
 // Logs are read once a minute (the Steam setup copies them once a minute too), plus once whenever the guide comes back
 // into view. While logs aren't connected yet, the panel still refreshes its setup state every few seconds.
-setInterval(()=>{if(LOGSTATE==="on")logScan();},60e3);
+// Every 15 s: reads only what the logs gained since the last look, so it stays cheap.
+setInterval(()=>{if(LOGSTATE==="on"&&!document.hidden)logScan();},15e3);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&LOGSTATE==="on")logScan();});
 setInterval(()=>{if(LOGSTATE==="on"&&window.LOGOLD===undefined)logOld();},3000);
 setInterval(()=>{if(LOGSTATE!=="on"&&document.getElementById("logpanel")&&!document.getElementById("logpanel").hidden)logUI();},8000);
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&LOGSTATE==="on"&&Date.now()-(LOGLAST||0)>15e3)logScan();});
