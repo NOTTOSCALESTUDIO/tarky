@@ -118,11 +118,11 @@ if errorlevel 1 (
 )
 
 REM --- 3. Cleanup of copied sessions older than DAYS (skipped if DAYS is 0).
-REM     Runs every 24 hours from setup (/SC HOURLY /MO 24). If the PC is off then, it just runs the next day. forfiles finds
+REM     Runs once a day at the time you ran setup (/SC DAILY). If the PC is off then, it just runs the next day. forfiles finds
 REM     log_ folders last changed more than DAYS days ago and removes them.
 REM     It only ever looks inside TarkovLogs; the game's own logs are never touched.
 if !DAYS! GTR 0 (
-  schtasks /Create /F /RU SYSTEM /SC HOURLY /MO 24 /TN "Tarky log cleanup" /TR "forfiles /p \"!DST!\" /m log_* /d -!DAYS! /c \"cmd /c if @isdir==TRUE rmdir /s /q @path\"" >nul
+  schtasks /Create /F /RU SYSTEM /SC DAILY /TN "Tarky log cleanup" /TR "forfiles /p \"!DST!\" /m log_* /d -!DAYS! /c \"cmd /c if @isdir==TRUE rmdir /s /q @path\"" >nul
   schtasks /Run /TN "Tarky log cleanup" >nul
   echo  Keeping !DAYS! days of copies. Older ones are removed once a day.
 ) else (
