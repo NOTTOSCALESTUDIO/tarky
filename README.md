@@ -72,7 +72,7 @@ The game's logs hold more than the guide needs: account and profile numbers, gam
 - **It stays on your PC.** The setup task copies files from one folder to another on the same PC with a small PowerShell script it writes to `%ProgramData%\Tarky\mirror.ps1` (its lines are at the bottom of the setup file, so you can read them first). It opens the logs the way the game allows while it's still writing them, so copies stay current during play. Nothing in it touches the network. *Ran the setup file before November 23, 2026?* Run the new one once more: the first version only caught up after the game closed and skipped the account file.
 - **Only three kinds of file are copied:** push-notifications, backend and application logs. Everything else in the Logs folder is left alone.
 - **The copies are private.** They go into your own user folder, which only you and the PC's administrators can open.
-- **They're kept only as long as you choose.** The cleanup task deletes copies older than the days you picked, once a day. [Tarky-log-remove.bat](Tarky-log-remove.bat) removes both tasks, and the log copies too if you say yes.
+- **They're kept only as long as you choose.** Setup asks whether to remove old copies. Say no to keep every copy; say yes and pick a number of days, and a cleanup task deletes older copies once a day. [Tarky-log-remove.bat](Tarky-log-remove.bat) removes both tasks, and the log copies too if you say yes.
 
 #### Everyone
 

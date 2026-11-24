@@ -17,8 +17,8 @@ REM      window ever pops up over your game). It copies only new or changed
 REM      push-notifications, backend and application logs (task events, game mode,
 REM      and which account was playing). Unlike Windows' robocopy, it can read the
 REM      logs while the game is still writing them, so copies stay current during play.
-REM   3. Optionally keeps only recent copies: the copy task skips logs older than
-REM      your chosen number of days, and a second hidden task "Tarky log cleanup"
+REM   3. Asks whether to remove old copies (Y/N). If yes, the copy task skips logs older
+REM      than your chosen number of days, and a second hidden task "Tarky log cleanup"
 REM      deletes older copied sessions once a day. (The guide only reads the newest
 REM      sessions; older ones matter only for a one-off "Import past completions".)
 REM   4. Runs it once and checks the copies arrived.
@@ -86,17 +86,21 @@ echo.
 choice /c YN /m "  Set up the copy task with these folders"
 if errorlevel 2 exit /b 0
 
-REM --- How long to keep copies. Enter = 30 days; 0 = keep everything.
+REM --- Keep every copy, or remove old ones automatically? N = keep everything (DAYS=0).
 echo.
-echo  How many days of copied logs to keep? The guide only needs recent ones;
-echo  older ones are only for a one-off "Import past completions".
+echo  The guide only needs recent logs; older copies are only for a one-off
+echo  "Import past completions". You can keep every copy, or have old ones removed.
+set "DAYS=0"
+choice /c YN /m "  Remove old copies automatically"
+if errorlevel 2 goto keepall
 set "DAYS=30"
-set /p "DAYS=  Days to keep (Enter for 30, 0 to keep all): "
+set /p "DAYS=  Keep how many days? (Enter for 30): "
 REM Whole numbers only; anything else falls back to 30.
 echo !DAYS!| findstr /r "^[0-9][0-9]*$" >nul || set "DAYS=30"
-REM Strip leading zeros (cmd would read "030" as octal); all zeros means 0.
+REM Strip leading zeros (cmd would read "030" as octal); all zeros means keep everything.
 for /f "tokens=* delims=0" %%n in ("!DAYS!") do set "DAYS=%%n"
 if "!DAYS!"=="" set "DAYS=0"
+:keepall
 
 REM --- 2. Write the copy script, then create (or replace, /F) the task: every minute, hidden, as SYSTEM.
 REM     The script's lines are at the bottom of this file (they start with ::PS). It opens each log
