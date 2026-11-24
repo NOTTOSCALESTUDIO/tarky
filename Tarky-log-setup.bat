@@ -19,7 +19,7 @@ REM      and which account was playing). Unlike Windows' robocopy, it can read t
 REM      logs while the game is still writing them, so copies stay current during play.
 REM   3. Optionally keeps only recent copies: the copy task skips logs older than
 REM      your chosen number of days, and a second hidden task "Tarky log cleanup"
-REM      deletes older copied sessions every hour. (The guide only reads the newest
+REM      deletes older copied sessions once a day. (The guide only reads the newest
 REM      sessions; older ones matter only for a one-off "Import past completions".)
 REM   4. Runs it once and checks the copies arrived.
 REM
@@ -118,13 +118,13 @@ if errorlevel 1 (
 )
 
 REM --- 3. Cleanup of copied sessions older than DAYS (skipped if DAYS is 0).
-REM     Runs hourly (so it still happens if the PC is off overnight). forfiles finds
+REM     Runs every 24 hours from setup (/SC HOURLY /MO 24). If the PC is off then, it just runs the next day. forfiles finds
 REM     log_ folders last changed more than DAYS days ago and removes them.
 REM     It only ever looks inside TarkovLogs; the game's own logs are never touched.
 if !DAYS! GTR 0 (
-  schtasks /Create /F /RU SYSTEM /SC HOURLY /TN "Tarky log cleanup" /TR "forfiles /p \"!DST!\" /m log_* /d -!DAYS! /c \"cmd /c if @isdir==TRUE rmdir /s /q @path\"" >nul
+  schtasks /Create /F /RU SYSTEM /SC HOURLY /MO 24 /TN "Tarky log cleanup" /TR "forfiles /p \"!DST!\" /m log_* /d -!DAYS! /c \"cmd /c if @isdir==TRUE rmdir /s /q @path\"" >nul
   schtasks /Run /TN "Tarky log cleanup" >nul
-  echo  Keeping !DAYS! days of copies. Older ones are removed every hour.
+  echo  Keeping !DAYS! days of copies. Older ones are removed once a day.
 ) else (
   schtasks /Delete /TN "Tarky log cleanup" /F >nul 2>&1
   echo  Keeping all copies.
