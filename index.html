@@ -64,6 +64,7 @@ section.phase.phasemin>:not(hr):not(.phasehead):not(.spoilph){display:none!impor
 #myname.pneed{outline:2px solid var(--accent);outline-offset:1px}#myname.pneed::placeholder{color:var(--accent)}
 .mvmate{display:inline-block;font-size:11px;line-height:1.35;padding:0 6px;margin-left:3px;border:1px solid;border-radius:9px;font-weight:600;vertical-align:1px;white-space:nowrap}
 .pmems{flex-basis:100%;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.tabpause{position:sticky;top:0;z-index:60;padding:8px 12px;background:var(--accent);color:#111;font-weight:600;font-size:14px}.tabpause .lreset{margin-left:8px}
 </style>
 <script>try{var t=localStorage.getItem("tsr_theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -2000,7 +2001,7 @@ function recentHTML(){const R=RECENT.filter(r=>r.c!==PCODE);if(!R.length)return 
 function liveBar(){if(!RELAY)return "";if(!PCODE)return `<button type="button" id="plink" class="lreset" title="Sync your checkmarks with your phone or other PC: shows a QR code and link that joins as you">Link device</button><button type="button" id="pstart" class="lreset">Start party</button><input id="pcode" class="pname pcode" placeholder="Code" maxlength="9"><button type="button" id="pjoin" class="lreset">Join</button>${LERR?`<span class="small perr">${esc(LERR)}</span>`:""}${recentHTML()}`;
   const st=LSTATE==="on"?`<span class="plive on">● live</span>`:LSTATE==="wait"?`<span class="plive">connecting…</span>`:`<span class="plive">offline, retrying</span>`;
   return `<b class="mono${STREAM?" scover":""}" title="${STREAM?"Party code hidden (streamer mode): click to show for 5 seconds":""}">${esc(fmtCode(PCODE))}</b> ${st}<button type="button" id="pinvite" class="lreset">Invite</button><button type="button" id="plink" class="lreset" title="Show a QR code and link your phone or other PC can use to join as you, with your checkmarks synced">Link device</button><button type="button" id="pleave" class="lreset">Leave</button>${LERR?`<span class="small perr">${esc(LERR)}</span>`:""}${recentHTML()}`;}
-async function liveConnect(){if(!RELAY||!PCODE)return;clearTimeout(LRETRY);await ogCalc();if(!PCODE)return;if(LWS){const o=LWS;LWS=null;try{o.close()}catch(e){}}LSTATE="wait";LERR="";
+async function liveConnect(){if(!RELAY||!PCODE||window.TSR_PASSIVE)return;clearTimeout(LRETRY);await ogCalc();if(!PCODE)return;if(LWS){const o=LWS;LWS=null;try{o.close()}catch(e){}}LSTATE="wait";LERR="";
   const ws=new WebSocket(RELAY+"/party/"+PCODE+"?id="+encodeURIComponent(PID)+"&name="+encodeURIComponent(MYNAME||"Friend")+(LMODE==="new"||LMODE==="reopen"?"&new=1":""));LWS=ws;
   ws.onopen=()=>{LSTATE="on";LTRY=0;LLAST="";livePush(true);renderLoot();};
   ws.onmessage=e=>{if(e.data==="pong")return;let m;try{m=JSON.parse(e.data)}catch(x){return;}
@@ -2224,7 +2225,7 @@ async function applyDone(ids,quiet){if(!ids.length)return [];const names=await t
 // Copies made by the first setup file (robocopy) have no application log and only update after the game closes;
 // the current setup file fixes both. Spot those copies and say so in the Game logs panel.
 let LOGOLDCOPY=false;
-async function logScan(){if(!LOGH||LOGSTATE!=="on"||LOGBUSY)return;LOGBUSY=true;try{const dirs=(await logDirs()).slice(-2);
+async function logScan(){if(!LOGH||LOGSTATE!=="on"||LOGBUSY||window.TSR_PASSIVE)return;LOGBUSY=true;try{const dirs=(await logDirs()).slice(-2);
     {const last=dirs[dirs.length-1];if(last){let push=false,app=false,other=false;for await(const [n,h] of last.h.entries()){if(h.kind!=="file")continue;if(/push-notifications_\d+\.log$/.test(n))push=true;else if(/application_\d+\.log$/.test(n))app=true;else if(!/backend_\d+\.log$/.test(n))other=true;}LOGOLDCOPY=push&&!app&&!other;}}const ids=[],seen=[],fl={};let st=null;
     const per={};let newest=null;
     for(const d of dirs){const tl=await dirTL(d);const ds=slotFrom(tl,Infinity);if(!ds)continue;newest={d,slot:ds};
@@ -3424,5 +3425,22 @@ setTimeout(pulseFetch,1500);setInterval(pulseFetch,5*60e3);document.addEventList
   document.addEventListener("click",e=>{const h=e.target.closest&&e.target.closest("section.phase .phasehead h2");if(h&&h.querySelector(".pharrow"))flip(h);});
   document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches("section.phase .phasehead h2[role=button]")){e.preventDefault();flip(e.target);}});
   const R0=render;render=function(){const x=R0.apply(this,arguments);try{sync()}catch(e){}return x;};sync();})();
+</script>
+<script>
+// Two guide tabs (or the installed app plus a tab) share one save. Without this, each kept its own copy in memory and
+// the last one to save overwrote the other's checkmarks. Now a tab picks up the other's changes as they happen.
+// One live tab at a time: the newest guide tab takes over the party connection and log reading; older tabs pause
+// (so you don't join your own party twice as two players) and offer to take over again.
+(function(){if(!window.BroadcastChannel)return;const bc=new BroadcastChannel("tsr-tabs");const me=Math.random().toString(36).slice(2);
+  const pause=()=>{if(window.TSR_PASSIVE)return;window.TSR_PASSIVE=true;try{if(LWS){const o=LWS;LWS=null;o.close();}LSTATE="off";}catch(x){}
+    let b=document.getElementById("tabpause");if(!b){b=document.createElement("div");b.id="tabpause";b.className="tabpause";b.innerHTML='The guide is open in another tab or window, so this one is paused (no party connection or log reading here). <button type="button" class="lreset" id="tabclaim">Use this tab</button>';document.body.prepend(b);}};
+  bc.onmessage=e=>{if(e.data&&e.data.t==="hello"&&e.data.id!==me)pause();};
+  document.addEventListener("click",e=>{if(e.target&&e.target.id==="tabclaim")location.reload();});
+  bc.postMessage({t:"hello",id:me});})();
+addEventListener("storage",e=>{if(!e.key)return;
+  if(e.key==="tsr_slot"){location.reload();return;}
+  const J=v=>{try{return JSON.parse(v||"{}")}catch(x){return null}};
+  if(e.key==="tsr_tasks"){const v=J(e.newValue);if(v){Object.keys(tdone).forEach(k=>delete tdone[k]);Object.assign(tdone,v);render();}}
+  else if(e.key==="tsr_done"){const v=J(e.newValue);if(v){Object.keys(done).forEach(k=>delete done[k]);Object.assign(done,v);render();}}});
 </script>
 </html>
