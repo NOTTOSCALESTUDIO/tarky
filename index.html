@@ -3437,6 +3437,15 @@ setTimeout(pulseFetch,1500);setInterval(pulseFetch,5*60e3);document.addEventList
   bc.onmessage=e=>{if(e.data&&e.data.t==="hello"&&e.data.id!==me)pause();};
   document.addEventListener("click",e=>{if(e.target&&e.target.id==="tabclaim")location.reload();});
   bc.postMessage({t:"hello",id:me});})();
+// Repair: a checklist left behind as "?|mode" while you're on that mode's real checklist (an older version switched
+// over instead of merging, and gave you a new party identity). Fold it in once: checkmarks combined, and its party
+// identity (player ID, linked devices, name, party code) restored, so you're the same player in your party again.
+setTimeout(()=>{if(window.TSR_PASSIVE||!SLOT||SLOT.startsWith("?|"))return;const qk="?|"+SLOT.split("|")[1],q=SLOTS[qk];if(!q)return;
+  const J=v=>{try{return JSON.parse(v||"{}")}catch(x){return {}}};const T=J(q.tsr_tasks),D=J(q.tsr_done);
+  Object.entries(T).forEach(([k,v])=>{if(v)tdone[k]=true;});Object.entries(D).forEach(([k,v])=>{if(v)done[k]=true;});
+  try{if(LWS&&LSTATE==="on")LWS.send(JSON.stringify({type:"leave"}));}catch(x){}
+  save();["tsr_pid","tsr_owner","tsr_myname","tsr_pcode","tsr_party","tsr_pex","tsr_syncts"].forEach(k=>{try{if(q[k]!=null)localStorage.setItem(k,q[k]);}catch(x){}});
+  delete SLOTS[qk];saveSlots();setTimeout(()=>location.reload(),400);},2500);
 addEventListener("storage",e=>{if(!e.key)return;
   if(e.key==="tsr_slot"){location.reload();return;}
   const J=v=>{try{return JSON.parse(v||"{}")}catch(x){return null}};
