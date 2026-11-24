@@ -2084,7 +2084,10 @@ var LSTAT=null;try{LSTAT=JSON.parse(localStorage.getItem("tsr_lstat")||"null")}c
 // covered on screen until you choose to show them.
 var STREAM=false;try{STREAM=localStorage.getItem("tsr_stream")==="1"}catch(e){}
 const stFresh=st=>st&&st.s&&Date.now()-(+st.t||0)<3*3600e3;
-function stHTML(st){if(!stFresh(st))return "";return st.s==="raid"?` <span class="pst raid" title="Started ${new Date(st.t).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"})}">in raid${st.m?" · "+esc(st.m):""}</span>`:` <span class="pst">in menus</span>`;}
+// The logs name maps by their internal ids; show the names players use.
+const LOCN={bigmap:"Customs",factory4_day:"Factory",factory4_night:"Factory (night)",factory_event:"Factory (event)",interchange:"Interchange",woods:"Woods",shoreline:"Shoreline",rezervbase:"Reserve",laboratory:"The Lab",laboratory_event:"The Lab (event)",lighthouse:"Lighthouse",tarkovstreets:"Streets",sandbox:"Ground Zero",sandbox_high:"Ground Zero (21+)",labyrinth:"The Labyrinth"};
+const locName=m=>LOCN[String(m||"").toLowerCase()]||String(m||"");
+function stHTML(st){if(!stFresh(st))return "";return st.s==="raid"?` <span class="pst raid" title="Started ${new Date(st.t).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"})}">in raid${st.m?" · "+esc(locName(st.m)):""}</span>`:` <span class="pst">in menus</span>`;}
 function myStatus(){let b=LSTAT;LIVE.forEach(m=>{if(mine(m)&&stFresh(m.st)&&(!stFresh(b)||m.st.t>b.t))b=m.st;});return b;}
 function setStatus(st){if(LSTAT&&st&&LSTAT.s===st.s&&LSTAT.m===st.m&&st.t-LSTAT.t<60e3)return;LSTAT=st;try{localStorage.setItem("tsr_lstat",JSON.stringify(st))}catch(e){}livePush(true);renderLoot();}
 const normT=n=>String(n||"").replace(/\s*\[PVE ZONE\]\s*$/i,"").replace(/ \((?:[^)]* half|USEC|BEAR)\)$/,"").replace(/[’‘`]/g,"'").replace(/[–—]/g,"-").replace(/\s+/g," ").trim().toLowerCase();
