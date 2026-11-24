@@ -2276,7 +2276,9 @@ async function logReconnect(){if(!LOGH)return logConnect();try{if(await LOGH.req
 async function logDisconnect(){LOGH=null;LOGSTATE="off";LOGSEEN={};saveSeen();await kvSet("logdir",undefined);setStatus(null);logUI();}
 function logToast(t){let b=document.getElementById("logtoast");if(!b){b=document.createElement("div");b.id="logtoast";b.className="updtoast logtoast";document.body.appendChild(b);}b.textContent=t;b.hidden=false;clearTimeout(b._t);b._t=setTimeout(()=>{b.hidden=true;},7000);}
 // The guide works best with game logs connected, so say so up front until they are.
-function logCTA(){const C=document.getElementById("logcta");if(!C)return;
+// Connected on this device before: when the logs are off, keep a one-line reminder instead of the full setup card.
+function logEver(){try{return localStorage.getItem("tsr_logever")==="1"}catch(e){return false}}
+function logCTA(){if(LOGSTATE==="on"){try{localStorage.setItem("tsr_logever","1")}catch(e){}}const C=document.getElementById("logcta");if(!C)return;
   if(LOGREADY&&LOGSTATE==="on"&&LOGOLDCOPY){let x="";try{x=sessionStorage.getItem("tsr_oldcopyx")||""}catch(e){}if(!x){C.innerHTML=`<p><b>Update your log setup.</b> Your TarkovLogs copies come from the first version of the setup file: they only catch up after you close the game, and they leave out the file that says which account played. Download the new <a href="https://github.com/nottoscalestudio/tarky/raw/main/Tarky-log-setup.bat">Tarky-log-setup.bat</a> and run it once more as administrator (it replaces the old copy task); then tasks check off within a minute or two while you play. <button type="button" class="lreset" id="ctaoldx">Not now</button></p>`;C.hidden=false;return;}}
   if(LOGREADY&&LOGSTATE==="on"&&impOffer()){const o=window.LOGOLD,d=new Date(o.oldest),loc=t=>{const x=new Date(t);return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0");},iso=loc(o.oldest),pick=o.from?loc(o.from):iso,nice=t=>new Date(t).toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"});
     C.innerHTML=`<h2>We found older game logs</h2>
@@ -2290,6 +2292,7 @@ function logCTA(){const C=document.getElementById("logcta");if(!C)return;
   const phone=/Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
   let h;
   if(LOGSTATE==="need")h=`<p><b>Game logs paused.</b> Chrome needs your OK again to read the logs folder. <button type="button" class="ctabtn" id="ctare">Allow again</button></p>`;
+  else if(logEver()&&!phone)h=`<p><b>Game logs are off,</b> so tasks won't check themselves. <button type="button" class="ctabtn" id="ctago">Connect again</button> <button type="button" class="lreset" id="ctamore">Show me how</button></p>`;
   else if(mini)h=`<p><b>Tip:</b> connect your game logs and tasks check themselves. <button type="button" class="lreset" id="ctamore">Show me how</button></p>`;
   else if(LOGOK&&!phone)h=`<h2>Let the game check off your tasks</h2>
     <p>Connect Tarkov's log folder once. From then on, finished tasks check themselves, your phone and party stay in sync, and each account and game mode keeps its own checklist. About two minutes, one time (longer if you move the game).</p>
@@ -2315,7 +2318,7 @@ document.addEventListener("click",e=>{const t=e.target;if(!t||!t.id||!/^cta/.tes
    if(t.id==="ctaoldx"){try{sessionStorage.setItem("tsr_oldcopyx","1")}catch(x){}logCTA();}
    if(t.id==="ctaimpno"){try{localStorage.setItem("tsr_logimpno","1")}catch(x){}logCTA();}
   if(t.id==="ctahow"){const P=document.getElementById("logpanel");if(!P||P.hidden){const g=document.getElementById("logtog");if(g)g.click();}}
-  if(t.id==="ctamin"||t.id==="ctamore"){try{t.id==="ctamin"?localStorage.setItem("tsr_ctamini","1"):localStorage.removeItem("tsr_ctamini")}catch(x){}logCTA();}});
+  if(t.id==="ctamin"||t.id==="ctamore"){try{t.id==="ctamin"?localStorage.setItem("tsr_ctamini","1"):localStorage.removeItem("tsr_ctamini");if(t.id==="ctamore")localStorage.removeItem("tsr_logever")}catch(x){}logCTA();}});
 function myBuild(){const el=document.getElementById("mybuild");if(!el)return;if(!LOGVER){el.textContent="";return;}
   const nw=GUIDEBUILD&&verGt(LOGVER,GUIDEBUILD);el.innerHTML=" · your game "+esc(LOGVER)+(nw?' <b class="newer" title="Your game is on a newer build than the guide was checked against; new or changed tasks may be missing until the next update.">newer</b>':"");}
 function logUI(){logCTA();myBuild();const b=document.getElementById("logtog");if(!b)return;b.hidden=!LOGOK;b.textContent=LOGSTATE==="on"?"Game logs ●":LOGSTATE==="need"?"Game logs: reconnect":"Game logs";b.classList.toggle("on",LOGSTATE==="on");
