@@ -149,6 +149,8 @@ pause
 exit /b 0
 
 REM ---- Copy script (written to %ProgramData%\Tarky\mirror.ps1 by step 2) ----
+REM  It compares sizes from the open file, not the folder listing: Windows doesn't update a
+REM  log's listed size while the game still has it open, so the listing would say "unchanged".
 ::PS $cut = [datetime]::MinValue
 ::PS if ($days -gt 0) { $cut = (Get-Date).AddDays(-$days) }
 ::PS Get-ChildItem -LiteralPath $src -Directory -Filter 'log_*' -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -gt $cut } | ForEach-Object {
@@ -157,11 +159,13 @@ REM ---- Copy script (written to %ProgramData%\Tarky\mirror.ps1 by step 2) ----
 ::PS     $outDir = Join-Path $dst $sub
 ::PS     $out = Join-Path $outDir $_.Name
 ::PS     $old = Get-Item -LiteralPath $out -ErrorAction SilentlyContinue
-::PS     if ($old -and $old.Length -eq $_.Length) { return }
 ::PS     try {
-::PS       New-Item -ItemType Directory -Force -Path $outDir | Out-Null
 ::PS       $in = [System.IO.File]::Open($_.FullName, 'Open', 'Read', 'ReadWrite, Delete')
-::PS       try { $o = [System.IO.File]::Create($out); try { $in.CopyTo($o) } finally { $o.Close() } } finally { $in.Close() }
+::PS       try {
+::PS         if ($old -and $old.Length -eq $in.Length) { return }
+::PS         New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+::PS         $o = [System.IO.File]::Create($out); try { $in.CopyTo($o) } finally { $o.Close() }
+::PS       } finally { $in.Close() }
 ::PS     } catch { }
 ::PS   }
 ::PS }
