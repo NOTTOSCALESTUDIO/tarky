@@ -156,6 +156,8 @@ REM ---- Copy script (written to %ProgramData%\Tarky\mirror.ps1 by step 2) ----
 REM  It compares sizes from the open file, not the folder listing: Windows doesn't update a
 REM  log's listed size while the game still has it open, so the listing would say "unchanged".
 REM  Logs untouched for an hour whose copy already matches are skipped without opening.
+REM  Logs only grow, so when a copy exists it appends just the new bytes; a log that got
+REM  smaller (replaced) is copied whole again.
 ::PS $cut = [datetime]::MinValue
 ::PS if ($days -gt 0) { $cut = (Get-Date).AddDays(-$days) }
 ::PS # Windows runs this at most once a minute, so it copies 4 times, 15 s apart.
@@ -172,9 +174,12 @@ REM  Logs untouched for an hour whose copy already matches are skipped without o
 ::PS     try {
 ::PS       $in = [System.IO.File]::Open($_.FullName, 'Open', 'Read', 'ReadWrite, Delete')
 ::PS       try {
-::PS         if ($old -and $old.Length -eq $in.Length) { return }
+::PS         $n = $in.Length
+::PS         if ($old -and $old.Length -eq $n) { return }
 ::PS         New-Item -ItemType Directory -Force -Path $outDir | Out-Null
-::PS         $o = [System.IO.File]::Create($out); try { $in.CopyTo($o) } finally { $o.Close() }
+::PS         if ($old -and $old.Length -lt $n) { [void]$in.Seek($old.Length, 'Begin'); $o = [System.IO.File]::Open($out, 'Append', 'Write', 'Read') }
+::PS         else { $o = [System.IO.File]::Create($out) }
+::PS         try { $in.CopyTo($o) } finally { $o.Close() }
 ::PS       } finally { $in.Close() }
 ::PS     } catch { }
 ::PS   }
